@@ -1,0 +1,4 @@
+1001,Alice Johnson,20,alice@email.com,Computer Science,95.000000;87.500000;92.000000
+1002,Bob Smith,21,bob@email.com,Mathematics,78.000000;85.500000
+1003,Carol Davis,19,carol@email.com,Physics,98.000000;94.500000;96.000000
+1004,David Wilson,22,david@email.com,Computer Science,
