@@ -54,13 +54,13 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **5 Solved**
+### 🔥 Current Problem Count: **7 Solved**
 
 ---
 
 ## <------------ARRAY ----------->
 
-**Day 11** [View Code](Day_011) - 01 May, 2025  
+**Day 11** [View Code](Day_011) - 25 Aug, 2025  
 Array Problems
 
 **Two Sum**
@@ -84,7 +84,7 @@ Array Problems
 
 ## <------------DIGIT MANIPULATION ----------->
 
-**Day 12** [View Code](Day_012) - 02 May, 2025  
+**Day 12** [View Code](Day_012) - 26 Aug, 2025  
 Digit Manipulation Problems
 
 **Find Smallest Index Where Index Equals Sum of Digits**
@@ -100,7 +100,7 @@ Digit Manipulation Problems
 
 ## <------------VOTING ALGORITHMS ----------->
 
-**Day 13** [View Code](Day_013) - 03 May, 2025  
+**Day 13** [View Code](Day_013) - 27 Aug, 2025  
 Boyer-Moore Voting Algorithm
 
 **Majority Element**
@@ -116,7 +116,7 @@ Boyer-Moore Voting Algorithm
 
 ## <------------INTEGER MANIPULATION ----------->
 
-**Day 14** [View Code](Day_014) - 04 May, 2025  
+**Day 14** [View Code](Day_014) - 28 Aug, 2025  
 Integer Manipulation Problems
 
 **Reverse Integer**
@@ -127,6 +127,38 @@ Integer Manipulation Problems
   - Overflow Detection: Check before multiplication to prevent overflow
   - Boundary Checks: INT_MIN/10 and INT_MAX/10 comparisons
   - Edge Cases: Negative numbers, trailing zeros, overflow returns 0
+
+---
+
+## <------------MATHEMATICAL ALGORITHMS ----------->
+
+**Day 15** [View Code](Day_015) - 29 Aug, 2025  
+Mathematical Algorithm Problems
+
+**Pow(x, n)**
+- **Definition**: Implement pow(x, n) which calculates x raised to power n
+- **Use Cases**: Mathematical computations, exponentiation optimization
+- **Key Concepts**:
+  - Binary Exponentiation: O(log n) time complexity using bit manipulation
+  - Negative Exponent Handling: Convert to 1/x and make exponent positive
+  - Overflow Prevention: Use long for exponent to handle INT_MIN
+  - Optimization: Square base and halve exponent for efficiency
+
+---
+
+## <------------TWO POINTERS ----------->
+
+**Day 16** [View Code](Day_016) - 30 Aug, 2025  
+Two Pointers Technique
+
+**Remove Duplicates from Sorted Array**
+- **Definition**: Remove duplicates in-place from sorted array, return new length
+- **Use Cases**: Array modification, in-place algorithms, space optimization
+- **Key Concepts**:
+  - Two Pointers: Slow pointer for unique elements, fast pointer for traversal
+  - In-place Modification: Modify array without extra space
+  - Sorted Array Property: Duplicates are adjacent, simplifies detection
+  - Return Length: First k elements contain unique values
 
 ## 🛠️ How to Use This Repository
 
