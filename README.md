@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **7 Solved**
+### 🔥 Current Problem Count: **14 Solved**
 
 ---
 
@@ -135,14 +135,14 @@ Integer Manipulation Problems
 **Day 15** [View Code](Day_015) - 29 Aug, 2025  
 Mathematical Algorithm Problems
 
-**Pow(x, n)**
-- **Definition**: Implement pow(x, n) which calculates x raised to power n
-- **Use Cases**: Mathematical computations, exponentiation optimization
+**Sqrt(x)**
+- **Definition**: Compute and return the square root of x (integer part only)
+- **Use Cases**: Mathematical computations, binary search applications
 - **Key Concepts**:
-  - Binary Exponentiation: O(log n) time complexity using bit manipulation
-  - Negative Exponent Handling: Convert to 1/x and make exponent positive
-  - Overflow Prevention: Use long for exponent to handle INT_MIN
-  - Optimization: Square base and halve exponent for efficiency
+  - Binary Search: O(log x) time complexity on answer space
+  - Integer Square Root: Return floor value, no decimals
+  - Overflow Prevention: Use long for mid calculations
+  - Search Space: Between 0 and x for optimization
 
 ---
 
@@ -159,6 +159,113 @@ Two Pointers Technique
   - In-place Modification: Modify array without extra space
   - Sorted Array Property: Duplicates are adjacent, simplifies detection
   - Return Length: First k elements contain unique values
+
+---
+
+## <------------SIEVE ALGORITHMS ----------->
+
+**Day 17** [View Code](Day_017) - 31 Aug, 2025  
+Mathematical Algorithms - Prime Numbers
+
+**Count Primes**
+- **Definition**: Count prime numbers less than non-negative number n
+- **Use Cases**: Number theory, mathematical computations, optimization
+- **Key Concepts**:
+  - Sieve of Eratosthenes: O(n log log n) classical algorithm
+  - Prime Marking: Mark multiples starting from i²
+  - Space Optimization: Boolean array for memory efficiency
+  - Mathematical Insight: Only check up to √n for completeness
+
+---
+
+## <------------BINARY SEARCH VARIATIONS ----------->
+
+**Day 18** [View Code](Day_018) - 1 Sep, 2025  
+Binary Search - Rotated Arrays
+
+**Search in Rotated Sorted Array**
+- **Definition**: Search target in rotated sorted array with O(log n) complexity
+- **Use Cases**: Modified binary search, sorted array variations
+- **Key Concepts**:
+  - Rotation Detection: Identify which half is properly sorted
+  - Conditional Logic: Check target range in sorted half
+  - Binary Search Adaptation: Modify standard algorithm for rotation
+  - Pivot Handling: Work with unknown rotation point
+
+---
+
+## <------------PEAK FINDING ----------->
+
+**Day 19** [View Code](Day_019) - 2 Sep, 2025  
+Binary Search - Mountain Arrays
+
+**Peak Index in Mountain Array**
+- **Definition**: Find peak element in mountain array using binary search
+- **Use Cases**: Unimodal function optimization, peak detection
+- **Key Concepts**:
+  - Mountain Property: Strictly increasing then decreasing
+  - Binary Search Logic: Compare mid with mid+1 for direction
+  - Convergence: Eliminate half search space each iteration
+  - Guaranteed Peak: Mountain structure ensures unique maximum
+
+---
+
+## <------------DYNAMIC PROGRAMMING ----------->
+
+**Day 20** [View Code](Day_020) - 3 Sep, 2025  
+Dynamic Programming - Sequences
+
+**Fibonacci Number**
+- **Definition**: Calculate nth Fibonacci number efficiently
+- **Use Cases**: Sequence generation, DP optimization, mathematical sequences
+- **Key Concepts**:
+  - Iterative DP: O(n) time, O(1) space optimization
+  - Space Reduction: Use variables instead of array
+  - Recurrence Relation: F(n) = F(n-1) + F(n-2)
+  - Base Cases: F(0) = 0, F(1) = 1
+
+---
+
+## <------------ADVANCED ALGORITHMS ----------->
+
+**Day 21** [View Code](Day_021) - 4 Sep, 2025  
+Power & Maximum Subarray Problems
+
+**Pow(x, n)**
+- **Definition**: Implement power function with binary exponentiation
+- **Use Cases**: Mathematical computations, optimization algorithms
+- **Key Concepts**:
+  - Binary Exponentiation: O(log n) fast power calculation
+  - Bit Manipulation: Use binary representation for efficiency
+  - Negative Handling: Convert to reciprocal for negative exponents
+  - Overflow Prevention: Handle INT_MIN edge case
+
+**Maximum Subarray (Kadane's Algorithm)**
+- **Definition**: Find contiguous subarray with maximum sum
+- **Use Cases**: Array optimization, dynamic programming patterns
+- **Key Concepts**:
+  - Kadane's Algorithm: O(n) optimal solution
+  - Reset Strategy: Start fresh when sum becomes negative
+  - Local vs Global: Track current and maximum sums
+  - Dynamic Programming: Optimal substructure property
+
+---
+
+## <------------SUBSEQUENCE ----------->
+
+**Day 22** [View Code](Day_022) - 5 Sep, 2025  
+Subsequence Problems
+
+**Longest Common Subsequence**
+- **Definition**: Find length of longest common subsequence between two sequences
+- **Use Cases**: Sequence alignment, dynamic programming applications
+- **Key Concepts**:
+  - Dynamic Programming: O(m × n) time complexity
+  - 2D Array: Store lengths of common subsequences
+  - Recurrence Relation: LCS(i, j) = LCS(i-1, j-1) + 1 if match
+  - Initialization: Handle edge cases for empty strings
+
+---
 
 ## 🛠️ How to Use This Repository
 
