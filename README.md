@@ -130,19 +130,19 @@ Integer Manipulation Problems
 
 ---
 
-## <------------MATHEMATICAL ALGORITHMS ----------->
+## <------------BINARY SEARCH ----------->
 
 **Day 15** [View Code](Day_015) - 29 Aug, 2025  
-Mathematical Algorithm Problems
+Binary Search - Mathematical Applications
 
 **Sqrt(x)**
-- **Definition**: Compute and return the square root of x (integer part only)
-- **Use Cases**: Mathematical computations, binary search applications
+- **Definition**: Find square root of integer x rounded down, without built-in functions
+- **Use Cases**: Mathematical computations, binary search on answer patterns
 - **Key Concepts**:
-  - Binary Search: O(log x) time complexity on answer space
-  - Integer Square Root: Return floor value, no decimals
-  - Overflow Prevention: Use long for mid calculations
-  - Search Space: Between 0 and x for optimization
+  - Binary Search on Answer: Search for largest i where i² ≤ x
+  - Overflow Prevention: Use long long for intermediate calculations
+  - Answer Tracking: Store valid candidates during search process
+  - Edge Case Handling: Special cases for x = 0 and x = 1
 
 ---
 
@@ -229,7 +229,7 @@ Dynamic Programming - Sequences
 ## <------------ADVANCED ALGORITHMS ----------->
 
 **Day 21** [View Code](Day_021) - 4 Sep, 2025  
-Power & Maximum Subarray Problems
+Binary Exponentiation Problems
 
 **Pow(x, n)**
 - **Definition**: Implement power function with binary exponentiation
@@ -240,6 +240,13 @@ Power & Maximum Subarray Problems
   - Negative Handling: Convert to reciprocal for negative exponents
   - Overflow Prevention: Handle INT_MIN edge case
 
+---
+
+## <------------SUBSEQUENCE ----------->
+
+**Day 22** [View Code](Day_022) - 5 Sep, 2025  
+Dynamic Programming - Maximum Subarray
+
 **Maximum Subarray (Kadane's Algorithm)**
 - **Definition**: Find contiguous subarray with maximum sum
 - **Use Cases**: Array optimization, dynamic programming patterns
@@ -248,22 +255,6 @@ Power & Maximum Subarray Problems
   - Reset Strategy: Start fresh when sum becomes negative
   - Local vs Global: Track current and maximum sums
   - Dynamic Programming: Optimal substructure property
-
----
-
-## <------------SUBSEQUENCE ----------->
-
-**Day 22** [View Code](Day_022) - 5 Sep, 2025  
-Subsequence Problems
-
-**Longest Common Subsequence**
-- **Definition**: Find length of longest common subsequence between two sequences
-- **Use Cases**: Sequence alignment, dynamic programming applications
-- **Key Concepts**:
-  - Dynamic Programming: O(m × n) time complexity
-  - 2D Array: Store lengths of common subsequences
-  - Recurrence Relation: LCS(i, j) = LCS(i-1, j-1) + 1 if match
-  - Initialization: Handle edge cases for empty strings
 
 ---
 

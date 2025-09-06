@@ -1,134 +1,180 @@
-# Day 15: Mathematical Algorithms - Power Function
+# Day 15: Binary Search - Sqrt(x)
 
-## Problem 1: Pow(x, n)
+## Problem 1: Sqrt(x)
 
 ### Problem Description
 
-Implement `pow(x, n)`, which calculates `x` raised to the power `n` (i.e., x^n). The function should handle both positive and negative exponents efficiently.
+Given a non-negative integer `x`, return the square root of `x` rounded down to the nearest integer. The returned integer should be non-negative as well.
+
+You must not use any built-in exponent function or operator.
 
 ### Examples:
 
 ```
-Input: x = 2.00000, n = 10
-Output: 1024.00000
+Input: x = 4
+Output: 2
+Explanation: The square root of 4 is 2.
 
-Input: x = 2.10000, n = 3
-Output: 9.26100
+Input: x = 8
+Output: 2
+Explanation: The square root of 8 is 2.828..., and since we round it down to the nearest integer, 2 is returned.
 
-Input: x = 2.00000, n = -2
-Output: 0.25000
-Explanation: 2^(-2) = 1/2^2 = 1/4 = 0.25
+Input: x = 1
+Output: 1
+
+Input: x = 0
+Output: 0
 ```
 
 ### Approach
 
-#### Binary Exponentiation (Fast Exponentiation)
+#### Binary Search Technique
 
-- **Time Complexity**: O(log n)
+- **Time Complexity**: O(log x)
 - **Space Complexity**: O(1)
 - **Algorithm**:
-  1. Handle negative exponent by converting x to 1/x and making n positive
-  2. Use binary representation of exponent for efficient calculation
-  3. Square the base and halve the exponent in each iteration
-  4. If exponent is odd, multiply current result with base
-  5. Continue until exponent becomes 0
+  1. Handle edge cases: `x = 0` returns 0, `x = 1` returns 1
+  2. Set search boundaries: `start = 0`, `end = x - 1`
+  3. Use binary search to find the largest integer whose square ≤ x
+  4. For each `mid`, calculate `mid²`:
+     - If `mid² = x`: Found exact square root, return `mid`
+     - If `mid² < x`: Store `mid` as potential answer, search right half
+     - If `mid² > x`: Search left half
+  5. Return the stored answer (largest valid square root)
 
 ```cpp
-double myPow(double x, int n) {
-    long bf = n;  // Use long to handle INT_MIN overflow
-    if(n < 0){
-        x = 1/x;      // Convert to reciprocal for negative exponent
-        bf = -bf;     // Make exponent positive
-    }
-    double ans = 1;
+int mySqrt(int x) {
+    // Initialize binary search boundaries
+    int s = 0;          // Start pointer
+    int e = x - 1;      // End pointer (x-1 because sqrt(x) < x for x > 1)
+    int ans = -1;       // Variable to store the answer
+
+    // Handle edge cases
+    if(x == 0) return 0;    // sqrt(0) = 0
+    if(x == 1) return 1;    // sqrt(1) = 1
     
-    while(bf > 0){
-        if(bf % 2 == 1) ans *= x;  // If exponent is odd, multiply result
-        x *= x;                    // Square the base
-        bf /= 2;                   // Halve the exponent
+    // Binary search to find the square root
+    while(s <= e) {
+        // Calculate mid point to avoid integer overflow
+        long long int mid = s + (e - s) / 2;
+        
+        // Calculate square of mid using long long to prevent overflow
+        long long int sqr = mid * mid;
+
+        // If perfect square found, return immediately
+        if(sqr == x) return mid;
+        
+        // If mid^2 < x, mid could be our answer
+        // Update ans and search in right half for potentially larger answer
+        else if(sqr < x) {
+            ans = mid;          // Store current valid answer
+            s = mid + 1;        // Search right half
+        }
+        // If mid^2 > x, search in left half
+        else {
+            e = mid - 1;        // Search left half
+        }
     }
+    
+    // Return the largest integer whose square is <= x
     return ans;
 }
 ```
 
 ### Key Points
 
-1. **Binary Exponentiation Logic**:
-   - Instead of multiplying x by itself n times (O(n))
-   - Use binary representation of n to reduce operations to O(log n)
-   - Example: 2^10 = 2^8 × 2^2 (binary: 1010)
+1. **Binary Search Logic**:
+   - **Search Space**: [0, x-1] for x > 1
+   - **Target**: Find largest integer `i` such that `i² ≤ x`
+   - **Answer Storage**: Keep track of valid candidates during search
 
-2. **Negative Exponent Handling**:
-   - x^(-n) = 1/(x^n)
-   - Convert x to 1/x and make exponent positive
-   - Use long to prevent overflow when n = INT_MIN
+2. **Overflow Prevention**:
+   - Use `long long` for mid and square calculations
+   - Prevents integer overflow when calculating `mid * mid`
+   - Calculate mid as `s + (e - s) / 2` to avoid overflow
 
-3. **Algorithm Intuition**:
-   - Every number can be expressed as sum of powers of 2
-   - 10 = 8 + 2 = 2^3 + 2^1 (binary: 1010)
-   - So x^10 = x^8 × x^2
+3. **Edge Case Handling**:
+   - `x = 0`: Direct return 0
+   - `x = 1`: Direct return 1
+   - For x > 1: Use binary search in range [0, x-1]
 
 ### Algorithm Walkthrough
 
 ```
-Example: x = 2, n = 10 (binary: 1010)
+Example: x = 8
 
-Initial: bf=10, x=2, ans=1
+Initial: s=0, e=7, ans=-1
+Search space: [0, 1, 2, 3, 4, 5, 6, 7]
 
-Step 1: bf=10 (even), ans=1
-        x = 2*2 = 4, bf = 10/2 = 5
+Step 1: mid = 3, sqr = 9
+        9 > 8, so search left half
+        s=0, e=2
 
-Step 2: bf=5 (odd), ans = 1*4 = 4
-        x = 4*4 = 16, bf = 5/2 = 2
+Step 2: mid = 1, sqr = 1
+        1 < 8, so ans = 1, search right half
+        s=2, e=2
 
-Step 3: bf=2 (even), ans=4
-        x = 16*16 = 256, bf = 2/2 = 1
+Step 3: mid = 2, sqr = 4
+        4 < 8, so ans = 2, search right half
+        s=3, e=2 (s > e, exit loop)
 
-Step 4: bf=1 (odd), ans = 4*256 = 1024
-        x = 256*256, bf = 1/2 = 0
-
-Result: ans = 1024 = 2^10
+Return: ans = 2
 ```
 
-### Binary Representation Insight
+### Visual Representation
 
 ```
-n = 10 (decimal) = 1010 (binary)
-Position:          3210
+Finding sqrt(8):
 
-Reading from right to left:
-- Position 0: 0 (don't use x^1)
-- Position 1: 1 (use x^2 = 4)
-- Position 2: 0 (don't use x^4)
-- Position 3: 1 (use x^8 = 256)
+Search Space: [0, 1, 2, 3, 4, 5, 6, 7]
+Target: Largest i where i² ≤ 8
 
-Result: x^2 × x^8 = 4 × 256 = 1024
+Step 1: Check mid=3
+        3² = 9 > 8 ❌
+        Search left: [0, 1, 2]
+
+Step 2: Check mid=1  
+        1² = 1 < 8 ✅ (ans = 1)
+        Search right: [2]
+
+Step 3: Check mid=2
+        2² = 4 < 8 ✅ (ans = 2)
+        Search right: [] (empty)
+
+Result: 2 (since 2² = 4 ≤ 8 < 9 = 3²)
 ```
-
-### Alternative Approaches
-
-1. **Recursive**: Divide and conquer approach with recursion
-2. **Iterative Naive**: Multiply x by itself n times (O(n))
-3. **Built-in Function**: Use math.pow() (language dependent)
 
 ### Edge Cases
 
-1. **n = 0**: Any number to power 0 is 1
-2. **x = 0**: 0 to any positive power is 0
-3. **n = INT_MIN**: Use long to prevent overflow
-4. **x = 1**: 1 to any power is 1
-5. **x = -1**: Alternates between 1 and -1 based on even/odd n
+1. **Perfect Squares**: `x = 4, 9, 16, 25` → Return exact square root
+2. **Zero**: `x = 0` → Return 0
+3. **One**: `x = 1` → Return 1
+4. **Large Numbers**: Handle integer overflow with `long long`
+5. **Non-Perfect Squares**: Return floor of square root
+
+### Alternative Approaches
+
+1. **Newton's Method**: Iterative approximation (faster convergence)
+2. **Linear Search**: O(√x) time complexity (less efficient)
+3. **Built-in Functions**: `sqrt()` function (not allowed in problem)
+4. **Bit Manipulation**: Using bit shifts for powers of 2
+
+### Mathematical Insight
+
+For any positive integer `x`:
+- If `x` is a perfect square: `sqrt(x)` is an integer
+- If `x` is not a perfect square: `floor(sqrt(x))` is the answer
+- Search range: `[0, x]` but can be optimized to `[0, x/2]` for `x ≥ 4`
 
 ### Constraints
 
-- -100.0 < x < 100.0
-- -2³¹ ≤ n ≤ 2³¹-1
-- Either x is not zero or n > 0
-- -10⁴ ≤ x^n ≤ 10⁴
+- 0 ≤ x ≤ 2³¹ - 1
+- Must not use built-in exponent functions
+- Return type: integer (rounded down)
 
 ### Source
 
-[LeetCode 50 - Pow(x, n)](https://leetcode.com/problems/powx-n)
+[LeetCode 69 - Sqrt(x)](https://leetcode.com/problems/sqrtx)
 
 ---
 
@@ -136,25 +182,25 @@ Result: x^2 × x^8 = 4 × 256 = 1024
 
 | Problem | Difficulty | Status | Approach | Time Complexity | Space Complexity |
 |---------|------------|--------|----------|-----------------|------------------|
-| Pow(x, n) | Medium | ✅ Solved | Binary Exponentiation | O(log n) | O(1) |
+| Sqrt(x) | Easy | ✅ Solved | Binary Search | O(log x) | O(1) |
 
 ## 🎯 Key Learnings
 
-1. **Binary Exponentiation**: Efficient algorithm for computing powers in logarithmic time
-2. **Bit Manipulation**: Using binary representation of exponent for optimization
-3. **Overflow Handling**: Using long data type to prevent integer overflow
-4. **Mathematical Optimization**: Converting O(n) naive approach to O(log n)
+1. **Binary Search Applications**: Not just for sorted arrays, but for finding answers in ranges
+2. **Overflow Prevention**: Using `long long` for intermediate calculations
+3. **Answer Tracking**: Storing valid candidates during binary search
+4. **Mathematical Optimization**: Reducing search space using mathematical properties
 
 ## 🚀 Next Steps
 
-- Practice more mathematical algorithm problems
-- Explore other applications of binary exponentiation
-- Study modular exponentiation for large number problems
-- Learn about matrix exponentiation for sequence problems
+- Practice more binary search on answer problems
+- Explore Newton's method for square root calculation
+- Study other mathematical binary search applications
+- Learn about binary search on floating-point ranges
 
 ## 💡 Problem-Solving Tips
 
-1. **Think Binary**: For exponentiation problems, consider binary representation
-2. **Handle Edge Cases**: Negative exponents, zero base, overflow scenarios
-3. **Optimize Iteratively**: Start with naive approach, then optimize
-4. **Use Appropriate Data Types**: long for handling overflow, double for precision
+1. **Binary Search on Answer**: When looking for a specific value in a range
+2. **Handle Overflow**: Use larger data types for intermediate calculations
+3. **Store Valid Answers**: Keep track of candidates that satisfy conditions
+4. **Edge Cases First**: Handle special cases before main algorithm
