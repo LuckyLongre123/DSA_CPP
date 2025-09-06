@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **14 Solved**
+### 🔥 Current Problem Count: **15 Solved**
 
 ---
 
@@ -255,6 +255,22 @@ Dynamic Programming - Maximum Subarray
   - Reset Strategy: Start fresh when sum becomes negative
   - Local vs Global: Track current and maximum sums
   - Dynamic Programming: Optimal substructure property
+
+---
+
+## <------------DIGIT PROCESSING ----------->
+
+**Day 23** [View Code](Day_023) - 6 Sep, 2025  
+Mathematical Algorithms - Self Dividing Numbers
+
+**Self Dividing Numbers**
+- **Definition**: Find all numbers in range where each digit divides the number itself
+- **Use Cases**: Mathematical validation, digit manipulation, number theory
+- **Key Concepts**:
+  - Digit Extraction: Use modulo and division operations (num % 10, num /= 10)
+  - Validation Logic: Check divisibility and handle zero digits
+  - Early Termination: Break immediately when invalid digit found
+  - Range Processing: Iterate through given bounds efficiently
 
 ---
 
