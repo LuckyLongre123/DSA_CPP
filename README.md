@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **15 Solved**
+### 🔥 Current Problem Count: **16 Solved**
 
 ---
 
@@ -271,6 +271,22 @@ Mathematical Algorithms - Self Dividing Numbers
   - Validation Logic: Check divisibility and handle zero digits
   - Early Termination: Break immediately when invalid digit found
   - Range Processing: Iterate through given bounds efficiently
+
+---
+
+## <------------MATHEMATICAL ALGORITHMS ----------->
+
+**Day 24** [View Code](Day_024) - 7 Sep, 2025  
+Mathematical Algorithms - Division Without Operators
+
+**Divide Two Integers**
+- **Definition**: Divide two integers without using multiplication, division, or mod operators
+- **Use Cases**: Mathematical computations, bit manipulation, overflow handling
+- **Key Concepts**:
+  - Binary Division: Use bit shifting to find largest fitting multiples
+  - Overflow Prevention: Handle INT_MIN / (-1) edge case
+  - Sign Detection: XOR operation for determining result sign
+  - Bit Manipulation: Left shift for multiplication by 2, efficient algorithm
 
 ---
 
