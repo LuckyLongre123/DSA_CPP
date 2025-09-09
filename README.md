@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **16 Solved**
+### 🔥 Current Problem Count: **18 Solved**
 
 ---
 
@@ -287,6 +287,38 @@ Mathematical Algorithms - Division Without Operators
   - Overflow Prevention: Handle INT_MIN / (-1) edge case
   - Sign Detection: XOR operation for determining result sign
   - Bit Manipulation: Left shift for multiplication by 2, efficient algorithm
+
+---
+
+## <------------PREFIX SUM ----------->
+
+**Day 25** [View Code](Day_025) - 8 Sep, 2025  
+Array Algorithms - Pivot Index
+
+**Find Pivot Index**
+- **Definition**: Find index where left sum equals right sum in array
+- **Use Cases**: Array balancing, equilibrium point detection, prefix sum applications
+- **Key Concepts**:
+  - Two-Sum Tracking: Maintain left and right sums dynamically
+  - Boundary Handling: Handle edge cases at array boundaries
+  - Leftmost Priority: Return first valid pivot index found
+  - Mathematical Property: At pivot i, leftSum = rightSum = (totalSum - nums[i]) / 2
+
+---
+
+## <------------ARRAY ROTATION ----------->
+
+**Day 26** [View Code](Day_026) - 9 Sep, 2025  
+Array Validation - Sorted and Rotated
+
+**Check if Array Is Sorted and Rotated**
+- **Definition**: Determine if array is a rotation of a sorted array
+- **Use Cases**: Data validation, rotation detection, circular array problems
+- **Key Concepts**:
+  - Break Point Counting: At most one break point in valid rotated sorted array
+  - Wrap-around Validation: First element ≥ last element when break exists
+  - Rotation Invariant: Local order preserved except at rotation point
+  - Circular Property: Array viewed as circular for validation
 
 ---
 
