@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **17 Solved**
+### 🔥 Current Problem Count: **18 Solved**
 
 ---
 
@@ -319,6 +319,22 @@ Array Validation - Sorted and Rotated
   - Wrap-around Validation: First element ≥ last element when break exists
   - Rotation Invariant: Local order preserved except at rotation point
   - Circular Property: Array viewed as circular for validation
+
+---
+
+## <------------STRING ROTATION ----------->
+
+**Day 27** [View Code](Day_027) - 10 Sep, 2025  
+String Algorithms - Rotation Detection
+
+**Rotate String**
+- **Definition**: Determine if one string can become another through rotation operations
+- **Use Cases**: String manipulation, pattern matching, cyclic data validation
+- **Key Concepts**:
+  - String Concatenation Method: Check if goal is substring of s + s
+  - Rotation Property: All rotations appear as substrings in doubled string
+  - Efficient Search: O(n) time using optimized substring search
+  - Length Validation: Equal lengths required for valid rotation
 
 ---
 
