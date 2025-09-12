@@ -58,338 +58,86 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ---
 
-## <------------ARRAY ----------->
-
 **Day 11** [View Code](Day_011) - 25 Aug, 2025  
 Array Problems
-
-**Two Sum**
-- **Definition**: Find two numbers in array that add up to target sum
-- **Use Cases**: Hash map optimization, pair finding patterns
-- **Key Concepts**:
-  - Brute Force: O(n²) nested loops approach
-  - Hash Map: O(n) single pass with complement lookup
-  - Index management: Return indices, not values
-  - Avoid duplicate usage: Start inner loop from i+1
-
-**Power of Two**
-- **Definition**: Check if number is power of 2 using bit manipulation
-- **Use Cases**: Binary operations, mathematical checks
-- **Key Concepts**:
-  - Bit Manipulation: n & (n-1) == 0 for powers of 2
-  - Edge Cases: Handle n ≤ 0
-  - Mathematical Property: Powers of 2 have single bit set
-
----
-
-## <------------DIGIT MANIPULATION ----------->
+- Two Sum (LeetCode 1) - Easy
+- Power of Two (LeetCode 231) - Easy
 
 **Day 12** [View Code](Day_012) - 26 Aug, 2025  
 Digit Manipulation Problems
-
-**Find Smallest Index Where Index Equals Sum of Digits**
-- **Definition**: Find index i where i equals sum of digits of nums[i]
-- **Use Cases**: Mathematical properties, digit processing
-- **Key Concepts**:
-  - Digit Extraction: Use num % 10 and num / 10
-  - Sum Calculation: Iterate through digits
-  - Early Return: Return first matching index
-  - Linear Search: O(n × d) where d is average digits
-
----
-
-## <------------VOTING ALGORITHMS ----------->
+- Find Smallest Index Where Index Equals Sum of Digits (LeetCode 3550) - Easy
 
 **Day 13** [View Code](Day_013) - 27 Aug, 2025  
 Boyer-Moore Voting Algorithm
-
-**Majority Element**
-- **Definition**: Find element appearing more than ⌊n/2⌋ times
-- **Use Cases**: Majority detection, voting systems, data analysis
-- **Key Concepts**:
-  - Boyer-Moore Algorithm: O(n) time, O(1) space
-  - Voting Logic: Increment for candidate, decrement for others
-  - Mathematical Guarantee: Majority survives cancellation
-  - Counter Reset: New candidate when counter reaches 0
-
----
-
-## <------------INTEGER MANIPULATION ----------->
+- Majority Element (LeetCode 169) - Easy
 
 **Day 14** [View Code](Day_014) - 28 Aug, 2025  
 Integer Manipulation Problems
-
-**Reverse Integer**
-- **Definition**: Reverse digits of 32-bit signed integer with overflow protection
-- **Use Cases**: Number manipulation, overflow handling
-- **Key Concepts**:
-  - Digit Reversal: Extract with % 10, build with * 10
-  - Overflow Detection: Check before multiplication to prevent overflow
-  - Boundary Checks: INT_MIN/10 and INT_MAX/10 comparisons
-  - Edge Cases: Negative numbers, trailing zeros, overflow returns 0
-
----
-
-## <------------BINARY SEARCH ----------->
+- Reverse Integer (LeetCode 7) - Medium
 
 **Day 15** [View Code](Day_015) - 29 Aug, 2025  
 Binary Search - Mathematical Applications
-
-**Sqrt(x)**
-- **Definition**: Find square root of integer x rounded down, without built-in functions
-- **Use Cases**: Mathematical computations, binary search on answer patterns
-- **Key Concepts**:
-  - Binary Search on Answer: Search for largest i where i² ≤ x
-  - Overflow Prevention: Use long long for intermediate calculations
-  - Answer Tracking: Store valid candidates during search process
-  - Edge Case Handling: Special cases for x = 0 and x = 1
-
----
-
-## <------------TWO POINTERS ----------->
+- Sqrt(x) (LeetCode 69) - Easy
 
 **Day 16** [View Code](Day_016) - 30 Aug, 2025  
 Two Pointers Technique
-
-**Remove Duplicates from Sorted Array**
-- **Definition**: Remove duplicates in-place from sorted array, return new length
-- **Use Cases**: Array modification, in-place algorithms, space optimization
-- **Key Concepts**:
-  - Two Pointers: Slow pointer for unique elements, fast pointer for traversal
-  - In-place Modification: Modify array without extra space
-  - Sorted Array Property: Duplicates are adjacent, simplifies detection
-  - Return Length: First k elements contain unique values
-
----
-
-## <------------SIEVE ALGORITHMS ----------->
+- Remove Duplicates from Sorted Array (LeetCode 26) - Easy
 
 **Day 17** [View Code](Day_017) - 31 Aug, 2025  
 Mathematical Algorithms - Prime Numbers
-
-**Count Primes**
-- **Definition**: Count prime numbers less than non-negative number n
-- **Use Cases**: Number theory, mathematical computations, optimization
-- **Key Concepts**:
-  - Sieve of Eratosthenes: O(n log log n) classical algorithm
-  - Prime Marking: Mark multiples starting from i²
-  - Space Optimization: Boolean array for memory efficiency
-  - Mathematical Insight: Only check up to √n for completeness
-
----
-
-## <------------BINARY SEARCH VARIATIONS ----------->
+- Count Primes (LeetCode 204) - Medium
 
 **Day 18** [View Code](Day_018) - 1 Sep, 2025  
 Binary Search - Rotated Arrays
-
-**Search in Rotated Sorted Array**
-- **Definition**: Search target in rotated sorted array with O(log n) complexity
-- **Use Cases**: Modified binary search, sorted array variations
-- **Key Concepts**:
-  - Rotation Detection: Identify which half is properly sorted
-  - Conditional Logic: Check target range in sorted half
-  - Binary Search Adaptation: Modify standard algorithm for rotation
-  - Pivot Handling: Work with unknown rotation point
-
----
-
-## <------------PEAK FINDING ----------->
+- Search in Rotated Sorted Array (LeetCode 33) - Medium
 
 **Day 19** [View Code](Day_019) - 2 Sep, 2025  
 Binary Search - Mountain Arrays
-
-**Peak Index in Mountain Array**
-- **Definition**: Find peak element in mountain array using binary search
-- **Use Cases**: Unimodal function optimization, peak detection
-- **Key Concepts**:
-  - Mountain Property: Strictly increasing then decreasing
-  - Binary Search Logic: Compare mid with mid+1 for direction
-  - Convergence: Eliminate half search space each iteration
-  - Guaranteed Peak: Mountain structure ensures unique maximum
-
----
-
-## <------------DYNAMIC PROGRAMMING ----------->
+- Peak Index in Mountain Array (LeetCode 852) - Medium
 
 **Day 20** [View Code](Day_020) - 3 Sep, 2025  
 Dynamic Programming - Sequences
-
-**Fibonacci Number**
-- **Definition**: Calculate nth Fibonacci number efficiently
-- **Use Cases**: Sequence generation, DP optimization, mathematical sequences
-- **Key Concepts**:
-  - Iterative DP: O(n) time, O(1) space optimization
-  - Space Reduction: Use variables instead of array
-  - Recurrence Relation: F(n) = F(n-1) + F(n-2)
-  - Base Cases: F(0) = 0, F(1) = 1
-
----
-
-## <------------ADVANCED ALGORITHMS ----------->
+- Fibonacci Number (LeetCode 509) - Easy
 
 **Day 21** [View Code](Day_021) - 4 Sep, 2025  
 Binary Exponentiation Problems
-
-**Pow(x, n)**
-- **Definition**: Implement power function with binary exponentiation
-- **Use Cases**: Mathematical computations, optimization algorithms
-- **Key Concepts**:
-  - Binary Exponentiation: O(log n) fast power calculation
-  - Bit Manipulation: Use binary representation for efficiency
-  - Negative Handling: Convert to reciprocal for negative exponents
-  - Overflow Prevention: Handle INT_MIN edge case
-
----
-
-## <------------SUBSEQUENCE ----------->
+- Pow(x, n) (LeetCode 50) - Medium
 
 **Day 22** [View Code](Day_022) - 5 Sep, 2025  
 Dynamic Programming - Maximum Subarray
-
-**Maximum Subarray (Kadane's Algorithm)**
-- **Definition**: Find contiguous subarray with maximum sum
-- **Use Cases**: Array optimization, dynamic programming patterns
-- **Key Concepts**:
-  - Kadane's Algorithm: O(n) optimal solution
-  - Reset Strategy: Start fresh when sum becomes negative
-  - Local vs Global: Track current and maximum sums
-  - Dynamic Programming: Optimal substructure property
-
----
-
-## <------------DIGIT PROCESSING ----------->
+- Maximum Subarray (LeetCode 53) - Medium
 
 **Day 23** [View Code](Day_023) - 6 Sep, 2025  
 Mathematical Algorithms - Self Dividing Numbers
-
-**Self Dividing Numbers**
-- **Definition**: Find all numbers in range where each digit divides the number itself
-- **Use Cases**: Mathematical validation, digit manipulation, number theory
-- **Key Concepts**:
-  - Digit Extraction: Use modulo and division operations (num % 10, num /= 10)
-  - Validation Logic: Check divisibility and handle zero digits
-  - Early Termination: Break immediately when invalid digit found
-  - Range Processing: Iterate through given bounds efficiently
-
----
-
-## <------------MATHEMATICAL ALGORITHMS ----------->
+- Self Dividing Numbers (LeetCode 728) - Easy
 
 **Day 24** [View Code](Day_024) - 7 Sep, 2025  
 Mathematical Algorithms - Division Without Operators
-
-**Divide Two Integers**
-- **Definition**: Divide two integers without using multiplication, division, or mod operators
-- **Use Cases**: Mathematical computations, bit manipulation, overflow handling
-- **Key Concepts**:
-  - Binary Division: Use bit shifting to find largest fitting multiples
-  - Overflow Prevention: Handle INT_MIN / (-1) edge case
-  - Sign Detection: XOR operation for determining result sign
-  - Bit Manipulation: Left shift for multiplication by 2, efficient algorithm
-
----
-
-## <------------PREFIX SUM ----------->
+- Divide Two Integers (LeetCode 29) - Medium
 
 **Day 25** [View Code](Day_025) - 8 Sep, 2025  
 Array Algorithms - Pivot Index
-
-**Find Pivot Index**
-- **Definition**: Find index where left sum equals right sum in array
-- **Use Cases**: Array balancing, equilibrium point detection, prefix sum applications
-- **Key Concepts**:
-  - Two-Sum Tracking: Maintain left and right sums dynamically
-  - Boundary Handling: Handle edge cases at array boundaries
-  - Leftmost Priority: Return first valid pivot index found
-  - Mathematical Property: At pivot i, leftSum = rightSum = (totalSum - nums[i]) / 2
-
----
-
-## <------------ARRAY ROTATION ----------->
+- Find Pivot Index (LeetCode 724) - Easy
 
 **Day 26** [View Code](Day_026) - 9 Sep, 2025  
 Array Validation - Sorted and Rotated
-
-**Check if Array Is Sorted and Rotated**
-- **Definition**: Determine if array is a rotation of a sorted array
-- **Use Cases**: Data validation, rotation detection, circular array problems
-- **Key Concepts**:
-  - Break Point Counting: At most one break point in valid rotated sorted array
-  - Wrap-around Validation: First element ≥ last element when break exists
-  - Rotation Invariant: Local order preserved except at rotation point
-  - Circular Property: Array viewed as circular for validation
-
----
-
-## <------------STRING ROTATION ----------->
+- Check if Array Is Sorted and Rotated (LeetCode 1752) - Easy
 
 **Day 27** [View Code](Day_027) - 10 Sep, 2025  
-String Algorithms - Rotation Detection
-
-**Rotate String**
-- **Definition**: Determine if one string can become another through rotation operations
-- **Use Cases**: String manipulation, pattern matching, cyclic data validation
-- **Key Concepts**:
-  - String Concatenation Method: Check if goal is substring of s + s
-  - Rotation Property: All rotations appear as substrings in doubled string
-  - Efficient Search: O(n) time using optimized substring search
-  - Length Validation: Equal lengths required for valid rotation
-
----
-
-## <------------ARRAY PROPERTIES ----------->
+Basic Sorting Algorithms
+- Selection Sort (GeeksForGeeks) - Easy
+- Bubble Sort (GeeksForGeeks) - Easy
 
 **Day 28** [View Code](Day_028) - 11 Sep, 2025  
 Array Properties - Monotonic Arrays
-
-**Monotonic Array**
-- **Definition**: Check if array is either monotone increasing or monotone decreasing
-- **Use Cases**: Array validation, trend analysis, data consistency checks
-- **Key Concepts**:
-  - Two-Flag Method: Track both increasing and decreasing possibilities simultaneously
-  - Single Pass Algorithm: O(n) time with O(1) space complexity
-  - Boolean Logic: Array is monotonic if either direction remains valid
-  - Direction Violations: Mark flags false when order is broken
-
----
-
-## <------------TWO POINTER TECHNIQUES ----------->
+- Monotonic Array (LeetCode 896) - Easy
 
 **Day 29** [View Code](Day_029) - 12 Sep, 2025  
-Array Manipulation - Multiple Two-Pointer Problems
-
-**Apply Operations to an Array (LeetCode 2460)**
-- **Definition**: Apply merge operations on adjacent equal elements, then move zeros to end
-- **Use Cases**: Array transformation, two-phase processing
-- **Key Concepts**:
-  - Two-Phase Algorithm: First merge operations, then rearrange zeros
-  - In-place Modification: Transform array without extra space
-  - Sequential Processing: Handle operations in correct order
-
-**Remove Element (LeetCode 27)**
-- **Definition**: Remove all occurrences of target value in-place, return new length
-- **Use Cases**: Array filtering, element removal patterns
-- **Key Concepts**:
-  - Two-Pointer Filtering: One pointer for valid elements, one for scanning
-  - In-place Removal: Overwrite unwanted elements efficiently
-  - Count Return: Return number of remaining valid elements
-
-**Move Zeroes (LeetCode 283)**
-- **Definition**: Move all zeros to end while maintaining relative order of non-zeros
-- **Use Cases**: Array partitioning, element segregation
-- **Key Concepts**:
-  - Stable Partitioning: Preserve relative order of non-zero elements
-  - Two-Pointer Rearrangement: Swap elements to correct positions
-  - Zero Accumulation: Zeros naturally collect at array end
-
-**Merge Sorted Array (LeetCode 88)**
-- **Definition**: Merge two sorted arrays into first array with sufficient space
-- **Use Cases**: Array merging, sorted sequence combination
-- **Key Concepts**:
-  - Three-Pointer Merge: Use temporary array for clean merging logic
-  - Sorted Property: Leverage existing order for efficient combination
-  - Space Management: Handle arrays with different sizes gracefully
+Array Manipulation - Two-Pointer Problems
+- Apply Operations to an Array (LeetCode 2460) - Easy
+- Remove Element (LeetCode 27) - Easy
+- Move Zeroes (LeetCode 283) - Easy
+- Merge Sorted Array (LeetCode 88) - Easy
 
 ---
 
