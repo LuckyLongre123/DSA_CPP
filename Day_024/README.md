@@ -1,32 +1,59 @@
-# Day 24: Mathematical Algorithms - Division Without Operators
+# Day 24: Binary Division Mastery
 
-## Problem 1: Divide Two Integers
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Binary Division Algorithm**: Efficient division using bit manipulation
+- **Overflow Handling**: Managing integer limits and edge cases
+- **Bit Manipulation**: Using shifts for multiplication and division by powers of 2
+- **Sign Detection**: XOR operations for determining result signs
 
-Given two integers `dividend` and `divisor`, divide two integers without using multiplication (`*`), division (`/`), and mod operator (`%`). Return the quotient after dividing `dividend` by `divisor`.
+---
 
-The integer division should truncate toward zero, which means losing its fractional part. For example, `8.345` would be truncated to `8`, and `-2.7335` would be truncated to `-2`.
+## Problem 1: Divide Two Integers (LeetCode 29)
 
-### Examples:
+### 📋 Problem Statement
+
+**Difficulty**: Medium  
+**Category**: Math, Bit Manipulation  
+**Companies**: Facebook, Microsoft, Amazon, Apple, Google
+
+Given two integers `dividend` and `divisor`, divide two integers **without using** multiplication (`*`), division (`/`), and mod operator (`%`).
+
+Return the quotient after dividing `dividend` by `divisor`.
+
+**Important**: The integer division should **truncate toward zero**, which means losing its fractional part.
+- Example: `8.345` → `8`, `-2.7335` → `-2`
+
+### 💡 Examples
 
 ```
+Example 1:
 Input: dividend = 10, divisor = 3
 Output: 3
-Explanation: 10/3 = 3.33333... which is truncated to 3.
+Explanation: 10/3 = 3.33333... → truncated to 3
 
+Example 2:
 Input: dividend = 7, divisor = -3
 Output: -2
-Explanation: 7/(-3) = -2.33333... which is truncated to -2.
+Explanation: 7/(-3) = -2.33333... → truncated to -2
 
+Example 3 (Overflow Case):
 Input: dividend = -2147483648, divisor = -1
 Output: 2147483647
-Explanation: Division of -2147483648 by -1 results in 2147483648, but since we are doing integer division with truncation toward zero, the result is 2147483647.
+Explanation: -2147483648/(-1) = 2147483648, but this exceeds INT_MAX,
+so we return INT_MAX = 2147483647
 ```
 
-### Approach
+### 🔍 Intuition
 
-#### Binary Division Algorithm
+Since we can't use multiplication, division, or modulo operators, we need to think creatively:
+
+**Key Insight**: Division is essentially finding how many times the divisor fits into the dividend. Instead of subtracting the divisor repeatedly (which is O(n)), we can use **binary search** and **bit manipulation** to achieve O(log n) complexity.
+
+**Core Idea**: Find the largest multiple of divisor (using powers of 2) that fits into the dividend.
+
+### 🚀 Approach: Binary Division Algorithm
 
 - **Time Complexity**: O(log n) where n is the dividend
 - **Space Complexity**: O(1)
@@ -297,3 +324,9 @@ bool negative = (dividend < 0) ^ (divisor < 0);
 3. **Sign Handling**: XOR is efficient for determining result sign
 4. **Bit Operations**: Left shift for multiplication by 2, right shift for division by 2
 5. **Edge Cases**: Handle division by zero and overflow scenarios carefully
+
+---
+
+**Total Problems Solved**: 14/∞
+
+*Divide and conquer with bits! ⚡*

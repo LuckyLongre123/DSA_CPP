@@ -1,18 +1,34 @@
-# Day 19: Binary Search - Peak Index in Mountain Array
+# Day 19: Peak Finding & Unimodal Arrays Mastery
 
-## Problem 1: Peak Index in a Mountain Array
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Peak Finding Algorithms**: Efficiently locating peaks in mountain arrays
+- **Unimodal Array Properties**: Understanding single-peak array characteristics
+- **Binary Search Applications**: Using binary search for optimization problems
+- **Gradient-Based Search**: Following slopes to find optimal points
 
-An array `arr` a **mountain** if the following properties hold:
+---
 
+## Problem 1: Peak Index in a Mountain Array (LeetCode 852)
+
+### Problem Statement
+
+**Difficulty**: Medium  
+**Category**: Array, Binary Search  
+**Companies**: Amazon, Microsoft, Apple, Facebook, Google
+
+An array `arr` is a **mountain array** if and only if:
 - `arr.length >= 3`
 - There exists some `i` with `0 < i < arr.length - 1` such that:
-  - `arr[0] < arr[1] < ... < arr[i - 1] < arr[i] > arr[i + 1] > ... > arr[arr.length - 1]`
+  - `arr[0] < arr[1] < ... < arr[i - 1] < arr[i]` (strictly increasing)
+  - `arr[i] > arr[i + 1] > ... > arr[arr.length - 1]` (strictly decreasing)
 
-Given a **mountain array** `arr`, return the index `i` such that `arr[i]` is the peak of the mountain.
+**Task**: Given a mountain array `arr`, return the index `i` such that `arr[i]` is the peak of the mountain.
 
-Your task is to solve it in `O(log(arr.length))` time complexity.
+**Guarantee**: The answer is guaranteed to exist and be unique.
+
+**Challenge**: You must solve it in `O(log(arr.length))` time complexity.
 
 ### Examples:
 

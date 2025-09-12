@@ -1,40 +1,68 @@
-# Day 22: Dynamic Programming - Maximum Subarray
+# Day 22: Kadane's Algorithm Mastery
 
-## Problem 1: Maximum Subarray
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Kadane's Algorithm**: The optimal solution for maximum subarray problems
+- **Dynamic Programming Optimization**: Converting O(n²) brute force to O(n) optimal
+- **Reset Strategy**: Understanding when to abandon current subarray and start fresh
+- **Subarray vs Subsequence**: Distinguishing between contiguous and non-contiguous elements
 
-Given an integer array `nums`, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+---
 
-A **subarray** is a **contiguous** part of an array.
+## Problem 1: Maximum Subarray (LeetCode 53)
 
-### Examples:
+### 📋 Problem Statement
+
+**Difficulty**: Medium  
+**Category**: Array, Dynamic Programming, Divide and Conquer  
+**Companies**: Amazon, Microsoft, Apple, Facebook, Google, LinkedIn
+
+Given an integer array `nums`, find the **contiguous subarray** (containing at least one number) which has the largest sum and return its sum.
+
+**Key Insight**: A **subarray** is a **contiguous** part of an array.
+
+**Follow-up**: If you have figured out the O(n) solution, try coding another solution using the **divide and conquer** approach, which is more subtle.
+
+### 💡 Examples
 
 ```
+Example 1:
 Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
 Output: 6
 Explanation: [4,-1,2,1] has the largest sum = 6.
 
+Example 2:
 Input: nums = [1]
 Output: 1
+Explanation: Single element array.
 
+Example 3:
 Input: nums = [5,4,-1,7,8]
 Output: 23
 Explanation: The entire array has the largest sum.
 ```
 
-### Approach
+### 🔍 Intuition
 
-#### Kadane's Algorithm
+The key insight is that **any negative prefix sum will only hurt our future calculations**. If our current sum becomes negative, we should abandon it and start fresh from the next element.
 
-- **Time Complexity**: O(n)
-- **Space Complexity**: O(1)
-- **Key Insight**: Reset current sum when it becomes negative
-- **Algorithm**:
-  1. Initialize current sum to 0 and maximum sum to smallest possible value
-  2. For each element, add it to current sum
-  3. Update maximum sum if current sum is larger
-  4. Reset current sum to 0 if it becomes negative
+Think of it as: "Should I extend my current subarray or start a new one?"
+
+### 🚀 Approach 1: Kadane's Algorithm (Optimal)
+
+**Core Idea**: At each position, decide whether to extend the existing subarray or start a new one.
+
+- **Time Complexity**: O(n) - Single pass through array
+- **Space Complexity**: O(1) - Only using two variables
+- **Key Insight**: Negative prefix sums are never beneficial
+
+**Algorithm Steps**:
+1. Initialize `currSum = 0` and `maxSum = INT_MIN`
+2. For each element in the array:
+   - Add current element to `currSum`
+   - Update `maxSum` if `currSum` is larger
+   - If `currSum` becomes negative, reset it to 0 (start fresh)
 
 ```cpp
 int maxSubArray(vector<int>& nums) {
@@ -217,3 +245,9 @@ int maxSubArrayDP(vector<int>& nums) {
 2. **Reset Strategy**: Drop negative prefixes to maximize future sums
 3. **Initialization**: Use INT_MIN for maxSum to handle all-negative cases
 4. **Track Both**: Maintain current sum and global maximum separately
+
+---
+
+**Total Problems Solved**: 12/∞
+
+*Think locally, optimize globally! 🎯*

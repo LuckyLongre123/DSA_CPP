@@ -1,12 +1,26 @@
-# Day 17: Mathematical Algorithms - Count Primes
+# Day 17: Sieve of Eratosthenes Mastery
 
-## Problem 1: Count Primes
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Sieve of Eratosthenes**: The most efficient algorithm for finding multiple primes
+- **Mathematical Optimization**: Understanding why sieve works and its optimizations
+- **Prime Number Theory**: Fundamental concepts about prime distribution
+- **Algorithm Efficiency**: Converting O(n²) to O(n log log n) complexity
 
-Given an integer `n`, return the number of prime numbers that are strictly less than `n`.
+---
 
-A **prime number** is a natural number greater than 1 that has no positive divisors other than 1 and itself.
+## Problem 1: Count Primes (LeetCode 204)
+
+### Problem Statement
+
+**Difficulty**: Medium  
+**Category**: Math, Array, Number Theory  
+**Companies**: Amazon, Microsoft, Apple, Facebook, Google
+
+Given an integer `n`, return the number of prime numbers that are less than `n`.
+
+**Definition**: A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.
 
 ### Examples:
 

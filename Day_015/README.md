@@ -1,12 +1,26 @@
-# Day 15: Binary Search - Sqrt(x)
+# Day 15: Binary Search on Answer Space Mastery
 
-## Problem 1: Sqrt(x)
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Binary Search on Answer**: Searching in solution space rather than array elements
+- **Overflow Prevention**: Handling large number multiplication safely
+- **Mathematical Optimization**: Converting O(√n) to O(log n) complexity
+- **Precision Handling**: Managing integer vs floating-point square roots
 
-Given a non-negative integer `x`, return the square root of `x` rounded down to the nearest integer. The returned integer should be non-negative as well.
+---
 
-You must not use any built-in exponent function or operator.
+## Problem 1: Sqrt(x) (LeetCode 69)
+
+### Problem Statement
+
+**Difficulty**: Easy  
+**Category**: Binary Search, Math  
+**Companies**: Amazon, Microsoft, Apple, Facebook, Google
+
+Given a non-negative integer `x`, return the square root of `x` rounded down to the nearest integer. The returned integer should be **non-negative** as well.
+
+**Key Constraint**: You must not use any built-in exponent function or operator.
 
 ### Examples:
 

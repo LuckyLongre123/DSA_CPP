@@ -1,38 +1,66 @@
-# Day 25: Prefix Sum - Find Pivot Index
+# Day 25: Prefix Sum Mastery
 
-## Problem 1: Find Pivot Index
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Prefix Sum Technique**: Efficient range sum calculations and queries
+- **Dynamic Sum Tracking**: Maintaining running sums without recalculation
+- **Two-Sum Logic**: Using dual variables to track array partitions
+- **Mathematical Optimization**: Converting O(n²) brute force to O(n) optimal
 
-Given an array of integers `nums`, calculate the pivot index of this array. The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the right of the index.
+---
 
-If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. This also applies to the right edge of the array.
+## Problem 1: Find Pivot Index (LeetCode 724)
 
-Return the leftmost pivot index. If no such index exists, return -1.
+### 📋 Problem Statement
 
-### Examples:
+**Difficulty**: Easy  
+**Category**: Array, Prefix Sum  
+**Companies**: Amazon, Microsoft, Facebook, Google
+
+Given an array of integers `nums`, calculate the **pivot index** of this array.
+
+**Pivot Index Definition**: The index where the sum of all numbers **strictly to the left** equals the sum of all numbers **strictly to the right**.
+
+**Edge Cases**:
+- If index is on the left edge → left sum = 0
+- If index is on the right edge → right sum = 0
+- Return the **leftmost** pivot index, or -1 if none exists
+
+### 💡 Examples
 
 ```
+Example 1:
 Input: nums = [1,7,3,6,5,6]
 Output: 3
-Explanation: The pivot index is 3.
-Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
-Right sum = nums[4] + nums[5] = 5 + 6 = 11
+Explanation: At index 3:
+Left sum = 1 + 7 + 3 = 11
+Right sum = 5 + 6 = 11
+11 == 11 ✓
 
+Example 2:
 Input: nums = [1,2,3]
 Output: -1
-Explanation: There is no index that satisfies the conditions in the problem statement.
+Explanation: No index satisfies the pivot condition.
 
+Example 3:
 Input: nums = [2,1,-1]
 Output: 0
-Explanation: The pivot index is 0.
-Left sum = 0 (no elements to the left of index 0)
-Right sum = nums[1] + nums[2] = 1 + (-1) = 0
+Explanation: At index 0:
+Left sum = 0 (no elements to the left)
+Right sum = 1 + (-1) = 0
+0 == 0 ✓
 ```
 
-### Approach
+### 🔍 Intuition
 
-#### Two-Sum Tracking Technique
+**Brute Force Approach**: For each index, calculate left sum and right sum separately → O(n²)
+
+**Optimized Approach**: Use **running sums** to track left and right partitions dynamically → O(n)
+
+**Key Insight**: At any index i, if we know the left sum and right sum, we can check for pivot condition in O(1) time.
+
+### 🚀 Approach: Dynamic Sum Tracking
 
 - **Time Complexity**: O(n)
 - **Space Complexity**: O(1)
@@ -179,3 +207,9 @@ nums[4] + nums[5] = 5 + 6 = 11
 2. **Handle Boundaries**: Check edge cases at array start/end
 3. **Early Return**: Return as soon as pivot is found
 4. **Mathematical Insight**: At pivot i, leftSum = rightSum = (totalSum - nums[i]) / 2
+
+---
+
+**Total Problems Solved**: 15/∞
+
+*Balance the sums, find the pivot! ⚖️*

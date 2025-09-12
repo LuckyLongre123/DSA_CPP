@@ -1,40 +1,68 @@
-# Day 26: Array Rotation - Check if Array Is Sorted and Rotated
+# Day 26: Array Rotation Mastery
 
-## Problem 1: Check if Array Is Sorted and Rotated
+## 🎯 Learning Objectives
 
-### Problem Description
+By the end of this day, you will master:
+- **Rotation Detection**: Identifying if an array is a rotated version of a sorted array
+- **Break Point Analysis**: Finding discontinuities in array order patterns
+- **Circular Array Logic**: Understanding wrap-around properties in rotated arrays
+- **Pattern Recognition**: Recognizing mathematical properties of rotated sequences
+
+---
+
+## Problem 1: Check if Array Is Sorted and Rotated (LeetCode 1752)
+
+### 📋 Problem Statement
+
+**Difficulty**: Easy  
+**Category**: Array, Sorting  
+**Companies**: Amazon, Microsoft, Google
 
 Given an array `nums`, return `true` if the array was originally sorted in **non-decreasing order**, then rotated some number of positions (including zero). Otherwise, return `false`.
 
-There may be duplicates in the original array.
+**Key Points**:
+- Duplicates are allowed in the original array
+- Rotation by 0 positions means the array stays the same
+- **Rotation Formula**: A[i] == B[(i+x) % A.length] where x is rotation amount
 
-**Note**: An array A rotated by x positions results in an array B of the same length such that A[i] == B[(i+x) % A.length], where % is the modulo operation.
-
-### Examples:
+### 💡 Examples
 
 ```
+Example 1:
 Input: nums = [3,4,5,1,2]
 Output: true
-Explanation: [3,4,5,1,2] is a rotation of [1,2,3,4,5].
-Original sorted: [1,2,3,4,5]
-Rotated 3 positions: [3,4,5,1,2]
+Explanation: This is [1,2,3,4,5] rotated 3 positions right
+Original: [1,2,3,4,5]
+Rotated:  [3,4,5,1,2] ✓
 
+Example 2:
 Input: nums = [2,1,3,4]
 Output: false
-Explanation: There is no sorted array once rotated that can make nums.
+Explanation: No sorted array can produce this after rotation
 
+Example 3:
 Input: nums = [1,2,3]
 Output: true
-Explanation: [1,2,3] is a rotation of [1,2,3] (rotated 0 positions).
+Explanation: Already sorted (0 rotations) ✓
 
+Example 4:
 Input: nums = [1,1,1]
 Output: true
-Explanation: [1,1,1] is a rotation of [1,1,1].
+Explanation: All elements equal, always valid ✓
 ```
 
-### Approach
+### 🔍 Intuition
 
-#### Break Point Counting Technique
+**Key Insight**: A rotated sorted array has a very specific property:
+- **At most 1 "break point"** where `nums[i] > nums[i+1]`
+- If there's exactly 1 break point, the **first element must be ≥ last element** (wrap-around property)
+
+**Why this works**:
+- Sorted array: 0 break points
+- Rotated sorted array: exactly 1 break point at rotation boundary
+- Invalid array: 2+ break points
+
+### 🚀 Approach: Break Point Analysis
 
 - **Time Complexity**: O(n)
 - **Space Complexity**: O(1)
@@ -180,3 +208,9 @@ Cannot be formed by rotating any sorted array
 2. **Check Wrap-around**: First element ≥ last element when break exists
 3. **Handle Edge Cases**: Consider already sorted and single element arrays
 4. **Think Circularly**: View array as circular for rotation validation
+
+---
+
+**Total Problems Solved**: 16/∞
+
+*Detect the rotation, find the pattern! 🔄*
