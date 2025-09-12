@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **18 Solved**
+### 🔥 Current Problem Count: **23 Solved**
 
 ---
 
@@ -335,6 +335,61 @@ String Algorithms - Rotation Detection
   - Rotation Property: All rotations appear as substrings in doubled string
   - Efficient Search: O(n) time using optimized substring search
   - Length Validation: Equal lengths required for valid rotation
+
+---
+
+## <------------ARRAY PROPERTIES ----------->
+
+**Day 28** [View Code](Day_028) - 11 Sep, 2025  
+Array Properties - Monotonic Arrays
+
+**Monotonic Array**
+- **Definition**: Check if array is either monotone increasing or monotone decreasing
+- **Use Cases**: Array validation, trend analysis, data consistency checks
+- **Key Concepts**:
+  - Two-Flag Method: Track both increasing and decreasing possibilities simultaneously
+  - Single Pass Algorithm: O(n) time with O(1) space complexity
+  - Boolean Logic: Array is monotonic if either direction remains valid
+  - Direction Violations: Mark flags false when order is broken
+
+---
+
+## <------------TWO POINTER TECHNIQUES ----------->
+
+**Day 29** [View Code](Day_029) - 12 Sep, 2025  
+Array Manipulation - Multiple Two-Pointer Problems
+
+**Apply Operations to an Array (LeetCode 2460)**
+- **Definition**: Apply merge operations on adjacent equal elements, then move zeros to end
+- **Use Cases**: Array transformation, two-phase processing
+- **Key Concepts**:
+  - Two-Phase Algorithm: First merge operations, then rearrange zeros
+  - In-place Modification: Transform array without extra space
+  - Sequential Processing: Handle operations in correct order
+
+**Remove Element (LeetCode 27)**
+- **Definition**: Remove all occurrences of target value in-place, return new length
+- **Use Cases**: Array filtering, element removal patterns
+- **Key Concepts**:
+  - Two-Pointer Filtering: One pointer for valid elements, one for scanning
+  - In-place Removal: Overwrite unwanted elements efficiently
+  - Count Return: Return number of remaining valid elements
+
+**Move Zeroes (LeetCode 283)**
+- **Definition**: Move all zeros to end while maintaining relative order of non-zeros
+- **Use Cases**: Array partitioning, element segregation
+- **Key Concepts**:
+  - Stable Partitioning: Preserve relative order of non-zero elements
+  - Two-Pointer Rearrangement: Swap elements to correct positions
+  - Zero Accumulation: Zeros naturally collect at array end
+
+**Merge Sorted Array (LeetCode 88)**
+- **Definition**: Merge two sorted arrays into first array with sufficient space
+- **Use Cases**: Array merging, sorted sequence combination
+- **Key Concepts**:
+  - Three-Pointer Merge: Use temporary array for clean merging logic
+  - Sorted Property: Leverage existing order for efficient combination
+  - Space Management: Handle arrays with different sizes gracefully
 
 ---
 
