@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **23 Solved**
+### 🔥 Current Problem Count: **26 Solved**
 
 ---
 
@@ -138,6 +138,15 @@ Array Manipulation - Two-Pointer Problems
 - Remove Element (LeetCode 27) - Easy
 - Move Zeroes (LeetCode 283) - Easy
 - Merge Sorted Array (LeetCode 88) - Easy
+
+**Day 30** [View Code](Day_030) - 13 Sep, 2025  
+Stack Applications - String Processing
+- Remove All Adjacent Duplicates In String (LeetCode 1047) - Easy
+
+**Day 31** [View Code](Day_031) - 14 Sep, 2025  
+Two Pointers - String Manipulation
+- Valid Palindrome (LeetCode 125) - Easy
+- Reverse String (LeetCode 344) - Easy
 
 ---
 
