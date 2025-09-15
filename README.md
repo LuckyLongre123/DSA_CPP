@@ -148,6 +148,10 @@ Two Pointers - String Manipulation
 - Valid Palindrome (LeetCode 125) - Easy
 - Reverse String (LeetCode 344) - Easy
 
+**Day 32** [View Code](Day_032) - 15 Sep, 2025  
+String Manipulation - Substring Removal
+- Remove All Occurrences of a Substring (LeetCode 1910) - Medium
+
 ---
 
 ## 🛠️ How to Use This Repository
