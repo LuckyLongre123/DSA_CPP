@@ -1,26 +1,68 @@
-// LeetCode Problem 344: Reverse String
-// Write a function that reverses a string. The input string is given as an array of characters s.
-// You must do this by modifying the input array in-place with O(1) extra memory.
-// Example 1: Input: s = ["h","e","l","l","o"], Output: ["o","l","l","e","h"]
-// Example 2: Input: s = ["H","a","n","n","a","h"], Output: ["h","a","n","n","a","H"]
-
 #include <vector>
 #include <algorithm>
 using namespace std;
 
+/*
+================================================================================
+LeetCode 344: Reverse String
+================================================================================
+🔹 Problem Description:
+Write a function that reverses a string. The input string is given as an array of
+characters s. You must reverse the string **in-place** with O(1) extra memory.
+
+--------------------------------------------------------------------------------
+Examples:
+Input:  s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+
+Input:  s = ["H","a","n","n","a","h"]
+Output: ["h","a","n","n","a","H"]
+
+================================================================================
+✨ Easy Explanation (Beginner Friendly)
+================================================================================
+👉 Idea: Two-Pointer Swap
+1. Use a left pointer (start) and a right pointer (end).
+2. Swap characters at left and right pointers.
+3. Move pointers towards the center.
+4. Stop when pointers meet or cross each other.
+
+⏱ Time Complexity: O(n) → single pass through array
+📦 Space Complexity: O(1) → in-place swapping
+================================================================================
+*/
+
 class Solution {
-    public:
-        // Function to reverse string in-place using two pointers approach
-        void reverseString(vector<char>& s) {
-            int a = 0;                    // Left pointer starting from beginning
-            int b = s.size() - 1;         // Right pointer starting from end
-    
-            // Swap characters from both ends moving towards center
-            while (a < b) {
-                swap(s[a], s[b]);         // Swap characters at positions a and b
-                a++;                      // Move left pointer right
-                b--;                      // Move right pointer left
-            }
-            // When a >= b, we've reached the center and string is fully reversed
+public:
+    // * Reverse string in-place
+    void reverseString(vector<char>& s) {
+        int a = 0;                 // Left pointer (start of array)
+        int b = s.size() - 1;      // Right pointer (end of array)
+
+        // * Swap characters until pointers meet
+        while (a < b) {
+            swap(s[a], s[b]);      // Swap characters at a and b
+            a++;                   // Move left pointer right
+            b--;                   // Move right pointer left
         }
-    };
+        // * After loop ends, string is reversed in-place
+    }
+};
+
+// ==================== Driver Code for Testing ====================
+#include <iostream>
+int main() {
+    Solution obj;
+
+    vector<char> s1 = {'h','e','l','l','o'};
+    obj.reverseString(s1);
+    for(char c : s1) cout << c << " ";  // Output: o l l e h
+    cout << endl;
+
+    vector<char> s2 = {'H','a','n','n','a','h'};
+    obj.reverseString(s2);
+    for(char c : s2) cout << c << " ";  // Output: h a n n a H
+    cout << endl;
+
+    return 0;
+}

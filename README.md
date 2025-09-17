@@ -152,6 +152,14 @@ Two Pointers - String Manipulation
 String Manipulation - Substring Removal
 - Remove All Occurrences of a Substring (LeetCode 1910) - Medium
 
+**Day 33** [View Code](Day_033) - 16 Sep, 2025  
+Sliding Window - String Permutation
+- Permutation in String (LeetCode 567) - Medium
+
+**Day 34** [View Code](Day_034) - 17 Sep, 2025  
+String Compression & Two Pointers
+- String Compression (LeetCode 443) - Medium
+
 ---
 
 ## 🛠️ How to Use This Repository

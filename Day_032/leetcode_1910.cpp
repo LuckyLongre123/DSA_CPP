@@ -1,63 +1,72 @@
-/*
-LeetCode 1910: Remove All Occurrences of a Substring
-Problem: Given two strings s and part, remove all occurrences of part from s and return the result.
-
-Key Concepts:
-1. String searching using find() method
-2. String deletion using erase() method  
-3. Iterative removal until no more occurrences exist
-4. Understanding string::npos (no position found indicator)
-
-Time Complexity: O(n * m * k) where n = length of s, m = length of part, k = number of occurrences
-Space Complexity: O(1) - in-place modification of string s
-*/
-
 #include <string>
 using namespace std;
 
+/*
+================================================================================
+LeetCode 1910: Remove All Occurrences of a Substring
+================================================================================
+🔹 Problem Description:
+Given two strings s and part, remove **all occurrences** of part from s and return
+the resulting string.
+
+--------------------------------------------------------------------------------
+Examples:
+Input:  s = "daabcbaabcbc", part = "abc"
+Output: "dab"
+
+Input:  s = "axxxxyyyyb", part = "xy"
+Output: "ab"
+
+================================================================================
+✨ Easy Explanation (Beginner Friendly)
+================================================================================
+👉 Idea: Iterative Search & Remove
+1. Use string::find() to locate the first occurrence of "part" in s.
+2. If found, remove it using string::erase().
+3. Repeat until no more occurrences exist.
+4. Return the modified string.
+
+⏱ Time Complexity: O(n * m * k)
+   - n = length of s
+   - m = length of part
+   - k = number of occurrences
+📦 Space Complexity: O(1) (in-place modification)
+================================================================================
+*/
+
 class Solution {
-    public:
-        string removeOccurrences(string s, string part) {
-            /*
-            Algorithm Approach: Iterative Search and Remove
-            
-            Step 1: Find the first occurrence of 'part' in string 's'
-            Step 2: If found, remove it from the string
-            Step 3: Repeat until no more occurrences exist
-            Step 4: Return the modified string
-            
-            Why this works:
-            - Each removal might expose new occurrences (overlapping patterns)
-            - We need to keep searching from the beginning after each removal
-            - string::npos indicates "not found" condition
-            */
-            
-            // Find the first occurrence of 'part' in string 's'
-            // find() returns the position of first character of the match
-            // Returns string::npos if substring is not found
-            size_t pos = s.find(part);
-                
-            // Continue removing while occurrences exist
-            // string::npos is a special value meaning "no position" or "not found"
-            // It's typically the largest possible value for size_t type
-            while (pos != string::npos) {
-                /*
-                erase(pos, length) method:
-                - pos: starting position to erase from
-                - part.size(): number of characters to erase
-                - Removes characters from position 'pos' for 'part.size()' length
-                - Automatically shifts remaining characters to fill the gap
-                */
-                s.erase(pos, part.size());
-                
-                // Search again for next occurrence
-                // We start from beginning because removal might create new patterns
-                // Example: s="abcabc", part="ca" -> after removing first "ca", 
-                // we get "ababc" which might have new "ca" patterns
-                pos = s.find(part);
-            }
-            
-            // Return the string with all occurrences of 'part' removed
-            return s;
+public:
+    string removeOccurrences(string s, string part) {
+        // Step 1: Find first occurrence of 'part' in s
+        size_t pos = s.find(part);
+
+        // Step 2: Loop until no more occurrences are found
+        while (pos != string::npos) {
+            // Remove substring starting at 'pos' of length 'part.size()'
+            s.erase(pos, part.size());
+
+            // Search again from beginning, since removal may create new occurrences
+            pos = s.find(part);
         }
+
+        // Step 3: Return the modified string
+        return s;
+    }
 };
+
+// ==================== Driver Code for Testing ====================
+#include <iostream>
+int main() {
+    Solution obj;
+
+    string s1 = "daabcbaabcbc", part1 = "abc";
+    cout << obj.removeOccurrences(s1, part1) << endl;  // Output: "dab"
+
+    string s2 = "axxxxyyyyb", part2 = "xy";
+    cout << obj.removeOccurrences(s2, part2) << endl;  // Output: "ab"
+
+    string s3 = "aababaab", part3 = "ab";
+    cout << obj.removeOccurrences(s3, part3) << endl;  // Output: "a"
+
+    return 0;
+}
