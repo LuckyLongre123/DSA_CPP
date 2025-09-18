@@ -1,87 +1,176 @@
+/**
+ * ================================================================================
+ * 🌀 LeetCode 7: Reverse Integer - Number Manipulation
+ * ================================================================================
+ * 
+ * 🎯 Problem: Given a signed 32-bit integer `x`, return `x` with its digits reversed. 
+ * If reversing `x` causes the value to go outside the signed 32-bit integer range 
+ * [-2³¹, 2³¹ - 1], then return 0.
+ * 
+ * 📝 Approach:
+ * 1. Initialize result as 0
+ * 2. While x is not zero:
+ *    - Check for overflow before multiplying by 10
+ *    - Get the last digit using modulo 10
+ *    - Update result by shifting left and adding the digit
+ *    - Remove the last digit from x
+ * 3. Return the reversed number or 0 if overflow occurs
+ * 
+ * ⚡ Time Complexity: O(log₁₀(x)) - We process each digit exactly once
+ * 💾 Space Complexity: O(1) - Constant extra space used
+ * 
+ * 🧠 Key Insight: 
+ *    - The main challenge is handling 32-bit integer overflow
+ *    - We check for potential overflow before performing operations that could cause it
+ *    - Negative numbers are handled naturally by integer division and modulo operations
+ * 
+ * 🚀 Optimizations: 
+ *    - Single pass through the digits
+ *    - Early termination on overflow detection
+ * ================================================================================
+ */
+
 #include <iostream>
 #include <climits>
+#include <string>
 using namespace std;
-
-/* 
-================================================================================
-LeetCode Problem 7: Reverse Integer
-================================================================================
-Given a signed 32-bit integer x, return x with its digits reversed.  
-
-If reversing x causes the value to go outside the signed 32-bit integer range:
-    [-2^31, 2^31 - 1]  
-then return 0.
-
---------------------------------------------------------------------------------
-Example 1:
-Input: x = 123
-Output: 321
-
-Example 2:
-Input: x = -123
-Output: -321
-
-Example 3:
-Input: x = 120
-Output: 21
-
---------------------------------------------------------------------------------
-Constraints:
-* -2^31 <= x <= 2^31 - 1
-================================================================================
-✨ Easy Explanation (Beginner Friendly)
-================================================================================
-- We need to reverse digits of a given integer.
-- But result must be inside 32-bit signed integer range.
-- Example:
-  x = 123 → reverse = 321
-  x = -123 → reverse = -321
-  x = 120 → reverse = 21
-- Trick:
-  1. Take last digit: x % 10
-  2. Add it to answer: ans = ans * 10 + digit
-  3. Remove last digit: x /= 10
-  4. Before multiplying by 10, check overflow:
-     if(ans < INT_MIN/10 or ans > INT_MAX/10) return 0
-================================================================================
-*/
 
 class Solution {
 public:
+    //! MAIN FUNCTION: Reverses the digits of a 32-bit signed integer
+    //! @param x The input integer to reverse
+    //! @return The reversed integer, or 0 if overflow occurs
     int reverse(int x) {
-        int ans = 0;  // * store reversed number
-
-        // * Process digits until x becomes 0
+        int reversed = 0;  // * Stores the reversed number
+        
         while (x != 0) {
-            // ! Check overflow before multiplying by 10
-            if (ans < INT_MIN / 10 || ans > INT_MAX / 10) 
-                return 0;
-
-            // * Take last digit and add to result
-            ans = ans * 10 + x % 10;
-
-            // * Remove last digit from x
+            int digit = x % 10;  // * Extract the last digit
+            
+            //! Check for potential overflow before updating the result
+            //? INT_MAX = 2147483647, so INT_MAX/10 = 214748364
+            if (reversed > INT_MAX/10 || (reversed == INT_MAX/10 && digit > 7)) {
+                return 0;  // * Would overflow positive
+            }
+            //? INT_MIN = -2147483648, so INT_MIN/10 = -214748364
+            if (reversed < INT_MIN/10 || (reversed == INT_MIN/10 && digit < -8)) {
+                return 0;  // * Would overflow negative
+            }
+            
+            //* Update the reversed number
+            reversed = reversed * 10 + digit;
+            
+            //* Remove the last digit from x
             x /= 10;
         }
-
-        // * Return final reversed number
-        return ans;
+        
+        return reversed;
+    }
+    
+    //! ALTERNATIVE: Using string conversion (for reference, not optimal)
+    //! Time: O(log x), Space: O(log x)
+    int reverseStringMethod(int x) {
+        string s = to_string(x);
+        bool isNegative = (s[0] == '-');
+        
+        if (isNegative) {
+            s = s.substr(1);  // Remove the negative sign
+        }
+        
+        std::reverse(s.begin(), s.end());
+        
+        try {
+            int result = stoi(s);
+            return isNegative ? -result : result;
+        } catch (const std::out_of_range&) {
+            return 0;  // Handle overflow
+        }
     }
 };
 
+// ============================================================
+// 🧪 TESTING SUITE - Verifies solution with various test cases
+// ============================================================
+
+//! Helper function to print test result
+void printTestResult(int x, int result, int expected) {
+    cout << "\n🔍 x = " << x << "\n";
+    cout << "   Result:   " << result << "\n";
+    cout << "   Expected: " << expected << "\n";
+    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL");
+    if (result != expected) {
+        cout << " (Expected: " << expected << ")";
+    }
+    cout << "\n";
+}
+
 int main() {
-    Solution obj;
-
-    // * Example test cases
-    int x1 = 123;
-    int x2 = -123;
-    int x3 = 120;
-    int x4 = 1534236469; // overflow case
-
-    cout << "Reverse of 123 → " << obj.reverse(x1) << endl;
-    cout << "Reverse of -123 → " << obj.reverse(x2) << endl;
-    cout << "Reverse of 120 → " << obj.reverse(x3) << endl;
-    cout << "Reverse of 1534236469 (overflow) → " << obj.reverse(x4) << endl;
-
+    Solution solution;
+    
+    // Test Case 1: Positive number
+    {
+        int x = 123;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 321);
+    }
+    
+    // Test Case 2: Negative number
+    {
+        int x = -123;
+        int result = solution.reverse(x);
+        printTestResult(x, result, -321);
+    }
+    
+    // Test Case 3: Ends with zero
+    {
+        int x = 120;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 21);
+    }
+    
+    // Test Case 4: Single digit
+    {
+        int x = 5;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 5);
+    }
+    
+    // Test Case 5: Overflow positive
+    {
+        int x = 1534236469;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 0);
+    }
+    
+    // Test Case 6: Overflow negative
+    {
+        int x = -2147483648;  // INT_MIN
+        int result = solution.reverse(x);
+        printTestResult(x, result, 0);
+    }
+    
+    // Test Case 7: Large number that doesn't overflow when reversed
+    {
+        int x = 2147447412;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 2147447412);
+    }
+    
+    // Test Case 8: Zero
+    {
+        int x = 0;
+        int result = solution.reverse(x);
+        printTestResult(x, result, 0);
+    }
+    
     return 0;
 }
+
+/*
+ * ================================================================================
+ * 📝 Additional Notes:
+ * - The solution handles all 32-bit integer edge cases, including INT_MIN and INT_MAX
+ * - The overflow check is done before the actual operation to prevent undefined behavior
+ * - The algorithm works with negative numbers naturally due to how modulo works in C++
+ * - For a 64-bit environment, the same logic applies but with different bounds
+ * ================================================================================
+ */

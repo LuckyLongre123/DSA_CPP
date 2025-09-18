@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Problem Count: **26 Solved**
+### 🔥 Current Progress: **35 Days | 30 LeetCode Problems Solved**
 
 ---
 
@@ -124,9 +124,13 @@ Array Validation - Sorted and Rotated
 - Check if Array Is Sorted and Rotated (LeetCode 1752) - Easy
 
 **Day 27** [View Code](Day_027) - 10 Sep, 2025  
-Basic Sorting Algorithms
-- Selection Sort (GeeksForGeeks) - Easy
-- Bubble Sort (GeeksForGeeks) - Easy
+Sorting Algorithms & String Rotation
+- **Sorting Algorithms Covered**:
+  - Bubble Sort (GeeksForGeeks) - Easy
+  - Selection Sort (GeeksForGeeks) - Easy
+  - Insertion Sort (GeeksForGeeks) - Easy
+- **String Problem**:
+  - Rotate String (LeetCode 796) - Easy
 
 **Day 28** [View Code](Day_028) - 11 Sep, 2025  
 Array Properties - Monotonic Arrays
@@ -159,6 +163,10 @@ Sliding Window - String Permutation
 **Day 34** [View Code](Day_034) - 17 Sep, 2025  
 String Compression & Two Pointers
 - String Compression (LeetCode 443) - Medium
+
+**Day 35** [View Code](Day_035) - 18 Sep, 2025  
+2D Array Traversal - Spiral Matrix
+- Spiral Matrix (LeetCode 54) - Medium
 
 ---
 
