@@ -1,101 +1,219 @@
+/**
+ * ================================================================================
+ * 🌀 LeetCode 33: Search in Rotated Sorted Array - Binary Search Solution
+ * ================================================================================
+ * 
+ * 🎯 Problem: Given an integer array `nums` sorted in ascending order (with distinct values)
+ * that is rotated at some pivot index, and an integer `target`, return the index of 
+ * `target` in `nums` or `-1` if not found.
+ * 
+ * 📝 Approach: Modified Binary Search
+ * 1. Use binary search to find the target in O(log n) time
+ * 2. At each step, determine which half of the array is sorted
+ * 3. Check if the target lies within the sorted half:
+ *    - If yes, search in that half
+ *    - If no, search in the other half
+ * 
+ * ⚡ Time Complexity: O(log n) - Each iteration reduces search space by half
+ * 💾 Space Complexity: O(1) - Constant extra space used
+ * 
+ * 🧠 Key Insight: 
+ *    - In a rotated sorted array, at least one half (left or right of mid) is always sorted
+ *    - By checking which half is sorted, we can determine where the target might be
+ * 
+ * 🚀 Optimizations: 
+ *    - Early return when target is found
+ *    - Single pass algorithm
+ *    - No extra space required
+ * ================================================================================
+ */
+
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
-
-/* 
-================================================================================
-LeetCode Problem 33: Search in Rotated Sorted Array
-================================================================================
-You are given an integer array `nums` sorted in ascending order with **distinct values**.  
-Before being passed into the function, the array might be rotated at some pivot index `k`.  
-For example, `[0,1,2,4,5,6,7]` might become `[4,5,6,7,0,1,2]`.  
-
-Given the array `nums` after rotation and an integer `target`, return the index of 
-`target` if it exists, otherwise return `-1`.
-
---------------------------------------------------------------------------------
-Example 1:
-Input: nums = [4,5,6,7,0,1,2], target = 0
-Output: 4
-
-Example 2:
-Input: nums = [4,5,6,7,0,1,2], target = 3
-Output: -1
-
---------------------------------------------------------------------------------
-Constraints:
-* 1 <= nums.length <= 5000
-* -10^4 <= nums[i] <= 10^4
-* All values of nums are unique
-* nums is rotated at most once
-* -10^4 <= target <= 10^4
-================================================================================
-✨ Easy Explanation (Beginner Friendly)
-================================================================================
-Normal Binary Search doesn’t directly work because the array is rotated.
-
-⚡ Trick: In every step of binary search:
-- One half (left or right) is always **sorted**.
-- Check if target lies in the sorted half:
-  - If yes → move into that half.
-  - If no → move into the other half.
-
-⏱ Time Complexity: O(log n)  
-📦 Space Complexity: O(1)
-================================================================================
-*/
 
 class Solution {
 public:
+    //! MAIN FUNCTION: Searches for target in rotated sorted array
+    //! @param nums The rotated sorted array with distinct values
+    //! @param target The value to search for
+    //! @return Index of target if found, -1 otherwise
     int search(vector<int>& nums, int target) {
-        int s = 0;                  // * Start pointer
-        int e = nums.size() - 1;    // * End pointer
+        int left = 0;
+        int right = nums.size() - 1;
 
-        while (s <= e) {
-            int mid = s + (e - s) / 2;  // * Middle index (safe from overflow)
+        while (left <= right) {
+            int mid = left + (right - left) / 2;  // Prevents integer overflow
 
-            // ? If element found at mid → return index
-            if (nums[mid] == target) return mid;
+            //? Found the target
+            if (nums[mid] == target) {
+                return mid;
+            }
 
-            // * Case 1: Left half is sorted
-            if (nums[s] <= nums[mid]) {
-                // ? Check if target lies inside sorted left half
-                if (nums[s] <= target && target < nums[mid]) {
-                    e = mid - 1;  // * Search left
+            //? Check if left half is sorted
+            if (nums[left] <= nums[mid]) {
+                //? If target is in the left sorted half
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;  // Search left
                 } else {
-                    s = mid + 1;  // * Otherwise search right
+                    left = mid + 1;   // Search right
                 }
             }
-            // * Case 2: Right half is sorted
+            //? Right half must be sorted
             else {
-                // ? Check if target lies inside sorted right half
-                if (nums[mid] < target && target <= nums[e]) {
-                    s = mid + 1;  // * Search right
+                //? If target is in the right sorted half
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;   // Search right
                 } else {
-                    e = mid - 1;  // * Otherwise search left
+                    right = mid - 1;  // Search left
                 }
             }
         }
 
-        // ! Target not found → return -1
+        //! Target not found
+        return -1;
+    }
+    
+    //! ALTERNATIVE: Two-pass approach (for reference)
+    //! 1. Find the pivot (smallest element)
+    //! 2. Perform binary search on the appropriate half
+    //! Time: O(log n), Space: O(1)
+    int searchTwoPass(vector<int>& nums, int target) {
+        if (nums.empty()) return -1;
+        
+        // Find the index of the smallest element (pivot)
+        int left = 0, right = nums.size() - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        int pivot = left;
+        left = 0;
+        right = nums.size() - 1;
+        
+        // Determine which subarray to search
+        if (target >= nums[pivot] && target <= nums[right]) {
+            left = pivot;
+        } else {
+            right = pivot - 1;
+        }
+        
+        // Standard binary search
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) return mid;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
         return -1;
     }
 };
 
+// ============================================================
+// 🧪 TESTING SUITE - Verifies solution with various test cases
+// ============================================================
+
+//! Helper function to print test results
+void printTestResult(const vector<int>& nums, int target, int result, int expected) {
+    cout << "\n🔍 Input: nums = [";
+    for (size_t i = 0; i < nums.size(); i++) {
+        cout << nums[i];
+        if (i != nums.size() - 1) cout << ", ";
+    }
+    cout << "], target = " << target << "\n";
+    
+    cout << "   Result:   " << result << "\n";
+    cout << "   Expected: " << expected << "\n";
+    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL");
+    if (result != expected) {
+        cout << " (Expected: " << expected << ")";
+    }
+    cout << "\n";
+    
+    if (result != -1) {
+        cout << "   Position: nums[" << result << "] = " << nums[result] << "\n";
+    }
+}
+
 int main() {
-    Solution obj;
-
-    // * Example 1
-    vector<int> nums1 = {4,5,6,7,0,1,2};
-    int target1 = 0;
-    cout << "Input: target = " << target1 
-         << " → Index = " << obj.search(nums1, target1) << endl;
-
-    // * Example 2
-    vector<int> nums2 = {4,5,6,7,0,1,2};
-    int target2 = 3;
-    cout << "Input: target = " << target2 
-         << " → Index = " << obj.search(nums2, target2) << endl;
-
+    Solution solution;
+    
+    // Test Case 1: Target in right half after rotation
+    {
+        vector<int> nums = {4, 5, 6, 7, 0, 1, 2};
+        int target = 0;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, 4);
+    }
+    
+    // Test Case 2: Target not in array
+    {
+        vector<int> nums = {4, 5, 6, 7, 0, 1, 2};
+        int target = 3;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, -1);
+    }
+    
+    // Test Case 3: Single element array (target found)
+    {
+        vector<int> nums = {1};
+        int target = 1;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, 0);
+    }
+    
+    // Test Case 4: Single element array (target not found)
+    {
+        vector<int> nums = {1};
+        int target = 2;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, -1);
+    }
+    
+    // Test Case 5: Not rotated array
+    {
+        vector<int> nums = {1, 3, 5, 7, 9, 11};
+        int target = 5;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, 2);
+    }
+    
+    // Test Case 6: Target at pivot point
+    {
+        vector<int> nums = {5, 1, 3};
+        int target = 1;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, 1);
+    }
+    
+    // Test Case 7: Large rotated array
+    {
+        vector<int> nums = {15, 16, 19, 20, 25, 1, 3, 4, 5, 7, 10, 14};
+        int target = 5;
+        int result = solution.search(nums, target);
+        printTestResult(nums, target, result, 8);
+    }
+    
     return 0;
 }
+
+/*
+ * ================================================================================
+ * 📝 Additional Notes:
+ * - The solution assumes all elements in the array are unique
+ * - For arrays with duplicates, the time complexity could degrade to O(n) in the worst case
+ * - The algorithm can be extended to handle multiple rotations, but the current
+ *   problem states the array is rotated at most once
+ * - The two-pass approach might be more intuitive but has the same time complexity
+ * ================================================================================
+ */
