@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **35 Days | 30 LeetCode Problems Solved**
+### 🔥 Current Progress: **37 Days | 33 Problems Solved**
 
 ---
 
@@ -167,6 +167,15 @@ String Compression & Two Pointers
 **Day 35** [View Code](Day_035) - 18 Sep, 2025  
 2D Array Traversal - Spiral Matrix
 - Spiral Matrix (LeetCode 54) - Medium
+
+**Day 36** [View Code](Day_36) - 19 Sep, 2025  
+2D Matrix Manipulation - In-Place Rotation
+- Rotate Image (LeetCode 48) - Medium
+
+**Day 37** [View Code](Day_37) - 20 Sep, 2025  
+Matrix Search Algorithms - Binary Search & Elimination
+- Search a 2D Matrix (LeetCode 74) - Medium
+- Search a 2D Matrix II (LeetCode 240) - Medium
 
 ---
 
