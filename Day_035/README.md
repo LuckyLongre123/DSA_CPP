@@ -1,29 +1,16 @@
-# 🌀 Day 35: Spiral Matrix (LeetCode 54)
-
-## 📚 Table of Contents
-1. [Introduction to 2D Arrays](#-introduction-to-2d-arrays)
-2. [Problem Understanding](#-problem-understanding)
-3. [Approach & Intuition](#-approach--intuition)
-4. [Solution Code](#-solution-code)
-5. [Complexity Analysis](#-complexity-analysis)
-6. [Visual Walkthrough](#-visual-walkthrough)
-7. [Edge Cases & Handling](#-edge-cases--handling)
-8. [Common Pitfalls & Mistakes](#-common-pitfalls--mistakes)
-9. [Optimization Techniques](#-optimization-techniques)
-10. [Real-world Applications](#-real-world-applications)
-11. [Practice Problems](#-practice-problems)
-12. [Frequently Asked Questions](#-frequently-asked-questions)
+# Day 35: 2D Array Traversal - Spiral Matrix
 
 ## 🎯 Learning Objectives
 
 By the end of this day, you will master:
-- **2D Array Manipulation**: Deep understanding of matrix operations and traversals
-- **Boundary Management**: Effectively handling matrix boundaries during traversal
-- **Spiral Order Traversal**: Implementing complex traversal patterns
-- **In-Place Algorithms**: Solving problems without extra space
-- **Edge Case Handling**: Managing various matrix dimensions and edge conditions
-- **Algorithm Optimization**: Techniques to improve time and space efficiency
-- **Problem Decomposition**: Breaking down complex problems into manageable components
+- **2D Array Traversal**: Understanding matrix navigation patterns and boundary management
+- **Spiral Pattern Recognition**: Implementing clockwise spiral traversal algorithms
+- **Boundary Shrinking Technique**: Managing four boundaries that converge inward
+- **Matrix Edge Cases**: Handling single row, single column, and empty matrices
+- **In-Place Processing**: Optimizing space complexity with boundary pointer manipulation
+- **Visual Algorithm Tracing**: Understanding step-by-step matrix traversal execution
+
+---
 
 ## 🌟 Introduction to 2D Arrays
 
@@ -43,15 +30,45 @@ A two-dimensional array is a data structure that stores elements in a tabular fo
 - Frequently tested in coding interviews
 - Foundation for graph algorithms on grids
 
-## 🔍 Problem Understanding
+## Problem: Spiral Matrix Traversal (LeetCode 54)
 
-### Problem Statement
-Given an m x n matrix, return all elements of the matrix in spiral order.
+### 📋 Problem Statement
 
-### Detailed Explanation
-- **Spiral Order**: Traverse the matrix in a clockwise spiral starting from the top-left corner
-- **Movement Pattern**: Right → Down → Left → Up, then repeat with inner layers
-- **Termination**: When all elements are processed
+**Difficulty**: Medium  
+**Category**: Array, Matrix, Simulation  
+**Companies**: Amazon, Microsoft, Google, Meta, Apple
+
+Given an `m x n` matrix, return all elements of the matrix in **spiral order**.
+
+**Task**: Traverse the matrix in a clockwise spiral pattern starting from the top-left corner.
+
+**Important Note**: The spiral moves layer by layer from outer to inner, processing each "ring" completely before moving inward.
+
+### 🔍 Problem Analysis
+
+**Key Insights**:
+- We need to traverse ALL elements in a specific spiral pattern
+- Each complete cycle has 4 directional moves: RIGHT → DOWN → LEFT → UP
+- We process the matrix layer by layer (like peeling an onion)
+- Boundary management is crucial to avoid revisiting elements
+- Edge cases include single row, single column, and empty matrices
+
+**Pattern Recognition**:
+```
+Matrix = [
+  [1, 2, 3],
+  [4, 5, 6], 
+  [7, 8, 9]
+]
+
+Step 1: Right  → 1, 2, 3
+Step 2: Down   → 6, 9  
+Step 3: Left   → 8, 7
+Step 4: Up     → 4
+Step 5: Center → 5
+
+Final: [1,2,3,6,9,8,7,4,5]
+```
 
 ### Example Walkthrough
 ```
