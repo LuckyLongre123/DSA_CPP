@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **37 Days | 33 Problems Solved**
+### 🔥 Current Progress: **38 Days | 34 Problems Solved**
 
 ---
 
@@ -177,7 +177,19 @@ Matrix Search Algorithms - Binary Search & Elimination
 - [Search a 2D Matrix (LeetCode 74)](https://leetcode.com/problems/search-a-2d-matrix/) - Medium
 - [Search a 2D Matrix II (LeetCode 240)](https://leetcode.com/problems/search-a-2d-matrix-ii/) - Medium
 
----
+**Day 38** [View Code](Day_038) - 21 Sep, 2025  
+Mathematical Optimization & Arithmetic Series Mastery + **Complete C++ Pointers Guide**
+- [Divisible and Non-divisible Sums Difference (LeetCode 2894)](https://leetcode.com/problems/divisible-and-non-divisible-sums-difference/) - Easy
+- **Pointers Concepts Covered**:
+  - Basic Pointers (Declaration, Initialization, Dereferencing)
+  - Pointer Arithmetic & Array Manipulation
+  - Pointers with Functions (Pass by Reference, Return Multiple Values)
+  - Dynamic Memory Management (new/delete, Memory Allocation)
+  - Advanced Pointers (Double Pointers, Function Pointers)
+  - Smart Pointers (unique_ptr, shared_ptr, weak_ptr)
+  - Practical Applications & Memory Safety
+
+--- 
 
 ## 🛠️ How to Use This Repository
 
