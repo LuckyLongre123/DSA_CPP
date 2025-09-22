@@ -1,28 +1,28 @@
 /**
  * ================================================================================
- * 🧮 LeetCode 2894: Divisible and Non-divisible Sums Difference - Mathematical Optimization
+ * LeetCode 2894: Divisible and Non-divisible Sums Difference - Mathematical Optimization
  * ================================================================================
  * 
- * 🎯 Problem: You are given positive integers n and m. Define two integers as follows:
+ * Problem: You are given positive integers n and m. Define two integers as follows:
  * - num1: The sum of all integers in the range [1, n] that are NOT divisible by m
  * - num2: The sum of all integers in the range [1, n] that ARE divisible by m
  * Return num1 - num2.
  * 
- * 📝 Approach:
+ * Approach:
  * 1. Calculate total sum of numbers from 1 to n using arithmetic series formula
  * 2. Calculate sum of numbers divisible by m using arithmetic progression
  * 3. Use mathematical relationship: num1 = totalSum - num2
  * 4. Return num1 - num2 = totalSum - 2 * num2
  * 
- * ⚡ Time Complexity: O(1) - Constant time mathematical operations
- * 💾 Space Complexity: O(1) - Constant extra space used
+ * Time Complexity: O(1) - Constant time mathematical operations
+ * Space Complexity: O(1) - Constant extra space used
  * 
- * 🧠 Key Insight: 
+ * Key Insight: 
  *    - Instead of iterating through all numbers, use mathematical formulas
  *    - Arithmetic series: 1+2+...+n = n*(n+1)/2
  *    - Divisible numbers form arithmetic progression: m, 2m, 3m, ..., km where k = n/m
  * 
- * 🚀 Optimizations: 
+ * Optimizations: 
  *    - Direct mathematical calculation eliminates need for loops
  *    - Handles large values of n efficiently
  * ================================================================================
@@ -87,12 +87,12 @@ public:
 };
 
 // ============================================================
-// 🧪 TESTING SUITE - Verifies solution with various test cases
+// TESTING SUITE - Verifies solution with various test cases
 // ============================================================
 
 //! Helper function to print test result with detailed breakdown
 void printTestResult(int n, int m, int result, int expected) {
-    cout << "\n🔍 n = " << n << ", m = " << m << "\n";
+    cout << "\nTest: n = " << n << ", m = " << m << "\n";
     
     // Calculate components for detailed analysis
     int totalSum = n * (n + 1) / 2;
@@ -106,14 +106,14 @@ void printTestResult(int n, int m, int result, int expected) {
     cout << "   Non-divisible sum: " << nonDivisibleSum << "\n";
     cout << "   Difference: " << nonDivisibleSum << " - " << divisibleSum << " = " << result << "\n";
     cout << "   Expected: " << expected << "\n";
-    cout << "   Status: " << (result == expected ? "✅ PASS" : "❌ FAIL") << "\n";
+    cout << "   Status: " << (result == expected ? "PASS" : "FAIL") << "\n";
 }
 
 //! Comprehensive test function covering edge cases and various scenarios
 void runComprehensiveTests() {
     Solution solution;
     
-    cout << "🧪 Running Comprehensive Test Suite for LeetCode 2894\n";
+    cout << "Running Comprehensive Test Suite for LeetCode 2894\n";
     cout << "=" << string(60, '=') << "\n";
     
     // Test Case 1: Basic example from problem description
@@ -158,10 +158,10 @@ void runComprehensiveTests() {
         int result = solution.differenceOfSums(n, m);
         // Validate against brute force for correctness
         int bruteForceResult = solution.differenceOfSumsBruteForce(n, m);
-        cout << "\n🔍 Large Test: n = " << n << ", m = " << m << "\n";
+        cout << "\nLarge Test: n = " << n << ", m = " << m << "\n";
         cout << "   Optimized result: " << result << "\n";
         cout << "   Brute force result: " << bruteForceResult << "\n";
-        cout << "   Status: " << (result == bruteForceResult ? "✅ PASS" : "❌ FAIL") << "\n";
+        cout << "   Status: " << (result == bruteForceResult ? "PASS" : "FAIL") << "\n";
         assert(result == bruteForceResult);
     }
     
@@ -175,14 +175,14 @@ void runComprehensiveTests() {
         assert(result == expected);
     }
     
-    cout << "\n🎉 All tests passed! Solution is correct.\n";
+    cout << "\nAll tests passed! Solution is correct.\n";
 }
 
 //! Performance comparison between optimized and brute force approaches
 void performanceComparison() {
     Solution solution;
     
-    cout << "\n⚡ Performance Comparison\n";
+    cout << "\nPerformance Comparison\n";
     cout << "=" << string(30, '=') << "\n";
     
     vector<pair<int, int>> testCases = {
@@ -200,7 +200,7 @@ void performanceComparison() {
         cout << "n = " << n << ", m = " << m << "\n";
         cout << "  Optimized O(1): " << optimized << "\n";
         cout << "  Brute Force O(n): " << bruteForce << "\n";
-        cout << "  Match: " << (optimized == bruteForce ? "✅" : "❌") << "\n\n";
+        cout << "  Match: " << (optimized == bruteForce ? "PASS" : "FAIL") << "\n\n";
         
         assert(optimized == bruteForce);
     }
@@ -214,7 +214,7 @@ int main() {
     performanceComparison();
     
     // Interactive example
-    cout << "\n🎯 Interactive Example:\n";
+    cout << "\nInteractive Example:\n";
     Solution solution;
     int n = 10, m = 3;
     
@@ -245,7 +245,7 @@ int main() {
 
 /*
  * ================================================================================
- * 📝 Mathematical Analysis:
+ * Mathematical Analysis:
  * 
  * For range [1, n] and divisor m:
  * 
