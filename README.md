@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **38 Days | 34 Problems Solved**
+### 🔥 Current Progress: **39 Days | 35 Problems Solved**
 
 ---
 
@@ -188,6 +188,10 @@ Mathematical Optimization & Arithmetic Series Mastery + **Complete C++ Pointers 
   - Advanced Pointers (Double Pointers, Function Pointers)
   - Smart Pointers (unique_ptr, shared_ptr, weak_ptr)
   - Practical Applications & Memory Safety
+
+**Day 39** [View Code](Day_39) - 22 Sep, 2025  
+Two Pointers & Area Optimization Mastery
+- [Container With Most Water (LeetCode 11)](https://leetcode.com/problems/container-with-most-water/) - Medium
 
 --- 
 
