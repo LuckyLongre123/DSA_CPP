@@ -54,7 +54,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **39 Days | 35 Problems Solved**
+### 🔥 Current Progress: **40 Days | 36 Problems Solved**
 
 ---
 
@@ -192,6 +192,10 @@ Mathematical Optimization & Arithmetic Series Mastery + **Complete C++ Pointers 
 **Day 39** [View Code](Day_39) - 22 Sep, 2025  
 Two Pointers & Area Optimization Mastery
 - [Container With Most Water (LeetCode 11)](https://leetcode.com/problems/container-with-most-water/) - Medium
+
+**Day 40** [View Code](Day_040) - 24 Sep, 2025  
+Binary Search & Insertion Position Mastery
+- [Search Insert Position (LeetCode 35)](https://leetcode.com/problems/search-insert-position/) - Easy
 
 --- 
 
