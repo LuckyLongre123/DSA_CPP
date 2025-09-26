@@ -32,6 +32,8 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![LeetCode Stats](https://leetcard.jacoblin.cool/Lucky_Longre_SD)
 
+**Total Problems Solved: 39** (as of 26 Sep, 2025)
+
 ## 📚 Learning Path Structure
 
 ### Phase 1: Building C++ Foundation 🏗️
@@ -196,6 +198,18 @@ Two Pointers & Area Optimization Mastery
 **Day 40** [View Code](Day_040) - 24 Sep, 2025  
 Binary Search & Insertion Position Mastery
 - [Search Insert Position (LeetCode 35)](https://leetcode.com/problems/search-insert-position/) - Easy
+
+**Day 41** [View Code](Day_041) - 25 Sep, 2025  
+String Search & Array Indexing
+- [Find Words Containing Character (LeetCode 2942)](https://leetcode.com/problems/find-words-containing-character/) - Easy
+
+**Day 42** [View Code](Day_042) - 26 Sep, 2025  
+Dynamic Programming - Triangle Minimum Path Sum
+- [Triangle (LeetCode 120)](https://leetcode.com/problems/triangle/) - Medium
+
+**Day 43** [View Code](Day_043) - 27 Sep, 2025  
+Advanced Binary Search - Median of Sorted Arrays
+- [Median of Two Sorted Arrays (LeetCode 4)](https://leetcode.com/problems/median-of-two-sorted-arrays/) - Hard
 
 --- 
 
