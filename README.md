@@ -56,7 +56,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **40 Days | 39 Problems Solved**
+### 🔥 Current Progress: **43 Days | 39 Problems Solved**
 
 ---
 
