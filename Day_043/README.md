@@ -50,7 +50,7 @@ graph TD
 ```
 
 **Key Insight**: The median divides an array into two equal halves where:
-- All elements in the left half ≤ all elements in the right half
+- All elements in the left half <= all elements in the right half
 - Both halves have equal (or nearly equal) sizes
 
 ### 🧩 The Partition Concept
@@ -91,7 +91,7 @@ flowchart TD
     B --> C[Calculate cut1 = mid point]
     C --> D[Calculate cut2 = total_left - cut1]
     D --> E[Get boundary elements]
-    E --> F{Valid Partition?<br/>left1≤right2 && left2≤right1}
+    E --> F{Valid Partition?<br/>left1 <= right2 && left2 <= right1}
     F -->|Yes| G[Calculate Median]
     F -->|No| H{left1 > right2?}
     H -->|Yes| I[Move left: high = cut1-1]
@@ -142,8 +142,8 @@ graph TD
     B --> C[Median = middle element = 2]
     
     D[Binary Search Process] --> E[cut1=1, cut2=1]
-    E --> F[left1=1, left2=2<br/>right1=3, right2=∞]
-    F --> G[Check: 1≤∞ ✓, 2≤3 ✓]
+    E --> F[left1=1, left2=2<br/>right1=3, right2=INF]
+    F --> G[Check: 1 <= INF ✓, 2 <= 3 ✓]
     G --> H[Valid! Median = max 1,2 = 2]
     
     style A fill:#e8f5e8
@@ -155,8 +155,8 @@ graph TD
 1. **Setup:** `n=2, m=1, low=0, high=2`
 2. **Iteration 1:** `cut1=1, cut2=1`
    - `left1=nums1[0]=1, left2=nums2[0]=2`
-   - `right1=nums1[1]=3, right2=∞`
-   - **Check:** `1≤∞ ✓` and `2≤3 ✓` → Valid partition!
+   - `right1=nums1[1]=3, right2=INF`
+   - **Check:** `1 <= INF ✓` and `2 <= 3 ✓` → Valid partition!
 3. **Result:** Odd total length → `max(1,2) = 2`
 
 ### 🔵 Example 2: Even Total Length
@@ -171,12 +171,12 @@ graph TD
     
     D[Binary Search Process] --> E[cut1=1, cut2=1]
     E --> F[left1=1, left2=3<br/>right1=2, right2=4]
-    F --> G[Check: 1≤4 ✓, 3≤2 ✗]
+    F --> G[Check: 1 <= 4 ✓, 3 <= 2 ✗]
     G --> H[Invalid! Adjust: low=2]
     H --> I[cut1=2, cut2=0]
-    I --> J[left1=2, left2=-∞<br/>right1=∞, right2=3]
-    J --> K[Check: 2≤3 ✓, -∞≤∞ ✓]
-    K --> L[Valid! Median = max 2,-∞ + min ∞,3 / 2 = 2.5]
+    I --> J[left1=2, left2=-INF<br/>right1=INF, right2=3]
+    J --> K[Check: 2 <= 3 ✓, -INF <= INF ✓]
+    K --> L[Valid! Median = max(2,-INF) + min(INF,3) / 2 = 2.5]
     
     style A fill:#e1f5fe
     style C fill:#c8e6c9
@@ -196,13 +196,13 @@ flowchart TD
     
     D[Binary Search Iterations] --> E[cut1=1, cut2=2]
     E --> F[left1=1, left2=4<br/>right1=3, right2=5]
-    F --> G[Check: 1≤5 ✓, 4≤3 ✗]
+    F --> G[Check: 1 <= 5 ✓, 4 <= 3 ✗]
     G --> H[Invalid! Move right: low=2]
     
     H --> I[cut1=2, cut2=1]
-    I --> J[left1=3, left2=2<br/>right1=∞, right2=4]
-    J --> K[Check: 3≤4 ✓, 2≤∞ ✓]
-    K --> L[Valid! Median = max 3,2 + min ∞,4 / 2 = 3.5]
+    I --> J[left1=3, left2=2<br/>right1=INF, right2=4]
+    J --> K[Check: 3 <= 4 ✓, 2 <= INF ✓]
+    K --> L[Valid! Median = max(3,2) + min(INF,4) / 2 = 3.5]
     
     style A fill:#fff8e1
     style G fill:#ffebee
@@ -266,9 +266,9 @@ graph TD
     A --> C[Use INT_MIN/MAX for boundaries]
     A --> D[Single pass without merging]
     
-    B --> E[Reduces complexity from<br/>O log m+n to O log min m,n]
+    B --> E[Reduces complexity from<br/>O(log(m+n)) to O(log(min(m,n)))]
     C --> F[Elegant edge case handling<br/>No special conditions needed]
-    D --> G[O 1 space complexity<br/>No additional arrays]
+    D --> G[O(1) space complexity<br/>No additional arrays]
     
     style A fill:#e8f5e8
     style E fill:#c8e6c9
@@ -326,13 +326,13 @@ graph TD
 graph TD
     A[Why Logarithmic?] --> B[Binary search on smaller array]
     B --> C[Each iteration halves search space]
-    C --> D[Maximum log min m,n iterations]
+    C --> D[Maximum log(min(m,n)) iterations]
     
-    E[Comparison with Alternatives] --> F[Merge Approach: O m+n]
-    E --> G[Our Approach: O log min m,n]
+    E[Comparison with Alternatives] --> F[Merge Approach: O(m+n)]
+    E --> G[Our Approach: O(log(min(m,n)))]
     E --> H[Improvement Factor]
     
-    F --> I[For m=1000, n=1000: 2000 operations]
+    F --> I[For m=1000, n=1000: ~2000 operations]
     G --> J[For m=1000, n=1000: ~10 operations]
     H --> K[200x faster for large arrays!]
     
@@ -364,13 +364,13 @@ graph TD
 flowchart TD
     A[Mathematical Foundation] --> B[Median Property]
     B --> C[Divides array into equal halves]
-    C --> D[max left_half ≤ min right_half]
+    C --> D[max(left_half) <= min(right_half)]
     
     E[Partition Constraint] --> F[cut1 + cut2 = n+m+1/2]
     F --> G[Ensures equal or nearly equal halves]
     
-    H[Validity Check] --> I[left1 ≤ right2]
-    H --> J[left2 ≤ right1]
+    H[Validity Check] --> I[left1 <= right2]
+    H --> J[left2 <= right1]
     I --> K[Guarantees proper ordering]
     J --> K
     
@@ -435,9 +435,9 @@ graph TD
     A --> C[Merge and Find]
     A --> D[K-th Element Method]
     
-    B --> B1[Time: O log min m,n<br/>Space: O 1<br/>✅ Optimal]
-    C --> C1[Time: O m+n<br/>Space: O m+n<br/>❌ Not optimal]
-    D --> D1[Time: O log m+n<br/>Space: O 1<br/>⚠️ More complex]
+    B --> B1[Time: O(log(min(m,n)))<br/>Space: O(1)<br/>✅ Optimal]
+    C --> C1[Time: O(m+n)<br/>Space: O(m+n)<br/>❌ Not optimal]
+    D --> D1[Time: O(log(m+n))<br/>Space: O(1)<br/>⚠️ More complex]
     
     style B1 fill:#c8e6c9
     style C1 fill:#ffebee
@@ -461,7 +461,7 @@ graph TD
 ```mermaid
 flowchart TD
     A[Problem Analysis] --> B[Identify Requirements]
-    B --> C[O log m+n complexity needed]
+    B --> C[O(log(m+n)) complexity needed]
     C --> D[Cannot merge arrays]
     
     D --> E[Solution Strategy]
@@ -486,7 +486,7 @@ flowchart TD
 - [ ] ✅ Searching on smaller array
 - [ ] ✅ Partition calculation correct: `cut1 + cut2 = (m+n+1)/2`
 - [ ] ✅ Boundary conditions handled with INT_MIN/MAX
-- [ ] ✅ Validation logic: `left1 ≤ right2 && left2 ≤ right1`
+- [ ] ✅ Validation logic: `left1 <= right2 && left2 <= right1`
 - [ ] ✅ Median calculation for both odd and even cases
 - [ ] ✅ Binary search bounds updated correctly
 
@@ -538,7 +538,7 @@ while (low <= high) {
 cut1 + cut2 = (m + n + 1) / 2
 
 // Validity check
-left1 ≤ right2 && left2 ≤ right1
+left1 <= right2 && left2 <= right1
 
 // Median calculation
 // Odd:  max(left1, left2)
