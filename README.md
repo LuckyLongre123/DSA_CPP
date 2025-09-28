@@ -32,7 +32,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![LeetCode Stats](https://leetcard.jacoblin.cool/Lucky_Longre_SD)
 
-**Total Problems Solved: 40** (as of 27 Sep, 2025)
+**Total Problems Solved: 41** (as of 28 Sep, 2025)
 
 ## 📚 Learning Path Structure
 
@@ -56,7 +56,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **44 Days | 40 Problems Solved**
+### 🔥 Current Progress: **45 Days | 41 Problems Solved**
 
 ---
 
@@ -223,6 +223,10 @@ Computational Geometry - Triangle Area Calculations ⭐ **GOLD STANDARD ENHANCED
   - **🌍 Real-World Applications**: Computer graphics, GIS, robotics, and computer vision examples
   - **⚡ Performance Analysis**: Algorithm comparison and complexity visualization
   - **🎓 Educational Structure**: Progressive learning from basic concepts to advanced optimization
+
+**Day 45** [View Code](Day_045) - 28 Sep, 2025  
+Geometric Optimization - Triangle Perimeter
+- [Largest Perimeter Triangle (LeetCode 976)](https://leetcode.com/problems/largest-perimeter-triangle/) - Easy
 
 --- 
 
