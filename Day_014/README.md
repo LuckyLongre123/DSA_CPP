@@ -1,6 +1,7 @@
-# 🔄 Reverse Integer - Complete Beginner's Guide
+# Day 14: 🔄 Reverse Integer - Complete Beginner's Guide
 
 > **Master integer manipulation and overflow handling step by step!**
+
 
 ---
 
@@ -349,10 +350,10 @@ flowchart TD
 
 ```mermaid
 graph TD
-    A[Input Size] --> B[1 digit: O(1)]
-    A --> C[10 digits: O(1)]
-    A --> D[1000 digits: O(1)]
-    A --> E[Max 32-bit: 10 digits]
+    A["Input Size"] --> B["1 digit: O(1)"]
+    A --> C["10 digits: O(1)"]
+    A --> D["1000 digits: O(1)"]
+    A --> E["Max 32-bit: 10 digits"]
     
     style A fill:#e3f2fd
     style B fill:#e8f5e8
@@ -380,6 +381,220 @@ Once you master this, try these similar problems:
 | 🧮 Plus One | Easy | Digit manipulation |
 | 💫 Power of Three | Easy | Mathematical properties |
 | 🔄 Add Digits | Easy | Digit processing |
+
+---
+
+## 💼 Interview Questions & Answers
+
+### ❓ Question 1: Why can't we use 64-bit integers?
+
+**Answer:**  
+The problem wants to test if you can handle overflow properly. Using 64-bit integers would be "cheating" because:
+- You could store any reversed 32-bit number without overflow
+- Real-world systems often have strict memory limits
+- The interviewer wants to see if you understand boundary checking
+
+**Simple Explanation:**  
+It's like being asked to carry water in a small cup (32-bit) instead of a bucket (64-bit). The challenge is handling the small cup carefully!
+
+---
+
+### ❓ Question 2: What happens to negative numbers in modulo operation?
+
+**Answer:**  
+In C++/Java, negative numbers keep their sign in modulo:
+- `-123 % 10 = -3` (not `7`)
+- `-456 % 10 = -6` (not `4`)
+
+**Simple Explanation:**  
+Think of it like this: if you owe 123 rupees and take out the last digit, you still owe 3 rupees (it stays negative).
+
+**Code Example:**
+```cpp
+int x = -123;
+int digit = x % 10;  // digit = -3
+x = x / 10;          // x = -12 (not -13!)
+```
+
+---
+
+### ❓ Question 3: Why do we check `ans > INT_MAX/10` instead of `ans * 10 > INT_MAX`?
+
+**Answer:**  
+Because `ans * 10` might already overflow before we can compare it!
+
+**Simple Explanation:**
+```
+Wrong way:  if (ans * 10 > INT_MAX)  // ans*10 overflows first! 💥
+Right way:  if (ans > INT_MAX/10)    // Safe comparison ✅
+```
+
+It's like checking if your bag can hold more items BEFORE adding them, not AFTER the bag has already burst!
+
+---
+
+### ❓ Question 4: How do you handle the last digit check?
+
+**Answer:**  
+We also need to check if the last digit will cause overflow:
+
+```cpp
+if (ans > INT_MAX/10 || (ans == INT_MAX/10 && digit > 7)) {
+    return 0;
+}
+```
+
+**Simple Explanation:**  
+- `INT_MAX = 2,147,483,647`
+- `INT_MAX/10 = 214,748,364`
+- If `ans = 214,748,364` and next digit is `8` or `9`, we'll overflow!
+- So we check: is digit greater than `7` (last digit of INT_MAX)?
+
+---
+
+### ❓ Question 5: What's the time complexity and why?
+
+**Answer:**  
+**Time: O(log₁₀ x)** - We process each digit once, and number of digits = log₁₀(x)
+
+**Simple Explanation:**  
+```
+123 has 3 digits → 3 operations
+1234 has 4 digits → 4 operations
+12345 has 5 digits → 5 operations
+```
+For 32-bit integers, maximum is 10 digits, so it's actually O(1) in practice!
+
+**Space: O(1)** - We only use 2 variables (`ans` and `x`)
+
+---
+
+### ❓ Question 6: How would you solve this without using `%` and `/` operators?
+
+**Answer:**  
+Convert to string and reverse it:
+
+```cpp
+int reverse(int x) {
+    string s = to_string(abs(x));  // Convert to string
+    reverse(s.begin(), s.end());   // Reverse the string
+    
+    long long result = stoll(s);   // Convert back to number
+    if (x < 0) result = -result;   // Add negative sign back
+    
+    // Check overflow
+    if (result > INT_MAX || result < INT_MIN) return 0;
+    
+    return result;
+}
+```
+
+**Pros:** Easier to understand  
+**Cons:** Uses extra space O(log x), and string operations are slower
+
+---
+
+### ❓ Question 7: Can you explain overflow with a real example?
+
+**Answer:**  
+Let's reverse `1534236469`:
+
+```
+Step-by-step:
+ans = 0
+ans = 9 → Safe ✅
+ans = 96 → Safe ✅
+ans = 964 → Safe ✅
+ans = 9646 → Safe ✅
+ans = 96463 → Safe ✅
+ans = 964632 → Safe ✅
+ans = 9646324 → Safe ✅
+ans = 96463243 → Safe ✅
+ans = 964632435 → Safe ✅
+
+Next: ans = 964632435
+      ans > INT_MAX/10? 
+      964632435 > 214748364? YES! ⚠️
+      Return 0 (overflow would happen)
+```
+
+**Simple Explanation:**  
+It's like filling a glass with water. We stop BEFORE it overflows, not after!
+
+---
+
+### ❓ Question 8: What if input is `0` or single digit?
+
+**Answer:**  
+```cpp
+reverse(0) = 0    // Zero stays zero
+reverse(5) = 5    // Single digit stays same
+reverse(-7) = -7  // Works for negative too
+```
+
+**Simple Explanation:**  
+The loop runs once (for single digit) or doesn't run at all (for zero). The algorithm handles these automatically!
+
+---
+
+### ❓ Question 9: How do trailing zeros disappear?
+
+**Answer:**  
+```
+x = 1200
+Step 1: digit = 0, ans = 0*10 + 0 = 0
+Step 2: digit = 0, ans = 0*10 + 0 = 0
+Step 3: digit = 2, ans = 0*10 + 2 = 2
+Step 4: digit = 1, ans = 2*10 + 1 = 21
+```
+
+**Simple Explanation:**  
+When we build the number, multiplying `0 × 10` keeps it zero. The significant digits only appear when we process them. It's like writing "00021" - the leading zeros don't add value!
+
+---
+
+### ❓ Question 10: What's the difference between `/` and `%` operators?
+
+**Answer:**  
+
+```cpp
+int x = 1234;
+
+x % 10  →  4    // Gives REMAINDER (last digit)
+x / 10  →  123  // Gives QUOTIENT (removes last digit)
+```
+
+**Visual Example:**
+```
+1234 ÷ 10 = 123 remainder 4
+         ↑              ↑
+      x / 10         x % 10
+```
+
+**Simple Explanation:**  
+- `%` (modulo) = "What's left over?" 
+- `/` (division) = "How many times does it fit?"
+
+Think of sharing 1234 candies among 10 friends:
+- Each gets 123 candies (`/`)
+- 4 candies remain (`%`)
+
+---
+
+### 🎯 Common Interview Follow-ups
+
+**Q: "Can you optimize this further?"**  
+A: The algorithm is already optimal - O(log x) time and O(1) space. Can't do better!
+
+**Q: "What if we allow 64-bit integers?"**  
+A: Then we'd multiply by 10 without overflow checks, making it simpler but "cheating" the problem's intent.
+
+**Q: "How would you test this function?"**  
+A: Test cases should include:
+- Normal cases: `123`, `-456`
+- Edge cases: `0`, `5`, `-7`
+- Overflow cases: `1534236469`, `2147483647`
+- Trailing zeros: `1200`, `10000`
 
 ---
 
@@ -437,6 +652,7 @@ graph TD
 - [ ] ✅ Solve the problem in O(log x) time
 - [ ] ✅ Use O(1) space only
 - [ ] ✅ Test all edge cases thoroughly
+- [ ] ✅ Answer common interview questions confidently
 
 ---
 
@@ -447,7 +663,8 @@ graph TD
 3. **🧪 Test Edge Cases**: Zero, single digits, negative numbers, overflow cases
 4. **📚 Learn the Pattern**: This digit manipulation technique appears in many problems
 5. **🎯 Visualize**: Draw out the step-by-step process for complex examples
+6. **💼 Prepare Stories**: Be ready to explain your logic clearly in interviews
 
 ---
 
-**🎉 Congratulations! You now have a complete understanding of integer reversal and overflow handling. Keep practicing and happy coding!**
+**🎉 Congratulations! You now have a complete understanding of integer reversal, overflow handling, and can confidently answer interview questions. Keep practicing and happy coding!**

@@ -1,32 +1,33 @@
 /**
  * ================================================================================
- * 🌀 LeetCode 69: Sqrt(x) - Binary Search Implementation
+ * LeetCode 69: Sqrt(x) - Binary Search on Answer Space
  * ================================================================================
  * 
- * 🎯 Problem: Given a non-negative integer `x`, return the integer square root of `x` 
- * rounded down to the nearest integer. The result must also be non-negative.
+ * ! Problem: Given a non-negative integer `x`, return the integer square root of `x` 
+ * ! rounded down to the nearest integer. The result must also be non-negative.
+ * ! You must not use any built-in exponent function or operator.
  * 
- * 📝 Approach: Binary Search
- * 1. Handle edge cases (0 and 1) directly
- * 2. Use binary search in the range [0, x] to find the square root
- * 3. For each midpoint, compare its square with x:
- *    - If square equals x → return mid
- *    - If square is less → store as potential answer and search right
- *    - If square is greater → search left
- * 4. Return the largest integer whose square is less than or equal to x
+ * * Approach:
+ * * 1. Handle edge cases (x = 0, x < 4) directly for efficiency
+ * * 2. Use binary search in the range [1, x/2] to find the square root
+ * * 3. For each midpoint, compare its square with x:
+ * *    - If square equals x: Found exact square root, return mid
+ * *    - If square is less than x: Store as potential answer and search right half
+ * *    - If square is greater than x: Search left half
+ * * 4. Return the largest integer whose square is less than or equal to x
  * 
- * ⚡ Time Complexity: O(log x) - Binary search halves the search space each iteration
- * 💾 Space Complexity: O(1) - Constant extra space used
+ * ? Time Complexity: O(log x) - Binary search halves the search space each iteration
+ * ? Space Complexity: O(1) - Constant extra space used
  * 
- * 🧠 Key Insight: 
- *    - Binary search is efficient for this problem due to the sorted nature of squares
- *    - Using `long long` prevents integer overflow during calculations
- *    - The search space can be optimized to [0, x/2] for x > 1
+ * TODO Key Insight: 
+ * *    - Binary search on answer space: searching for the answer value, not in an array
+ * *    - For x > 1, the square root is always less than or equal to x/2
+ * *    - Using `long long` prevents integer overflow when computing mid * mid
  * 
- * 🚀 Optimizations: 
- *    - Early termination for edge cases (0 and 1)
- *    - Midpoint calculation avoids overflow
- *    - Efficient search space reduction
+ * * Optimizations: 
+ * *    - Search space reduced to [1, x/2] instead of [0, x]
+ * *    - Early termination for edge cases (0 and small values)
+ * *    - Midpoint calculation uses s + (e-s)/2 to prevent overflow
  * ================================================================================
  */
 
@@ -36,49 +37,62 @@ using namespace std;
 
 class Solution {
 public:
-    //! MAIN FUNCTION: Computes the integer square root of x
-    //! @param x The input non-negative integer
-    //! @return The largest integer whose square is less than or equal to x
+    /**
+     * Computes the integer square root of x using binary search
+     * @param x The input non-negative integer
+     * @return The largest integer whose square is less than or equal to x
+     */
     int mySqrt(int x) {
-        //? Handle edge cases
-        if (x == 0) return 0;     // √0 = 0
-        if (x < 4) return 1;      // √1 = 1, √2 ≈ 1.41, √3 ≈ 1.73
+        int s = 0;      // * Start pointer
+        int e = x - 1;  // * End pointer (x-1 because sqrt(x) < x for x > 1)
+        int ans = -1;   // * Variable to store the answer
         
-        int left = 1;             // Start from 1 (already handled 0 case)
-        int right = x / 2;        // For x > 1, √x <= x/2
-        int result = 0;
+        // ! Handle edge cases for efficiency
+        if (x == 0) return 0;  // ? sqrt(0) = 0
+        if (x == 1) return 1;  // ? sqrt(1) = 1
         
-        //* Binary search implementation
-        while (left <= right) {
-            //? Calculate mid point (prevents overflow compared to (left + right)/2)
-            int mid = left + (right - left) / 2;
+        // * Binary search to find the square root
+        while (s <= e) {
+            // ? Calculate mid point to avoid integer overflow
+            long long int mid = s + (e - s) / 2;
             
-            //? Use long long to prevent integer overflow for mid*mid
-            long long square = (long long)mid * mid;
+            // ? Calculate square of mid using long long to prevent overflow
+            long long int sqr = mid * mid;
             
-            if (square == x) {
-                return mid;  // Found exact square root
-            } 
-            else if (square < x) {
-                result = mid;       // Potential answer
-                left = mid + 1;     // Search right half
-            } 
+            // ! If perfect square found, return immediately
+            if (sqr == x) {
+                return mid;
+            }
+            
+            // * If mid^2 < x, mid could be our answer
+            // * Update ans and search in right half for potentially larger answer
+            else if (sqr < x) {
+                ans = mid;      // * Store current valid answer
+                s = mid + 1;    // * Search right half
+            }
+            // * If mid^2 > x, search in left half
             else {
-                right = mid - 1;    // Search left half
+                e = mid - 1;    // * Search left half
             }
         }
         
-        return result;  // Return floor of square root
+        // * Return the largest integer whose square is <= x
+        return ans;
     }
     
-    //! ALTERNATIVE: Newton's Method (for reference)
-    //! Time: O(log x), Space: O(1)
+    /**
+     * Alternative: Newton's Method for square root (iterative approximation)
+     * @param x The input non-negative integer
+     * @return The integer square root of x
+     */
     int mySqrtNewton(int x) {
         if (x == 0) return 0;
         
+        // * Newton's iteration formula: x_new = (x_old + n/x_old) / 2
         double x0 = x;
         double x1 = (x0 + x / x0) / 2.0;
         
+        // * Iterate until convergence (difference < 1)
         while (abs(x0 - x1) >= 1) {
             x0 = x1;
             x1 = (x0 + x / x0) / 2.0;
@@ -89,15 +103,17 @@ public:
 };
 
 // ============================================================
-// 🧪 TESTING SUITE - Verifies solution with various test cases
+// * TESTING SUITE - Verifies solution with various test cases
 // ============================================================
 
-//! Helper function to print test result
+/**
+ * Helper function to print test result
+ */
 void printTestResult(int x, int result, int expected) {
-    cout << "\n🔍 x = " << x << "\n";
+    cout << "\nx = " << x << "\n";
     cout << "   Result:   " << result << "\n";
     cout << "   Expected: " << expected << "\n";
-    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL");
+    cout << "   Status:   " << (result == expected ? "PASS" : "FAIL");
     if (result != expected) {
         cout << " (Expected: " << expected << ")";
     }
@@ -107,53 +123,60 @@ void printTestResult(int x, int result, int expected) {
 int main() {
     Solution solution;
     
-    // Test Case 1: Perfect square
+    // * Test Case 1: Perfect square
     {
         int x = 16;
         int result = solution.mySqrt(x);
         printTestResult(x, result, 4);
     }
     
-    // Test Case 2: Non-perfect square
+    // * Test Case 2: Non-perfect square
     {
         int x = 8;
         int result = solution.mySqrt(x);
         printTestResult(x, result, 2);
     }
     
-    // Test Case 3: Minimum value (0)
+    // * Test Case 3: Zero (edge case)
     {
         int x = 0;
         int result = solution.mySqrt(x);
         printTestResult(x, result, 0);
     }
     
-    // Test Case 4: Maximum 32-bit integer (2^31 - 1)
+    // * Test Case 4: One (edge case)
     {
-        int x = 2147483647;  // 2^31 - 1
+        int x = 1;
+        int result = solution.mySqrt(x);
+        printTestResult(x, result, 1);
+    }
+    
+    // ! Test Case 5: Maximum 32-bit integer
+    {
+        int x = 2147483647;  // INT_MAX
         int result = solution.mySqrt(x);
         printTestResult(x, result, 46340);  // 46340^2 = 2,147,395,600
     }
     
-    // Test Case 5: Large perfect square
+    // * Test Case 6: Large perfect square
     {
         int x = 1000000;  // 1000^2
         int result = solution.mySqrt(x);
         printTestResult(x, result, 1000);
     }
     
-    // Test Case 6: Small number
+    // * Test Case 7: Small non-perfect square
     {
         int x = 2;
         int result = solution.mySqrt(x);
         printTestResult(x, result, 1);
     }
     
-    // Test Case 7: Large non-perfect square
+    // * Test Case 8: Large non-perfect square
     {
-        int x = 2000000000;  // Between 44721^2 and 44722^2
+        int x = 2000000000;
         int result = solution.mySqrt(x);
-        printTestResult(x, result, 44721);
+        printTestResult(x, result, 44721);  // 44721^2 < 2000000000 < 44722^2
     }
     
     return 0;
@@ -161,11 +184,11 @@ int main() {
 
 /*
  * ================================================================================
- * 📝 Additional Notes:
- * - The binary search approach is more intuitive and has the same time complexity
- *   as Newton's method but might be easier to understand and implement
- * - For very large numbers, using `long long` is crucial to prevent overflow
- * - The search space can be further optimized by setting the upper bound to min(x/2, 46340)
- *   since the maximum possible square root of a 32-bit integer is 46340
+ * TODO Additional Notes:
+ * * - The binary search approach handles all 32-bit integer edge cases effectively
+ * ! - Using `long long` for square calculation prevents integer overflow
+ * * - Newton's method provides an alternative approach with similar time complexity
+ * ? - The search space optimization (x/2) significantly reduces iterations for large values
+ * * - Maximum possible square root of a 32-bit integer is 46340 (46340^2 = 2,147,395,600)
  * ================================================================================
  */

@@ -1,117 +1,170 @@
 /**
  * ================================================================================
- * 🌀 LeetCode 1: Two Sum - Hash Map Solution
+ * LeetCode 1: Two Sum - Array Search and Pair Finding
  * ================================================================================
  * 
- * 🎯 Problem: Given an array of integers nums and an integer target, return indices
- * of the two numbers such that they add up to target.
+ * ! Problem: Given an array of integers `nums` and an integer `target`, return 
+ * ! indices of the two numbers such that they add up to target. You may assume 
+ * ! that each input would have exactly one solution, and you may not use the 
+ * ! same element twice. You can return the answer in any order.
  * 
- * 📝 Approach: Hash Map (One-pass)
- * 1. Use a hash map to store numbers and their indices
- * 2. For each number, calculate its complement (target - current number)
- * 3. If complement exists in map, return the indices
- * 4. Otherwise, add current number and its index to the map
+ * * Approach (Brute Force):
+ * * 1. Use nested loops to check all possible pairs
+ * * 2. For each element at index i, check all elements after it (j > i)
+ * * 3. If nums[i] + nums[j] equals target, return [i, j]
+ * * 4. Continue until pair is found (guaranteed by problem constraints)
  * 
- * ⚡ Time Complexity: O(n) - Single pass through the array
- * 💾 Space Complexity: O(n) - Store at most n elements in the hash map
+ * ? Time Complexity: O(n²) - We check all possible pairs using nested loops
+ * ? Space Complexity: O(1) - Only using constant extra space (not counting output)
  * 
- * 🧠 Key Insight: The complement (target - current) helps find the pair efficiently
+ * TODO Key Insight: 
+ * *    - This is the straightforward brute force solution
+ * *    - Can be optimized to O(n) using hash map (see advanced notes)
+ * *    - The problem guarantees exactly one solution exists
  * 
- * 🚀 Optimizations: 
- *    - One-pass solution (faster in practice)
- *    - Early termination when pair is found
+ * * Optimizations Possible: 
+ * *    - Hash map approach: O(n) time with O(n) space
+ * *    - Two pointer approach: O(n log n) with sorting
  * ================================================================================
  */
 
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 using namespace std;
 
 class Solution {
 public:
-    //! MAIN FUNCTION: Finds two numbers that add up to target
-    //! @param nums The input array of integers
-    //! @param target The target sum to find
-    //! @return Vector containing the indices of the two numbers
+    /**
+     * Finds two indices whose elements sum to target
+     * @param nums Vector of integers to search
+     * @param target The target sum to find
+     * @return Vector containing two indices [i, j] where nums[i] + nums[j] = target
+     */
     vector<int> twoSum(vector<int>& nums, int target) {
-        //? Hash map to store value -> index mapping
-        unordered_map<int, int> numMap;
+        int l = nums.size();  // * Get the length of input array
+        vector<int> myarr;    // * Stores the result indices
         
-        //* Single pass through the array
-        for (int i = 0; i < nums.size(); i++) {
-            //? Calculate the complement needed to reach target
-            int complement = target - nums[i];
-            
-            //! Check if complement exists in the map
-            if (numMap.find(complement) != numMap.end()) {
-                //* Found the pair, return the indices
-                return {numMap[complement], i};
+        // * Outer loop: Consider each element as first number
+        for (int i = 0; i < l; i++) {
+            // * Inner loop: Check all elements after current for complement
+            for (int j = i + 1; j < l; j++) {
+                // ! Check if current pair sums to target
+                if (nums[i] + nums[j] == target) {
+                    myarr.push_back(i);  // * Add first index
+                    myarr.push_back(j);  // * Add second index
+                    return myarr;         // * Return immediately when found
+                }
             }
-            
-            //* Add current number and its index to the map
-            numMap[nums[i]] = i;
         }
         
-        //* No solution found (though problem states there is exactly one)
-        return {};
+        return {};  // ! Return empty if no solution (won't happen per problem guarantee)
     }
 };
 
 // ============================================================
-// 🧪 TESTING SUITE - Verifies solution with various test cases
+// * TESTING SUITE - Verifies solution with various test cases
 // ============================================================
 
-//! Helper function to print test results
-void printTestResult(const string& testName, const vector<int>& result, const vector<int>& expected) {
-    cout << "\n🔍 " << testName << "\n";
-    cout << "   Result:   [";
-    for (size_t i = 0; i < result.size(); i++) {
-        cout << result[i];
-        if (i != result.size() - 1) cout << ", ";
+/**
+ * Helper function to print test result
+ */
+void printTestResult(vector<int>& nums, int target, vector<int> result, vector<int> expected) {
+    cout << "\nInput: nums = [";
+    for (int i = 0; i < nums.size(); i++) {
+        cout << nums[i];
+        if (i < nums.size() - 1) cout << ", ";
     }
-    cout << "]\n   Expected: [";
-    for (size_t i = 0; i < expected.size(); i++) {
-        cout << expected[i];
-        if (i != expected.size() - 1) cout << ", ";
+    cout << "], target = " << target << "\n";
+    
+    cout << "   Result:   [" << (result.size() >= 2 ? to_string(result[0]) + ", " + to_string(result[1]) : "") << "]\n";
+    cout << "   Expected: [" << expected[0] << ", " << expected[1] << "]\n";
+    
+    bool pass = (result.size() == 2 && 
+                 ((result[0] == expected[0] && result[1] == expected[1]) ||
+                  (result[0] == expected[1] && result[1] == expected[0])));
+    
+    cout << "   Status:   " << (pass ? "PASS" : "FAIL") << "\n";
+    
+    if (pass && result.size() == 2) {
+        cout << "   Verification: nums[" << result[0] << "] + nums[" << result[1] 
+             << "] = " << nums[result[0]] << " + " << nums[result[1]] 
+             << " = " << (nums[result[0]] + nums[result[1]]) << "\n";
     }
-    cout << "]\n";
-    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL") << "\n";
 }
 
 int main() {
     Solution solution;
     
-    // Test Case 1: Basic case
+    // * Test Case 1: Basic example from problem description
     {
         vector<int> nums = {2, 7, 11, 15};
         int target = 9;
         vector<int> result = solution.twoSum(nums, target);
-        printTestResult("Test Case 1: Basic Case", result, {0, 1});
+        vector<int> expected = {0, 1};
+        printTestResult(nums, target, result, expected);
     }
     
-    // Test Case 2: Duplicate values
+    // * Test Case 2: Multiple valid pairs, any one is acceptable
     {
         vector<int> nums = {3, 2, 4};
         int target = 6;
         vector<int> result = solution.twoSum(nums, target);
-        printTestResult("Test Case 2: Duplicate Values", result, {1, 2});
+        vector<int> expected = {1, 2};
+        printTestResult(nums, target, result, expected);
     }
     
-    // Test Case 3: Same number used twice (not allowed)
+    // * Test Case 3: Same number twice (different indices)
     {
         vector<int> nums = {3, 3};
         int target = 6;
         vector<int> result = solution.twoSum(nums, target);
-        printTestResult("Test Case 3: Same Number Twice", result, {0, 1});
+        vector<int> expected = {0, 1};
+        printTestResult(nums, target, result, expected);
     }
     
-    // Test Case 4: Negative numbers
+    // * Test Case 4: Larger array
     {
-        vector<int> nums = {-1, -2, -3, -4, -5};
-        int target = -8;
+        vector<int> nums = {1, 5, 3, 7, 9, 2};
+        int target = 10;
         vector<int> result = solution.twoSum(nums, target);
-        printTestResult("Test Case 4: Negative Numbers", result, {2, 4});
+        vector<int> expected = {1, 3};  // 5 + 5 would be same index, so 3 + 7
+        printTestResult(nums, target, result, expected);
+    }
+    
+    // * Test Case 5: Negative numbers
+    {
+        vector<int> nums = {-3, 4, 3, 90};
+        int target = 0;
+        vector<int> result = solution.twoSum(nums, target);
+        vector<int> expected = {0, 2};
+        printTestResult(nums, target, result, expected);
+    }
+    
+    // * Test Case 6: Large numbers
+    {
+        vector<int> nums = {1000000, 2000000, 3000000};
+        int target = 5000000;
+        vector<int> result = solution.twoSum(nums, target);
+        vector<int> expected = {1, 2};
+        printTestResult(nums, target, result, expected);
+    }
+    
+    // * Test Case 7: Two elements only
+    {
+        vector<int> nums = {5, 10};
+        int target = 15;
+        vector<int> result = solution.twoSum(nums, target);
+        vector<int> expected = {0, 1};
+        printTestResult(nums, target, result, expected);
+    }
+    
+    // * Test Case 8: Zero in array
+    {
+        vector<int> nums = {0, 4, 3, 0};
+        int target = 0;
+        vector<int> result = solution.twoSum(nums, target);
+        vector<int> expected = {0, 3};
+        printTestResult(nums, target, result, expected);
     }
     
     return 0;
@@ -119,10 +172,11 @@ int main() {
 
 /*
  * ================================================================================
- * 📝 Additional Notes:
- * - The solution handles all edge cases including negative numbers and zero
- * - The hash map approach is more efficient than the brute-force O(n²) solution
- * - The problem guarantees exactly one solution, so we don't need to handle
- *   multiple solutions or no solution cases in the main logic
+ * TODO Additional Notes:
+ * * - This brute force solution checks all n(n-1)/2 pairs
+ * ! - For large arrays (n > 10,000), consider hash map optimization: O(n) time
+ * * - The problem guarantees exactly one solution, so no need for multiple answers
+ * ? - Hash map approach trades space for speed: O(n) extra space for O(n) time
+ * * - Alternative: Sort array and use two pointers, but loses original indices
  * ================================================================================
  */
