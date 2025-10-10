@@ -1,30 +1,35 @@
 /**
  * ================================================================================
- * 🌀 LeetCode 204: Count Primes - Sieve of Eratosthenes Implementation
+ * LeetCode 204: Count Primes - Sieve of Eratosthenes
  * ================================================================================
  * 
- * 🎯 Problem: Given an integer `n`, return the number of prime numbers that are 
- * strictly less than `n`.
+ * ! Problem: Given an integer n, return the number of prime numbers that are 
+ * ! strictly less than n.
+ * ! 
+ * ! A prime number is a natural number greater than 1 that has no positive 
+ * ! divisors other than 1 and itself.
  * 
- * 📝 Approach: Sieve of Eratosthenes Algorithm
- * 1. Create a boolean array `isPrime` of size `n`, initialized to `true`
- * 2. Mark 0 and 1 as not prime (base cases)
- * 3. For each number `i` from 2 to sqrt(n):
- *    - If `i` is still marked as prime, mark all its multiples as not prime
- * 4. Count the number of `true` values in the `isPrime` array
+ * * Approach: Sieve of Eratosthenes Algorithm
+ * * 1. Create a boolean array of size n, initially all true
+ * * 2. Mark 0 and 1 as not prime
+ * * 3. For each number i from 2 to √n:
+ * *    - If i is still marked as prime
+ * *    - Mark all multiples of i (starting from i²) as not prime
+ * * 4. Count all numbers still marked as prime
  * 
- * ⚡ Time Complexity: O(n log log n) - The inner loop runs for n/2 + n/3 + n/5 + ...
- * 💾 Space Complexity: O(n) - To store the prime status of each number up to n
+ * ? Time Complexity: O(n log log n) - Near-linear performance for prime sieving
+ * ? Space Complexity: O(n) - Boolean array to track prime status
  * 
- * 🧠 Key Insight: 
- *    - The Sieve of Eratosthenes efficiently eliminates non-prime numbers
- *    - We only need to check up to sqrt(n) since any composite number has a factor ≤ sqrt(n)
- *    - Multiples of each prime can be marked starting from i² (optimization)
+ * TODO Key Insight: 
+ * *    - Instead of checking each number individually (O(n√n)), we eliminate 
+ * *      composites by marking multiples of known primes
+ * *    - Start marking from i² because smaller multiples were already marked
+ * *    - Only need to check up to √n because larger factors pair with smaller ones
  * 
- * 🚀 Optimizations: 
- *    - Only check up to sqrt(n)
- *    - Start marking multiples from i²
- *    - Use vector<bool> for space efficiency (specialization that uses bits)
+ * * Optimizations: 
+ * *    - Start inner loop from i*i instead of 2*i (smaller multiples already marked)
+ * *    - Only iterate outer loop up to √n (mathematical optimization)
+ * *    - Use boolean array instead of bitset for simplicity and speed
  * ================================================================================
  */
 
@@ -35,57 +40,38 @@ using namespace std;
 
 class Solution {
 public:
-    //! MAIN FUNCTION: Counts the number of prime numbers less than n
-    //! @param n The upper bound (exclusive)
-    //! @return The count of prime numbers less than n
+    /**
+     * Counts the number of prime numbers less than n using Sieve of Eratosthenes
+     * @param n The upper bound (exclusive) for counting primes
+     * @return The count of prime numbers less than n
+     */
     int countPrimes(int n) {
-        //? Handle edge cases: 0, 1, and 2 have no primes less than them
+        // ! Edge case: Numbers less than or equal to 2 have no primes less than them
         if (n <= 2) return 0;
         
-        //? Initialize a boolean array where index represents the number
-        //? and value represents if the number is prime
+        // * Create boolean array - initially assume all numbers are prime
         vector<bool> isPrime(n, true);
-        isPrime[0] = isPrime[1] = false;  // 0 and 1 are not prime
         
-        //? Sieve of Eratosthenes algorithm
-        for (int i = 2; i * i < n; i++) {
+        // * Mark 0 and 1 as not prime (by definition)
+        isPrime[0] = isPrime[1] = false;
+        
+        // ! Main Sieve Algorithm: Mark composites as not prime
+        // ? Only need to check up to √n because if n = a*b and a > √n, then b < √n
+        for (int i = 2; i * i < n; ++i) {
             if (isPrime[i]) {
-                //? Mark all multiples of i as non-prime, starting from i²
-                //? (smaller multiples would have already been marked by smaller primes)
+                // * Mark all multiples of i as composite
+                // ? Start from i*i because smaller multiples (2*i, 3*i, ..., (i-1)*i) 
+                // ? were already marked by smaller primes
                 for (int j = i * i; j < n; j += i) {
-                    isPrime[j] = false;
+                    isPrime[j] = false;  // ! This number is composite
                 }
             }
         }
         
-        //? Count the number of primes
+        // * Count remaining primes
         int count = 0;
-        for (int i = 2; i < n; i++) {
-            if (isPrime[i]) {
-                count++;
-            }
-        }
-        
-        return count;
-    }
-    
-    //! ALTERNATIVE: Optimized Sieve with early termination (for reference)
-    //! Time: O(n log log n), Space: O(n)
-    int countPrimesOptimized(int n) {
-        if (n <= 2) return 0;
-        
-        vector<bool> isPrime(n, true);
-        int count = n - 2;  // All numbers from 2 to n-1 initially assumed prime
-        
-        for (int i = 2; i * i < n; i++) {
-            if (isPrime[i]) {
-                for (int j = i * i; j < n; j += i) {
-                    if (isPrime[j]) {  // Only decrement if not already marked
-                        isPrime[j] = false;
-                        count--;
-                    }
-                }
-            }
+        for (int i = 2; i < n; ++i) {
+            if (isPrime[i]) count++;
         }
         
         return count;
@@ -93,32 +79,36 @@ public:
 };
 
 // ============================================================
-// 🧪 TESTING SUITE - Verifies solution with various test cases
-// ============================================================================
+// * TESTING SUITE - Verifies solution with various test cases
+// ============================================================
 
-//! Helper function to print test results
+/**
+ * Helper function to print test result
+ */
 void printTestResult(int n, int result, int expected) {
-    cout << "\n🔍 n = " << n << "\n";
-    cout << "   Result:   " << result << " prime(s) less than " << n << "\n";
-    cout << "   Expected: " << expected << " prime(s) less than " << n << "\n";
-    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL");
+    cout << "\nn = " << n << "\n";
+    cout << "   Result:   " << result << " primes\n";
+    cout << "   Expected: " << expected << " primes\n";
+    cout << "   Status:   " << (result == expected ? "PASS" : "FAIL");
     if (result != expected) {
         cout << " (Expected: " << expected << ")";
     }
     cout << "\n";
 }
 
-//! Helper function to print prime numbers (for small n)
+/**
+ * Helper function to print all primes less than n (for verification)
+ */
 void printPrimes(int n) {
     if (n <= 2) {
-        cout << "   Primes:   []\n";
+        cout << "No primes less than " << n << "\n";
         return;
     }
     
     vector<bool> isPrime(n, true);
     isPrime[0] = isPrime[1] = false;
     
-    for (int i = 2; i * i < n; i++) {
+    for (int i = 2; i * i < n; ++i) {
         if (isPrime[i]) {
             for (int j = i * i; j < n; j += i) {
                 isPrime[j] = false;
@@ -126,96 +116,104 @@ void printPrimes(int n) {
         }
     }
     
-    cout << "   Primes:   [";
-    bool first = true;
-    for (int i = 2; i < n; i++) {
-        if (isPrime[i]) {
-            if (!first) cout << ", ";
-            cout << i;
-            first = false;
-        }
+    cout << "Primes less than " << n << ": ";
+    for (int i = 2; i < n; ++i) {
+        if (isPrime[i]) cout << i << " ";
     }
-    cout << "]\n";
+    cout << "\n";
 }
 
 int main() {
     Solution solution;
     
-    // Test Case 1: Small range with primes
+    // * Test Case 1: Small number
     {
         int n = 10;
         int result = solution.countPrimes(n);
-        printTestResult(n, result, 4);
+        printTestResult(n, result, 4);  // Primes: 2, 3, 5, 7
         printPrimes(n);
     }
     
-    // Test Case 2: Edge case - n = 0
+    // * Test Case 2: Zero
     {
         int n = 0;
         int result = solution.countPrimes(n);
         printTestResult(n, result, 0);
     }
     
-    // Test Case 3: Edge case - n = 1
+    // * Test Case 3: One
     {
         int n = 1;
         int result = solution.countPrimes(n);
         printTestResult(n, result, 0);
     }
     
-    // Test Case 4: Edge case - n = 2 (first prime)
+    // * Test Case 4: Two
     {
         int n = 2;
         int result = solution.countPrimes(n);
         printTestResult(n, result, 0);
     }
     
-    // Test Case 5: Single prime number
+    // * Test Case 5: Three (first prime)
     {
         int n = 3;
         int result = solution.countPrimes(n);
-        printTestResult(n, result, 1);
+        printTestResult(n, result, 1);  // Prime: 2
         printPrimes(n);
     }
     
-    // Test Case 6: Larger range
-    {
-        int n = 20;
-        int result = solution.countPrimes(n);
-        printTestResult(n, result, 8);
-        printPrimes(n);
-    }
-    
-    // Test Case 7: Medium-sized input
+    // ! Test Case 6: Larger number
     {
         int n = 100;
         int result = solution.countPrimes(n);
-        printTestResult(n, result, 25);
-        // Don't print all primes for larger n to keep output clean
+        printTestResult(n, result, 25);  // 25 primes less than 100
+        printPrimes(n);
     }
     
-    // Test Case 8: Performance test (commented out by default)
-    // {
-    //     int n = 1000000;  // 1 million
-    //     cout << "\n🔍 Performance Test (n = " << n << ")\n";
-    //     cout << "   Running countPrimes..." << endl;
-    //     int result = solution.countPrimes(n);
-    //     cout << "   Result: " << result << " primes less than " << n << "\n";
-    //     cout << "   Expected: 78498 primes less than " << n << "\n";
-    //     cout << "   Status:   " << (result == 78498 ? "✅ PASS" : "❌ FAIL") << "\n";
-    // }
+    // ! Test Case 7: Even larger number
+    {
+        int n = 1000;
+        int result = solution.countPrimes(n);
+        printTestResult(n, result, 168);  // 168 primes less than 1000
+    }
+    
+    // ! Test Case 8: Power of 2
+    {
+        int n = 256;
+        int result = solution.countPrimes(n);
+        printTestResult(n, result, 54);  // 54 primes less than 256
+    }
+    
+    // * Test Case 9: Perfect square
+    {
+        int n = 49;  // 7²
+        int result = solution.countPrimes(n);
+        printTestResult(n, result, 15);  // Primes: 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47
+        printPrimes(n);
+    }
+    
+    // * Test Case 10: Large boundary test
+    {
+        int n = 5000;
+        int result = solution.countPrimes(n);
+        printTestResult(n, result, 669);  // 669 primes less than 5000
+    }
     
     return 0;
 }
 
 /*
  * ================================================================================
- * 📝 Additional Notes:
- * - The Sieve of Eratosthenes is one of the most efficient ways to find all primes
- *   smaller than n when n is smaller than about 10 million
- * - For very large n (beyond 10^7), more memory-efficient segmented sieve algorithms
- *   might be more appropriate
- * - The optimized version with early counting can be slightly faster for very large n
- *   as it avoids a second pass through the array
+ * TODO Additional Notes:
+ * * - The Sieve of Eratosthenes is one of the most efficient algorithms for 
+ * *   finding all primes up to a given number
+ * ! - The algorithm's efficiency comes from eliminating multiples rather than 
+ * !   testing divisibility of each number
+ * * - Starting from i² in the inner loop is a crucial optimization that reduces 
+ * *   redundant marking operations
+ * ? - For very large n, consider segmented sieve or wheel factorization for 
+ * ?   further optimization
+ * * - The algorithm trades space (O(n)) for time efficiency (O(n log log n))
  * ================================================================================
  */
