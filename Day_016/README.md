@@ -63,9 +63,9 @@ Since the array is sorted, all duplicates are next to each other:
 
 ```mermaid
 flowchart TD
-    A[Sorted Array:<br/>1,1,2,2,2,3] --> B[Duplicates are<br/>adjacent]
-    B --> C[Just compare<br/>neighbors!]
-    C --> D[If nums[i] != nums[j]<br/>Found unique element]
+    A["Sorted Array:<br/>1,1,2,2,2,3"] --> B["Duplicates are<br/>adjacent"]
+    B --> C["Just compare<br/>neighbors!"]
+    C --> D["If current != next<br/>Found unique element"]
     
     style A fill:#e3f2fd
     style B fill:#fff3e0
@@ -89,11 +89,11 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Start: 1,1,2<br/>i=0, j=1] --> B{nums[0]==nums[1]?}
-    B -->|YES: 1==1| C[Skip duplicate<br/>j=2]
-    C --> D{nums[0]==nums[2]?}
-    D -->|NO: 1!=2| E[Found unique!<br/>i++, nums[1]=2]
-    E --> F[Result: 1,2,_<br/>Return 2]
+    A["Start: 1,1,2<br/>i=0, j=1"] --> B{"Compare positions<br/>0 and 1"}
+    B -->|"YES: 1==1"| C["Skip duplicate<br/>j=2"]
+    C --> D{"Compare positions<br/>0 and 2"}
+    D -->|"NO: 1!=2"| E["Found unique!<br/>i++, copy value"]
+    E --> F["Result: 1,2,_<br/>Return 2"]
     
     style A fill:#e8f5e8
     style E fill:#c8e6c9
@@ -119,15 +119,15 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Start: 0,0,1,1,1,2,2,3,3,4] --> B[Skip duplicate 0<br/>i=0, j=2]
-    B --> C[Found 1<br/>nums[1]=1, i=1]
-    C --> D[Skip two 1s<br/>j=3,4,5]
-    D --> E[Found 2<br/>nums[2]=2, i=2]
-    E --> F[Skip duplicate 2<br/>j=6,7]
-    F --> G[Found 3<br/>nums[3]=3, i=3]
-    G --> H[Skip duplicate 3<br/>j=8,9]
-    H --> I[Found 4<br/>nums[4]=4, i=4]
-    I --> J[Final: 0,1,2,3,4<br/>Return 5]
+    A["Start: 0,0,1,1,1,2,2,3,3,4"] --> B["Skip duplicate 0<br/>i=0, j=2"]
+    B --> C["Found 1<br/>Copy to position 1"]
+    C --> D["Skip two 1s<br/>j=3,4,5"]
+    D --> E["Found 2<br/>Copy to position 2"]
+    E --> F["Skip duplicate 2<br/>j=6,7"]
+    F --> G["Found 3<br/>Copy to position 3"]
+    G --> H["Skip duplicate 3<br/>j=8,9"]
+    H --> I["Found 4<br/>Copy to position 4"]
+    I --> J["Final: 0,1,2,3,4<br/>Return 5"]
     
     style A fill:#ffebee
     style C fill:#fff3e0
@@ -171,10 +171,10 @@ Final: [0,1,2,3,4,_,_,_,_,_]
 
 ```mermaid
 flowchart TD
-    A[All elements<br/>are unique] --> B[Every comparison<br/>nums[i] != nums[j]]
-    B --> C[i increments<br/>every time]
-    C --> D[Array stays<br/>unchanged]
-    D --> E[Return 5]
+    A["All elements<br/>are unique"] --> B["Every comparison<br/>shows different values"]
+    B --> C["i increments<br/>every time"]
+    C --> D["Array stays<br/>unchanged"]
+    D --> E["Return 5"]
     
     style A fill:#fff8e1
     style D fill:#ffecb3
@@ -190,10 +190,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Start: 7,7,7,7,7<br/>i=0] --> B[All comparisons<br/>nums[0] == nums[j]]
-    B --> C[i never moves<br/>stays at 0]
-    C --> D[Only first element<br/>is kept]
-    D --> E[Return 1]
+    A["Start: 7,7,7,7,7<br/>i=0"] --> B["All comparisons<br/>show same value"]
+    B --> C["i never moves<br/>stays at 0"]
+    C --> D["Only first element<br/>is kept"]
+    D --> E["Return 1"]
     
     style A fill:#e1f5fe
     style C fill:#ffebee
@@ -210,12 +210,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Initialize i=0<br/>slow pointer] --> B{Is j < array length?}
-    B -->|No| G[Return i+1<br/>count of unique]
-    B -->|Yes| C{nums[i] != nums[j]?}
-    C -->|Yes| D[Increment i<br/>Copy nums[j] to nums[i]]
-    C -->|No| E[Skip duplicate]
-    D --> F[Move j forward]
+    A["Initialize i=0<br/>slow pointer"] --> B{"Is j < array length?"}
+    B -->|No| G["Return i+1<br/>count of unique"]
+    B -->|Yes| C{"Values at i and j<br/>are different?"}
+    C -->|Yes| D["Increment i<br/>Copy value from j to i"]
+    C -->|No| E["Skip duplicate"]
+    D --> F["Move j forward"]
     E --> F
     F --> B
     
@@ -255,9 +255,9 @@ int removeDuplicates(vector<int>& nums) {
 
 ```mermaid
 flowchart LR
-    A[Array Structure] --> B[0 to i:<br/>Unique Elements]
-    A --> C[i+1 to j-1:<br/>Duplicates/Processed]
-    A --> D[j to end:<br/>Unprocessed]
+    A["Array Structure"] --> B["0 to i:<br/>Unique Elements"]
+    A --> C["i+1 to j-1:<br/>Duplicates/Processed"]
+    A --> D["j to end:<br/>Unprocessed"]
     
     style B fill:#c8e6c9
     style C fill:#ffcdd2
@@ -294,20 +294,20 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Test Categories] --> B[Normal Arrays<br/>✅ Mixed duplicates]
-    A --> C[Edge Cases<br/>⚠️ Special sizes]
-    A --> D[Performance<br/>🚀 Large inputs]
+    A["Test Categories"] --> B["Normal Arrays<br/>✅ Mixed duplicates"]
+    A --> C["Edge Cases<br/>⚠️ Special sizes"]
+    A --> D["Performance<br/>🚀 Large inputs"]
     
-    B --> B1[1,1,2 → 2]
-    B --> B2[0,0,1,1,1,2,2,3,3,4 → 5]
+    B --> B1["1,1,2 → 2"]
+    B --> B2["0,0,1,1,1,2,2,3,3,4 → 5"]
     
-    C --> C1[Empty → 0]
-    C --> C2[Single → 1]
-    C --> C3[All same → 1]
+    C --> C1["Empty → 0"]
+    C --> C2["Single → 1"]
+    C --> C3["All same → 1"]
     
-    D --> D1[10000 elements]
-    D --> D2[All unique]
-    D --> D3[All duplicates]
+    D --> D1["10000 elements"]
+    D --> D2["All unique"]
+    D --> D3["All duplicates"]
     
     style B fill:#e8f5e8
     style C fill:#fff3e0
@@ -343,9 +343,9 @@ for (int fastPointer = 0; fastPointer < n; fastPointer++) {
 
 ```mermaid
 flowchart LR
-    A[Original Array] --> B[Read from<br/>fast pointer]
-    B --> C[Write to<br/>slow pointer]
-    C --> D[Modified Array<br/>Same memory]
+    A["Original Array"] --> B["Read from<br/>fast pointer"]
+    B --> C["Write to<br/>slow pointer"]
+    C --> D["Modified Array<br/>Same memory"]
     
     style A fill:#e3f2fd
     style B fill:#fff3e0
@@ -362,10 +362,10 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[Identify Constraints] --> B[Sorted? In-place?]
-    B --> C[Choose Two-Pointer<br/>Technique]
-    C --> D[Define Slow/Fast<br/>Pointer Roles]
-    D --> E[Implement and Test]
+    A["Identify Constraints"] --> B["Sorted? In-place?"]
+    B --> C["Choose Two-Pointer<br/>Technique"]
+    C --> D["Define Slow/Fast<br/>Pointer Roles"]
+    D --> E["Implement and Test"]
     
     style A fill:#e1f5fe
     style B fill:#f3e5f5
@@ -387,10 +387,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Input Size] --> B[1 element: 1 operation]
-    A --> C[10 elements: 10 operations]
-    A --> D[1000 elements: 1000 operations]
-    A --> E[Linear relationship<br/>T n = c × n]
+    A["Input Size"] --> B["1 element: 1 operation"]
+    A --> C["10 elements: 10 operations"]
+    A --> D["1000 elements: 1000 operations"]
+    A --> E["Linear relationship<br/>T(n) = c × n"]
     
     style A fill:#e3f2fd
     style B fill:#e8f5e8
@@ -716,10 +716,10 @@ if (nums.empty()) return 0;
 
 ```mermaid
 flowchart TD
-    A[Think of array as<br/>sorted bookshelf] --> B[Slow pointer marks<br/>where to place next unique book]
-    B --> C[Fast pointer scans<br/>to find unique books]
-    C --> D[Copy unique books<br/>to front section]
-    D --> E[Ignore duplicates<br/>at the back]
+    A["Think of array as<br/>sorted bookshelf"] --> B["Slow pointer marks<br/>where to place next unique book"]
+    B --> C["Fast pointer scans<br/>to find unique books"]
+    C --> D["Copy unique books<br/>to front section"]
+    D --> E["Ignore duplicates<br/>at the back"]
     
     style A fill:#e1f5fe
     style B fill:#f3e5f5
