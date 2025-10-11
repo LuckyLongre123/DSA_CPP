@@ -1,259 +1,174 @@
-# Day 29: Two-Pointer Techniques Mastery - Complete Guide
+# Day 29: 🎯 Two-Pointer Array Manipulation - Complete Mastery Guide
 
-## 🎯 Learning Objectives
-
-By the end of this day, you will master:
-- **Two-Pointer Patterns**: Understanding different pointer movement strategies and variations
-- **In-Place Array Manipulation**: Modifying arrays without extra space efficiently
-- **Filtering and Partitioning**: Separating elements based on conditions with optimal performance
-- **Array Merging**: Combining sorted sequences using multiple pointer techniques
-- **Phase-Based Processing**: Breaking complex problems into manageable phases
-- **Stable vs Unstable Operations**: Understanding when order preservation matters
-- **Space Optimization**: Converting O(n) space solutions to O(1) in-place algorithms
+> **Master the two-pointer technique for in-place array operations step by step!**
 
 ---
 
-## 📋 Problems Overview
+## 📖 What You'll Learn
 
-| Problem | Difficulty | Category | Technique |
-|---------|------------|----------|-----------|
-| Apply Operations to an Array (2460) | Easy | Array Processing | Two-Phase |
-| Remove Element (27) | Easy | Array Filtering | Two-Pointer |
-| Move Zeroes (283) | Easy | Array Partitioning | Two-Pointer |
-| Merge Sorted Array (88) | Easy | Array Merging | Three-Pointer |
+By the end of this guide, you'll master:
+- 🎯 **Two-Pointer Technique** - The fundamental pattern for array manipulation
+- 🔄 **In-Place Operations** - Modifying arrays without extra space
+- 📊 **Array Partitioning** - Separating elements based on conditions
+- 🚀 **Merge Algorithms** - Combining sorted arrays efficiently
 
 ---
 
-## 🔵 Problem 1: Apply Operations to an Array (LeetCode 2460)
+## 🎯 The Problems
 
-### 📋 Problem Statement
+This day covers **4 essential two-pointer problems** that build upon each other:
 
-**Difficulty**: Easy  
-**Category**: Array, Two-Pointer, Simulation  
-**Companies**: Meta, Amazon, Google
+| Problem | LeetCode | Difficulty | Key Concept |
+|---------|----------|------------|-------------|
+| **Apply Operations to Array** | 2460 | Easy | Two-phase processing |
+| **Remove Element** | 27 | Easy | In-place removal |
+| **Move Zeroes** | 283 | Easy | Stable partitioning |
+| **Merge Sorted Array** | 88 | Easy | Three-pointer merge |
 
-You are given a **0-indexed** array `nums` of size `n` consisting of **non-negative** integers.
+---
 
-You need to apply `n - 1` operations to this array where, in the `ith` operation, you will apply the following on the `ith` element of `nums`:
-- If `nums[i] == nums[i + 1]`, then multiply `nums[i]` by `2` and set `nums[i + 1]` to `0`
-- Otherwise, skip this operation
+## 🔍 Understanding the Basics
 
-After performing all operations, **shift** all the `0`s to the **end** of the array.
+### 🏗️ What is the Two-Pointer Technique?
 
-Return the resulting array.
-
-### 💡 Detailed Examples with Analysis
-
-**Example 1: Standard Case**
-```
-Input: nums = [1,2,2,1,1,0]
-
-Phase 1 - Apply Operations (Left to Right):
-Initial:  [1, 2, 2, 1, 1, 0]
-          ↑
-i=0: nums[0]=1, nums[1]=2 → 1≠2, skip
-Result:   [1, 2, 2, 1, 1, 0]
-
-i=1: nums[1]=2, nums[2]=2 → 2==2, merge!
-Action:   nums[1] = 2*2 = 4, nums[2] = 0
-Result:   [1, 4, 0, 1, 1, 0]
-
-i=2: nums[2]=0, nums[3]=1 → 0≠1, skip
-Result:   [1, 4, 0, 1, 1, 0]
-
-i=3: nums[3]=1, nums[4]=1 → 1==1, merge!
-Action:   nums[3] = 1*2 = 2, nums[4] = 0
-Result:   [1, 4, 0, 2, 0, 0]
-
-i=4: nums[4]=0, nums[5]=0 → 0==0, merge!
-Action:   nums[4] = 0*2 = 0, nums[5] = 0
-Result:   [1, 4, 0, 0, 0, 0]
-
-Phase 2 - Move Zeros to End:
-Before:   [1, 4, 0, 0, 0, 0]
-Process:  Keep non-zeros: [1, 4]
-          Fill zeros: [1, 4, 0, 0, 0, 0]
-Final:    [1, 4, 0, 0, 0, 0]
-
-Wait, let me recalculate correctly:
-After Phase 1: [1, 4, 0, 2, 0, 0]
-Phase 2: Move non-zeros [1, 4, 2] to front
-Final: [1, 4, 2, 0, 0, 0]
+```mermaid
+flowchart TD
+    A["Two-Pointer Technique"] --> B["Single Array<br/>One or Two Pointers"]
+    A --> C["Two Arrays<br/>One Pointer Each"]
+    
+    B --> B1["Slow-Fast Pattern"]
+    B --> B2["Left-Right Pattern"]
+    
+    C --> C1["Merge Pattern"]
+    C --> C2["Comparison Pattern"]
+    
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
 ```
 
-**Example 2: No Operations Needed**
-```
-Input: nums = [1,3,5,7]
+**Think of pointers as bookmarks:**
+- They track positions in the array
+- They move based on conditions
+- They help us rearrange elements efficiently
 
-Phase 1 - Apply Operations:
-i=0: 1≠3, skip → [1,3,5,7]
-i=1: 3≠5, skip → [1,3,5,7]
-i=2: 5≠7, skip → [1,3,5,7]
+### 🎲 The Core Pattern
 
-Phase 2 - Move Zeros (no zeros):
-Result: [1,3,5,7] (unchanged)
-```
-
-**Example 3: All Same Elements**
-```
-Input: nums = [2,2,2,2]
-
-Phase 1 - Apply Operations:
-i=0: 2==2, merge → [4,0,2,2]
-i=1: 0≠2, skip → [4,0,2,2]
-i=2: 2==2, merge → [4,0,4,0]
-
-Phase 2 - Move Zeros:
-Non-zeros: [4,4]
-Result: [4,4,0,0]
+```mermaid
+flowchart TD
+    A["Initialize Pointers"] --> B["Scan Array with Loop"]
+    B --> C{"Condition Met?"}
+    C -->|"Yes"| D["Swap or Move Elements"]
+    C -->|"No"| E["Skip Element"]
+    D --> F["Advance Pointers"]
+    E --> F
+    F --> G{"More Elements?"}
+    G -->|"Yes"| B
+    G -->|"No"| H["Return Result"]
+    
+    style A fill:#e8f5e8
+    style C fill:#fff3e0
+    style H fill:#c8e6c9
 ```
 
-### 🚀 Approach: Two-Phase Processing
+---
 
-#### 🔍 Core Intuition
+# 🟢 Problem 1: Apply Operations to Array (LeetCode 2460)
 
-This problem combines two classic array operations:
-1. **Conditional Merging**: Process adjacent equal elements
-2. **Partitioning**: Separate zeros from non-zeros
+## 📋 Problem Statement
 
-**Why Two Phases?**
-- Phase 1 creates zeros that need to be moved
-- Phase 2 handles the zero-moving efficiently
-- Separating concerns makes the solution cleaner and easier to debug
+**Given**: A 0-indexed array `nums` of non-negative integers  
+**Task**: 
+1. Merge adjacent equal elements (first doubles, second becomes 0)
+2. Move all zeros to the end while maintaining relative order
 
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(n) - Two linear passes through the array
-- **Space Complexity**: O(1) - Only using constant extra variables
+**Important**: Two distinct phases - merge first, then move zeros
 
-#### 🔧 Detailed Algorithm Steps
+### 🌟 Real-World Example
 
-**Phase 1: Apply Merge Operations**
+Think of it like organizing inventory:
+- **Phase 1**: Combine duplicate items (merge equal boxes)
+- **Phase 2**: Move empty boxes to storage (zeros to end)
+
+---
+
+## 🔍 Understanding Problem 1
+
+### 📊 Visual Representation
+
+```mermaid
+flowchart TD
+    A["Input: [1,2,2,1,1,0]"] --> B["Phase 1: Merge<br/>[1,4,0,2,0,0]"]
+    B --> C["Phase 2: Move Zeros<br/>[1,4,2,0,0,0]"]
+    
+    B1["2 equals 2 becomes 4,0"] --> B
+    B2["1 equals 1 becomes 2,0"] --> B
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#c8e6c9
 ```
-For i from 0 to n-2:
-    If nums[i] == nums[i+1]:
-        nums[i] = nums[i] * 2    // Double the first element
-        nums[i+1] = 0            // Zero out the second element
+
+### 🎯 Step-by-Step Example
+
+**Input:** `nums = [1,2,2,1,1,0]`
+
+```mermaid
+flowchart TD
+    A["Step 0: [1,2,2,1,1,0]"] --> B["Step 1: Check index 0<br/>1 not equal 2, skip"]
+    B --> C["Step 2: Check index 1<br/>2 equals 2, merge!"]
+    C --> D["Result: [1,4,0,1,1,0]"]
+    D --> E["Step 3: Check index 2<br/>0 not equal 1, skip"]
+    E --> F["Step 4: Check index 3<br/>1 equals 1, merge!"]
+    F --> G["Result: [1,4,0,2,0,0]"]
+    G --> H["Phase 2: Move Zeros<br/>Final: [1,4,2,0,0,0]"]
+    
+    style A fill:#e8f5e8
+    style D fill:#fff3e0
+    style G fill:#ffecb3
+    style H fill:#c8e6c9
 ```
 
-**Phase 2: Move Zeros to End**
-```
-writeIndex = 0
-For i from 0 to n-1:
-    If nums[i] != 0:
-        nums[writeIndex] = nums[i]
-        writeIndex++
+---
 
-Fill remaining positions with zeros
+## 🛠️ The Algorithm - Problem 1
+
+### 🎯 Two-Phase Strategy
+
+```mermaid
+flowchart TD
+    A["Start"] --> B["Phase 1: Merge Adjacent Equals"]
+    B --> C["For i equals 0 to n minus 2"]
+    C --> D{"nums[i] equals nums[i+1]?"}
+    D -->|"Yes"| E["nums[i] multiply by 2<br/>nums[i+1] equals 0"]
+    D -->|"No"| F["Continue"]
+    E --> F
+    F --> G{"More elements?"}
+    G -->|"Yes"| C
+    G -->|"No"| H["Phase 2: Move Zeros"]
+    H --> I["Two-pointer: zeroIndex equals 0"]
+    I --> J["For j equals 0 to n minus 1"]
+    J --> K{"nums[j] not equal 0?"}
+    K -->|"Yes"| L["Swap nums[zeroIndex], nums[j]<br/>zeroIndex increment"]
+    K -->|"No"| M["Skip"]
+    L --> M
+    M --> N{"More elements?"}
+    N -->|"Yes"| J
+    N -->|"No"| O["Return nums"]
+    
+    style A fill:#e8f5e8
+    style B fill:#e1f5fe
+    style H fill:#f3e5f5
+    style O fill:#c8e6c9
 ```
 
-#### 💻 Implementation with Comments
+### 💻 The Code
 
 ```cpp
 vector<int> applyOperations(vector<int>& nums) {
     int n = nums.size();
     
-    // Phase 1: Apply merge operations left to right
-    for (int i = 0; i < n - 1; i++) {
-        if (nums[i] == nums[i + 1]) {
-            nums[i] *= 2;        // Double the current element
-            nums[i + 1] = 0;     // Set next element to zero
-        }
-    }
-    
-    // Phase 2: Move all non-zero elements to the front
-    int writeIndex = 0;
-    for (int i = 0; i < n; i++) {
-        if (nums[i] != 0) {
-            nums[writeIndex++] = nums[i];
-        }
-    }
-    
-    // Fill remaining positions with zeros
-    while (writeIndex < n) {
-        nums[writeIndex++] = 0;
-    }
-    
-    return nums;
-}
-```
-
-#### 🚨 Edge Cases
-
-**1. Empty Array**
-```cpp
-Input: nums = []
-Output: []
-```
-
-**2. Single Element**
-```cpp
-Input: nums = [5]
-Output: [5]  // No operations possible
-```
-
-**3. All Zeros**
-```cpp
-Input: nums = [0,0,0,0]
-Phase 1: [0,0,0,0] → [0,0,0,0] (0==0 merges to 0)
-Phase 2: [0,0,0,0] (already all zeros)
-Output: [0,0,0,0]
-```
-
-**4. No Equal Adjacent Elements**
-```cpp
-Input: nums = [1,3,5,7,9]
-Phase 1: No changes (no equal adjacent pairs)
-Phase 2: No zeros to move
-Output: [1,3,5,7,9]
-```
-
-**5. Alternating Pattern**
-```cpp
-Input: nums = [2,2,0,0,3,3]
-Phase 1: [4,0,0,0,6,0]
-Phase 2: [4,6,0,0,0,0]
-Output: [4,6,0,0,0,0]
-```
-
-#### 🔄 Alternative Approaches
-
-**Approach 1: Single Pass with Deferred Zero Handling**
-```cpp
-vector<int> applyOperationsSinglePass(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> result;
-    
-    // Apply operations and collect non-zeros
-    for (int i = 0; i < n - 1; i++) {
-        if (nums[i] == nums[i + 1]) {
-            result.push_back(nums[i] * 2);
-            nums[i + 1] = 0;  // Mark as processed
-        } else if (nums[i] != 0) {
-            result.push_back(nums[i]);
-        }
-    }
-    
-    // Handle last element
-    if (nums[n-1] != 0) {
-        result.push_back(nums[n-1]);
-    }
-    
-    // Fill with zeros
-    while (result.size() < n) {
-        result.push_back(0);
-    }
-    
-    return result;
-}
-```
-**Analysis**: O(n) time, O(n) space - trades space for simpler logic
-
-**Approach 2: In-Place with Swap Optimization**
-```cpp
-vector<int> applyOperationsOptimized(vector<int>& nums) {
-    int n = nums.size();
-    
-    // Phase 1: Apply operations
+    // PHASE 1: Merge adjacent equal elements
     for (int i = 0; i < n - 1; i++) {
         if (nums[i] == nums[i + 1]) {
             nums[i] *= 2;
@@ -261,833 +176,1123 @@ vector<int> applyOperationsOptimized(vector<int>& nums) {
         }
     }
     
-    // Phase 2: Optimized zero movement with swapping
-    int left = 0, right = 0;
-    while (right < n) {
-        if (nums[right] != 0) {
-            swap(nums[left], nums[right]);
-            left++;
+    // PHASE 2: Move zeros to end
+    int zeroIndex = 0;
+    for (int j = 0; j < n; j++) {
+        if (nums[j] != 0) {
+            swap(nums[zeroIndex++], nums[j]);
         }
-        right++;
     }
     
     return nums;
 }
 ```
-**Analysis**: O(n) time, O(1) space - uses swapping instead of overwriting
 
 ---
 
-## 🟢 Problem 2: Remove Element (LeetCode 27)
+## 📊 Complexity Analysis - Problem 1
 
-### 📋 Problem Statement
+### ⏰ Time Complexity: O(n)
 
-**Difficulty**: Easy  
-**Category**: Array, Two-Pointer  
-**Companies**: Adobe, Amazon, Microsoft, Facebook
-
-Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` **in-place**. The order of the elements may be changed. Then return *the number of elements in `nums` which are not equal to `val`*.
-
-**Key Requirements**:
-- Modify the array in-place (no extra space for new array)
-- Return the count of remaining elements (new length)
-- Order doesn't need to be preserved (allows optimization)
-- Elements beyond the returned length don't matter
-
-### 💡 Detailed Examples with Analysis
-
-**Example 1: Basic Filtering**
-```
-Input: nums = [3,2,2,3], val = 3
-
-Step-by-step process:
-Initial:     [3, 2, 2, 3]  val = 3
-             ↑
-writeIndex = 0, i = 0
-
-i=0: nums[0] = 3, equals val → skip
-     writeIndex = 0
-
-i=1: nums[1] = 2, not equal to val → keep
-     nums[0] = 2, writeIndex = 1
-     Array: [2, 2, 2, 3]
-
-i=2: nums[2] = 2, not equal to val → keep  
-     nums[1] = 2, writeIndex = 2
-     Array: [2, 2, 2, 3]
-
-i=3: nums[3] = 3, equals val → skip
-     writeIndex = 2
-
-Final: [2, 2, _, _]  (elements beyond index 2 don't matter)
-Return: 2 (new length)
+```mermaid
+flowchart TD
+    A["Total Operations"] --> B["Phase 1: O of n<br/>One pass through array"]
+    A --> C["Phase 2: O of n<br/>One pass through array"]
+    A --> D["Combined: O of n plus O of n equals O of n"]
+    
+    style A fill:#e3f2fd
+    style D fill:#c8e6c9
 ```
 
-**Example 2: Complex Case**
+### 💾 Space Complexity: O(1)
+
+**Why constant space?**
+- Only use a few variables: `i`, `j`, `zeroIndex`
+- In-place modifications
+- No auxiliary data structures
+
+---
+
+## 🧪 Test Cases & Edge Cases - Problem 1
+
+### ✅ Normal Cases
+
+| Input | Output | Explanation |
+|-------|--------|-------------|
+| `[1,2,2,1,1,0]` | `[1,4,2,0,0,0]` | Multiple merges |
+| `[0,1,1,2]` | `[2,2,0,0]` | Merge at beginning |
+| `[1,2,3,4]` | `[1,2,3,4]` | No equal adjacents |
+
+### ⚠️ Edge Cases
+
+| Input | Output | Why |
+|-------|--------|-----|
+| `[0,0,0,0]` | `[0,0,0,0]` | All zeros |
+| `[5,5]` | `[10,0]` | Minimal size |
+| `[1,1,1,1]` | `[2,2,0,0]` | Consecutive equals |
+
+---
+
+# 🔵 Problem 2: Remove Element (LeetCode 27)
+
+## 📋 Problem Statement
+
+**Given**: An integer array `nums` and an integer `val`  
+**Task**: Remove all occurrences of `val` in-place  
+**Return**: The count of elements not equal to `val`
+
+**Important**: Order of elements may be changed (allows optimization)
+
+### 🌟 Real-World Example
+
+Think of it like filtering a list:
+- Go through each item
+- Keep the good ones, discard the target ones
+- Count how many good items remain
+
+---
+
+## 🔍 Understanding Problem 2
+
+### 📊 Two-Pointer Visualization
+
+```mermaid
+flowchart TD
+    A["Array with target val"] --> B["valIndex equals 0<br/>Boundary Pointer"]
+    B --> C["j equals scan pointer<br/>Checks each element"]
+    C --> D{"nums[j] not equal val?"}
+    D -->|"Yes"| E["Swap to valIndex<br/>valIndex increment"]
+    D -->|"No"| F["Skip removes it"]
+    E --> G["Valid Elements | Garbage"]
+    F --> G
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style G fill:#c8e6c9
 ```
-Input: nums = [0,1,2,2,3,0,4,2], val = 2
 
-Process visualization:
-Original: [0, 1, 2, 2, 3, 0, 4, 2]
-Keep:      ✓  ✓  ✗  ✗  ✓  ✓  ✓  ✗
+### 🎯 Step-by-Step Example
 
-Step-by-step:
-i=0: 0≠2 → nums[0]=0, writeIndex=1
-i=1: 1≠2 → nums[1]=1, writeIndex=2  
-i=2: 2==2 → skip
-i=3: 2==2 → skip
-i=4: 3≠2 → nums[2]=3, writeIndex=3
-i=5: 0≠2 → nums[3]=0, writeIndex=4
-i=6: 4≠2 → nums[4]=4, writeIndex=5
-i=7: 2==2 → skip
+**Input:** `nums = [3,2,2,3]`, `val = 3`
 
-Result: [0, 1, 3, 0, 4, _, _, _]
-Return: 5
+```mermaid
+flowchart TD
+    A["Start: valIndex equals 0, j equals 0<br/>[3,2,2,3]"] --> B["j equals 0: nums[0] equals 3 equals val, skip"]
+    B --> C["j equals 1: nums[1] equals 2 not equal val<br/>swap nums[0] and nums[1]"]
+    C --> D["After swap: [2,3,2,3]<br/>valIndex equals 1"]
+    D --> E["j equals 2: nums[2] equals 2 not equal val<br/>swap nums[1] and nums[2]"]
+    E --> F["After swap: [2,2,3,3]<br/>valIndex equals 2"]
+    F --> G["j equals 3: nums[3] equals 3 equals val, skip"]
+    G --> H["Return valIndex equals 2<br/>Valid: [2,2]"]
+    
+    style A fill:#e8f5e8
+    style D fill:#fff3e0
+    style F fill:#ffecb3
+    style H fill:#c8e6c9
 ```
 
-**Example 3: No Elements to Remove**
-```
-Input: nums = [1,3,5,7], val = 2
+---
 
-All elements ≠ 2, so all are kept:
-Result: [1, 3, 5, 7] (unchanged)
-Return: 4
-```
+## 🛠️ The Algorithm - Problem 2
 
-**Example 4: Remove All Elements**
-```
-Input: nums = [2,2,2,2], val = 2
+### 🎯 Partitioning Strategy
 
-All elements == 2, so all are removed:
-Result: [_, _, _, _] (all positions irrelevant)
-Return: 0
-```
-
-### 🚀 Approach: Two-Pointer Filtering
-
-#### 🔍 Core Intuition
-
-Use two pointers:
-- **Read Pointer (i)**: Scans through all elements
-- **Write Pointer (writeIndex)**: Points to next position for valid elements
-
-**Key Insight**: Only advance write pointer when we find a valid element to keep.
-
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(n) - Single pass through array
-- **Space Complexity**: O(1) - Only using two pointer variables
-
-#### 🔧 Algorithm Steps
-
-```
-1. Initialize writeIndex = 0
-2. For each element at index i:
-   - If nums[i] != val:
-     - Copy nums[i] to nums[writeIndex]
-     - Increment writeIndex
-3. Return writeIndex (count of valid elements)
+```mermaid
+flowchart TD
+    A["Initialize valIndex equals 0"] --> B["For j equals 0 to n minus 1"]
+    B --> C{"nums[j] not equal val?"}
+    C -->|"Yes"| D["Swap nums[valIndex] and nums[j]"]
+    D --> E["valIndex increment"]
+    C -->|"No"| F["Skip element"]
+    E --> G{"More elements?"}
+    F --> G
+    G -->|"Yes"| B
+    G -->|"No"| H["Return valIndex"]
+    
+    style A fill:#e8f5e8
+    style C fill:#fff3e0
+    style H fill:#c8e6c9
 ```
 
-#### 💻 Implementation with Comments
+### 💻 The Code
 
 ```cpp
 int removeElement(vector<int>& nums, int val) {
-    int writeIndex = 0;  // Points to next position for valid element
+    int valIndex = 0;  // Boundary pointer
     
-    // Scan through all elements
-    for (int i = 0; i < nums.size(); i++) {
-        if (nums[i] != val) {
-            // Keep this element - copy to write position
-            nums[writeIndex] = nums[i];
-            writeIndex++;  // Move to next write position
-        }
-        // If nums[i] == val, we skip it (don't increment writeIndex)
-    }
-    
-    return writeIndex;  // Count of elements that are not equal to val
-}
-```
-
-#### 🚨 Edge Cases
-
-**1. Empty Array**
-```cpp
-Input: nums = [], val = 1
-Output: 0
-```
-
-**2. Single Element - Remove**
-```cpp
-Input: nums = [3], val = 3
-Output: 0
-```
-
-**3. Single Element - Keep**
-```cpp
-Input: nums = [3], val = 2
-Output: 1, nums = [3]
-```
-
-**4. All Elements Same - Remove All**
-```cpp
-Input: nums = [7,7,7,7,7], val = 7
-Output: 0
-```
-
-**5. All Elements Same - Keep All**
-```cpp
-Input: nums = [5,5,5,5,5], val = 3
-Output: 5, nums = [5,5,5,5,5]
-```
-
-#### 🔄 Alternative Approaches
-
-**Approach 1: Two-Pointer from Both Ends**
-```cpp
-int removeElementTwoEnds(vector<int>& nums, int val) {
-    int left = 0, right = nums.size() - 1;
-    
-    while (left <= right) {
-        if (nums[left] == val) {
-            // Replace with element from right
-            nums[left] = nums[right];
-            right--;
-        } else {
-            left++;
+    for (int j = 0; j < nums.size(); j++) {
+        if (nums[j] != val) {
+            swap(nums[valIndex++], nums[j]);
         }
     }
     
-    return left;
+    return valIndex;  // Count of valid elements
 }
 ```
-**Analysis**: O(n) time, O(1) space - potentially fewer writes when val is rare
 
-**Approach 2: Using STL remove**
-```cpp
-int removeElementSTL(vector<int>& nums, int val) {
-    auto it = remove(nums.begin(), nums.end(), val);
-    return distance(nums.begin(), it);
-}
-```
-**Analysis**: O(n) time, O(1) space - leverages optimized library function
+### 🛡️ Boundary Tracking Explained
 
-**Approach 3: Counting and Shifting**
-```cpp
-int removeElementCount(vector<int>& nums, int val) {
-    int count = 0;
+```mermaid
+flowchart TD
+    A["valIndex tracks boundary"] --> B["Elements before valIndex:<br/>All valid not equal val"]
+    A --> C["Elements after valIndex:<br/>Garbage or equals val"]
     
-    for (int i = 0; i < nums.size(); i++) {
-        if (nums[i] == val) {
-            count++;
-        } else {
-            nums[i - count] = nums[i];
-        }
-    }
+    B --> D["[Valid Valid Valid | Garbage Garbage]<br/>      pointer<br/>   valIndex"]
     
-    return nums.size() - count;
-}
+    style A fill:#e1f5fe
+    style B fill:#c8e6c9
+    style C fill:#ffebee
 ```
-**Analysis**: O(n) time, O(1) space - counts removals and shifts accordingly
-
-#### 💡 Key Insights
-
-1. **Order Preservation Not Required**: This allows for optimization opportunities
-2. **In-Place Modification**: We overwrite the array as we process it
-3. **Two-Pointer Pattern**: Classic technique for filtering arrays
-4. **Return Value Significance**: The returned length defines the "valid" portion of the array
 
 ---
 
-## 🟡 Problem 3: Move Zeroes (LeetCode 283)
+## 📊 Complexity Analysis - Problem 2
 
-### 📋 Problem Statement
+### ⏰ Time Complexity: O(n)
 
-**Difficulty**: Easy  
-**Category**: Array, Two-Pointer  
-**Companies**: Facebook, Amazon, Bloomberg, Microsoft, Apple
+**Why linear?**
+- Single pass through array
+- Each element checked once
+- Swap operation is O(1)
 
-Given an integer array `nums`, move all `0`'s to the end of it while maintaining the **relative order** of the non-zero elements.
+### 💾 Space Complexity: O(1)
 
-**Key Requirements**:
-- Maintain relative order of non-zero elements (stable partitioning)
-- Move in-place (minimize operations on the array)
-- Do not make a copy of the array
+**Why constant space?**
+- Only two pointers: `valIndex` and `j`
+- In-place modifications
+- No extra arrays
 
-### 💡 Detailed Examples with Analysis
+---
 
-**Example 1: Mixed Array**
-```
-Input: nums = [0,1,0,3,12]
+## 🧪 Test Cases & Edge Cases - Problem 2
 
-Step-by-step process:
-Initial:     [0, 1, 0, 3, 12]
-             ↑
-writeIndex = 0, i = 0
+### ✅ Normal Cases
 
-i=0: nums[0] = 0 → skip (don't increment writeIndex)
-i=1: nums[1] = 1 → nums[0] = 1, writeIndex = 1
-     Array: [1, 1, 0, 3, 12]
-     
-i=2: nums[2] = 0 → skip
-i=3: nums[3] = 3 → nums[1] = 3, writeIndex = 2
-     Array: [1, 3, 0, 3, 12]
-     
-i=4: nums[4] = 12 → nums[2] = 12, writeIndex = 3
-     Array: [1, 3, 12, 3, 12]
+| Input | val | Output | Result Array |
+|-------|-----|--------|--------------|
+| `[3,2,2,3]` | `3` | `2` | `[2,2,_,_]` |
+| `[0,1,2,2,3,0,4,2]` | `2` | `5` | `[0,1,4,0,3,_,_,_]` |
 
-Fill remaining with zeros:
-writeIndex = 3, fill positions 3,4 with 0
-Final: [1, 3, 12, 0, 0]
-```
+### ⚠️ Edge Cases
 
-**Example 2: No Zeros**
-```
-Input: nums = [1,2,3,4,5]
+| Input | val | Output | Why |
+|-------|-----|--------|-----|
+| `[]` | `5` | `0` | Empty array |
+| `[7,7,7,7]` | `7` | `0` | All target |
+| `[1,2,3]` | `4` | `3` | No target |
 
-All elements are non-zero:
-- Copy each element to itself
-- No zeros to fill at end
-Result: [1,2,3,4,5] (unchanged)
-```
+---
 
-**Example 3: All Zeros**
-```
-Input: nums = [0,0,0,0]
+# 🟡 Problem 3: Move Zeroes (LeetCode 283)
 
-No non-zero elements to move:
-- writeIndex remains 0
-- Fill entire array with zeros
-Result: [0,0,0,0] (unchanged)
-```
+## 📋 Problem Statement
 
-**Example 4: Zeros at Beginning**
-```
-Input: nums = [0,0,1,2,3]
+**Given**: An integer array `nums`  
+**Task**: Move all 0's to the end while maintaining relative order of non-zero elements  
+**Constraint**: Must be done in-place without making a copy
 
-Process:
-i=0,1: Skip zeros
-i=2,3,4: Move 1,2,3 to positions 0,1,2
-Fill positions 3,4 with zeros
-Result: [1,2,3,0,0]
+**Important**: Relative order must be preserved (stable algorithm)
+
+### 🌟 Real-World Example
+
+Think of it like organizing a queue:
+- Non-zero people (active) move to front
+- Zero people (inactive) move to back
+- Everyone keeps their relative position
+
+---
+
+## 🔍 Understanding Problem 3
+
+### 📊 Stable Partitioning Visualization
+
+```mermaid
+flowchart TD
+    A["Input: [0,1,0,3,12]"] --> B["zeroIndex equals 0<br/>Tracks non-zero boundary"]
+    B --> C["Scan and swap<br/>non-zeros forward"]
+    C --> D["[1,3,12,0,0]<br/>Order preserved!"]
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style D fill:#c8e6c9
 ```
 
-**Example 5: Zeros at End**
-```
-Input: nums = [1,2,3,0,0]
+### 🎯 Detailed Example
 
-Process:
-i=0,1,2: Move 1,2,3 to positions 0,1,2
-i=3,4: Skip zeros
-Fill positions 3,4 with zeros
-Result: [1,2,3,0,0] (already correct!)
-```
+**Input:** `nums = [0,1,0,3,12]`
 
-### 🚀 Approach: Stable Partitioning
-
-#### 🔍 Core Intuition
-
-This is a **stable partitioning** problem:
-- **Stable**: Maintain relative order of non-zero elements
-- **Partitioning**: Separate zeros from non-zeros
-
-**Two-Phase Strategy**:
-1. **Collect Phase**: Move all non-zeros to the front
-2. **Fill Phase**: Fill remaining positions with zeros
-
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(n) - Two passes through array
-- **Space Complexity**: O(1) - Only using pointer variables
-
-#### 🔧 Algorithm Steps
-
-```
-Phase 1: Collect Non-Zero Elements
-writeIndex = 0
-For i from 0 to n-1:
-    If nums[i] != 0:
-        nums[writeIndex] = nums[i]
-        writeIndex++
-
-Phase 2: Fill Remaining with Zeros
-While writeIndex < n:
-    nums[writeIndex] = 0
-    writeIndex++
+```mermaid
+flowchart TD
+    A["Start: zeroIndex equals 0<br/>[0,1,0,3,12]"] --> B["j equals 0: nums[0] equals 0, skip"]
+    B --> C["j equals 1: nums[1] equals 1 not equal 0<br/>swap nums[0] and nums[1]"]
+    C --> D["After: [1,0,0,3,12]<br/>zeroIndex equals 1"]
+    D --> E["j equals 2: nums[2] equals 0, skip"]
+    E --> F["j equals 3: nums[3] equals 3 not equal 0<br/>swap nums[1] and nums[3]"]
+    F --> G["After: [1,3,0,0,12]<br/>zeroIndex equals 2"]
+    G --> H["j equals 4: nums[4] equals 12 not equal 0<br/>swap nums[2] and nums[4]"]
+    H --> I["Final: [1,3,12,0,0]<br/>zeroIndex equals 3"]
+    
+    style A fill:#e8f5e8
+    style D fill:#fff3e0
+    style G fill:#ffecb3
+    style I fill:#c8e6c9
 ```
 
-#### 💻 Implementation with Comments
+---
+
+## 🛠️ The Algorithm - Problem 3
+
+### 🎯 Stable Swap Strategy
+
+```mermaid
+flowchart TD
+    A["Initialize zeroIndex equals 0"] --> B["For j equals 0 to n minus 1"]
+    B --> C{"nums[j] not equal 0?"}
+    C -->|"Yes"| D["Swap nums[zeroIndex] and nums[j]"]
+    D --> E["zeroIndex increment<br/>Move boundary forward"]
+    C -->|"No"| F["Skip zero<br/>Will end up at back"]
+    E --> G{"More elements?"}
+    F --> G
+    G -->|"Yes"| B
+    G -->|"No"| H["Done: Non-zeros | Zeros"]
+    
+    style A fill:#e8f5e8
+    style C fill:#fff3e0
+    style H fill:#c8e6c9
+```
+
+### 💻 The Code
 
 ```cpp
 void moveZeroes(vector<int>& nums) {
-    int writeIndex = 0;  // Points to next position for non-zero element
+    int zeroIndex = 0;  // Boundary for non-zeros
     
-    // Phase 1: Move all non-zero elements to front
-    for (int i = 0; i < nums.size(); i++) {
-        if (nums[i] != 0) {
-            nums[writeIndex] = nums[i];
-            writeIndex++;
-        }
-        // Skip zeros - they'll be filled later
-    }
-    
-    // Phase 2: Fill remaining positions with zeros
-    while (writeIndex < nums.size()) {
-        nums[writeIndex] = 0;
-        writeIndex++;
-    }
-}
-```
-
-#### 🚨 Edge Cases
-
-**1. Empty Array**
-```cpp
-Input: nums = []
-Output: [] (no change needed)
-```
-
-**2. Single Zero**
-```cpp
-Input: nums = [0]
-Output: [0] (already correct)
-```
-
-**3. Single Non-Zero**
-```cpp
-Input: nums = [5]
-Output: [5] (no change needed)
-```
-
-**4. Alternating Pattern**
-```cpp
-Input: nums = [0,1,0,2,0,3]
-Process: Collect [1,2,3], fill [0,0,0]
-Output: [1,2,3,0,0,0]
-```
-
-#### 🔄 Alternative Approaches
-
-**Approach 1: Optimal Two-Pointer (Single Pass)**
-```cpp
-void moveZeroesOptimal(vector<int>& nums) {
-    int writeIndex = 0;
-    
-    // Single pass: move non-zeros and track position
-    for (int i = 0; i < nums.size(); i++) {
-        if (nums[i] != 0) {
-            if (i != writeIndex) {  // Avoid unnecessary self-assignment
-                nums[writeIndex] = nums[i];
-                nums[i] = 0;  // Clear the original position
-            }
-            writeIndex++;
+    for(int j = 0; j < nums.size(); j++) {
+        if(nums[j] != 0) {
+            swap(nums[zeroIndex++], nums[j]);
         }
     }
 }
 ```
-**Analysis**: O(n) time, O(1) space - single pass with immediate zero filling
 
-**Approach 2: Swap-Based Approach**
-```cpp
-void moveZeroesSwap(vector<int>& nums) {
-    int left = 0;
+### 🔍 Why Swap Maintains Order
+
+```mermaid
+flowchart TD
+    A["Key Insight"] --> B["zeroIndex less than or equal j always"]
+    B --> C["Non-zeros swap forward<br/>in order of appearance"]
+    C --> D["Zeros naturally<br/>accumulate at end"]
     
-    for (int right = 0; right < nums.size(); right++) {
-        if (nums[right] != 0) {
-            swap(nums[left], nums[right]);
-            left++;
-        }
-    }
-}
+    D --> E["Example:<br/>[0,1,0,3] becomes [1,3,0,0]<br/>1 before 3 preserved!"]
+    
+    style A fill:#e1f5fe
+    style C fill:#c8e6c9
+    style E fill:#fff3e0
 ```
-**Analysis**: O(n) time, O(1) space - uses swapping to maintain stability
-
-**Approach 3: Count and Reconstruct**
-```cpp
-void moveZeroesCount(vector<int>& nums) {
-    vector<int> nonZeros;
-    int zeroCount = 0;
-    
-    // Collect non-zeros and count zeros
-    for (int num : nums) {
-        if (num != 0) {
-            nonZeros.push_back(num);
-        } else {
-            zeroCount++;
-        }
-    }
-    
-    // Reconstruct array
-    for (int i = 0; i < nonZeros.size(); i++) {
-        nums[i] = nonZeros[i];
-    }
-    for (int i = nonZeros.size(); i < nums.size(); i++) {
-        nums[i] = 0;
-    }
-}
-```
-**Analysis**: O(n) time, O(n) space - uses extra space but clearer logic
-
-#### 💡 Key Insights
-
-1. **Stability Requirement**: Must preserve relative order of non-zero elements
-2. **Two-Pointer Pattern**: Read pointer scans, write pointer places valid elements
-3. **Phase Separation**: Collecting and filling can be done separately for clarity
-4. **Optimization Opportunity**: Can combine phases for single-pass solution
 
 ---
 
-## 🔴 Problem 4: Merge Sorted Array (LeetCode 88)
+## 📊 Complexity Analysis - Problem 3
 
-### 📋 Problem Statement
+### ⏰ Time Complexity: O(n)
 
-**Difficulty**: Easy  
-**Category**: Array, Two-Pointer, Sorting  
-**Companies**: Facebook, Microsoft, Amazon, Apple, Google
-
-You are given two integer arrays `nums1` and `nums2`, sorted in **non-decreasing order**, and two integers `m` and `n`, representing the number of elements in `nums1` and `nums2` respectively.
-
-**Merge** `nums1` and `nums2` into a single array sorted in **non-decreasing order**.
-
-**Key Constraint**: The final sorted array should be stored inside `nums1`. `nums1` has a length of `m + n` with extra space for the merge.
-
-### 💡 Detailed Examples with Analysis
-
-**Example 1: Standard Merge**
-```
-Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-
-Visual representation:
-nums1: [1, 2, 3, _, _, _]  (m=3 valid elements)
-nums2: [2, 5, 6]           (n=3 elements)
-
-Merge process (using temporary array):
-temp = [1, 2, 3]
-i=0, j=0, k=0
-
-Compare temp[0]=1 vs nums2[0]=2 → 1≤2 → nums1[0]=1, i=1, k=1
-Compare temp[1]=2 vs nums2[0]=2 → 2≤2 → nums1[1]=2, i=2, k=2  
-Compare temp[2]=3 vs nums2[0]=2 → 3>2 → nums1[2]=2, j=1, k=3
-temp exhausted, copy remaining nums2: [5,6]
-
-Final: [1,2,2,3,5,6]
+```mermaid
+flowchart TD
+    A["Single Pass"] --> B["Visit each element once"]
+    B --> C["Swap is O of 1 operation"]
+    C --> D["Total: O of n"]
+    
+    style A fill:#e3f2fd
+    style D fill:#c8e6c9
 ```
 
-**Example 2: One Array Empty**
+### 💾 Space Complexity: O(1)
+
+**Why constant space?**
+- Only two pointers: `zeroIndex` and `j`
+- In-place swapping
+- No auxiliary structures
+
+---
+
+## 🧪 Test Cases & Edge Cases - Problem 3
+
+### ✅ Normal Cases
+
+| Input | Output | Explanation |
+|-------|--------|-------------|
+| `[0,1,0,3,12]` | `[1,3,12,0,0]` | Mixed zeros |
+| `[1,2,3,0,0]` | `[1,2,3,0,0]` | Already sorted |
+| `[0,0,1,2,3]` | `[1,2,3,0,0]` | Leading zeros |
+
+### ⚠️ Edge Cases
+
+| Input | Output | Why |
+|-------|--------|-----|
+| `[0]` | `[0]` | Single zero |
+| `[5]` | `[5]` | Single non-zero |
+| `[0,0,0,0]` | `[0,0,0,0]` | All zeros |
+| `[1,2,3,4]` | `[1,2,3,4]` | No zeros |
+
+---
+
+# 🟣 Problem 4: Merge Sorted Array (LeetCode 88)
+
+## 📋 Problem Statement
+
+**Given**: Two sorted integer arrays `nums1` and `nums2`  
+**Integers**: `m` (elements in nums1) and `n` (elements in nums2)  
+**Task**: Merge `nums2` into `nums1` as one sorted array  
+**Note**: `nums1` has length `m+n` with extra space at the end
+
+**Important**: Must merge in-place into nums1
+
+### 🌟 Real-World Example
+
+Think of it like merging two sorted queues:
+- Both lines are already sorted
+- Combine them into one sorted line
+- Use the extra space at the end of nums1
+
+---
+
+## 🔍 Understanding Problem 4
+
+### 📊 Three-Pointer Merge Visualization
+
+```mermaid
+flowchart TD
+    A["nums1: [1,2,3,0,0,0]<br/>m equals 3"] --> B["temp: [1,2,3]<br/>Copy original"]
+    C["nums2: [2,5,6]<br/>n equals 3"] --> D["Three Pointers"]
+    B --> D
+    D --> E["i points to temp<br/>j points to nums2<br/>k points to nums1"]
+    E --> F["Compare temp[i] vs nums2[j]<br/>Place smaller in nums1[k]"]
+    F --> G["Result: [1,2,2,3,5,6]"]
+    
+    style A fill:#e3f2fd
+    style C fill:#e3f2fd
+    style E fill:#fff3e0
+    style G fill:#c8e6c9
 ```
-Input: nums1 = [1], m = 1, nums2 = [], n = 0
 
-Only nums1 has elements:
-Result: [1] (no merge needed)
+### 🎯 Detailed Merge Process
+
+**Input:** `nums1 = [1,2,3,0,0,0]`, `m = 3`, `nums2 = [2,5,6]`, `n = 3`
+
+```mermaid
+flowchart TD
+    A["Setup:<br/>temp equals [1,2,3], i equals 0<br/>nums2 equals [2,5,6], j equals 0<br/>k equals 0"] --> B["Compare: temp[0] equals 1 less than nums2[0] equals 2<br/>nums1[0] equals 1, i equals 1, k equals 1"]
+    B --> C["Compare: temp[1] equals 2 equals nums2[0] equals 2<br/>nums1[1] equals 2, i equals 2, k equals 2"]
+    C --> D["Compare: temp[2] equals 3 greater than nums2[0] equals 2<br/>nums1[2] equals 2, j equals 1, k equals 3"]
+    D --> E["Compare: temp[2] equals 3 less than nums2[1] equals 5<br/>nums1[3] equals 3, i equals 3, k equals 4"]
+    E --> F["temp exhausted, copy nums2<br/>nums1[4] equals 5, nums1[5] equals 6"]
+    F --> G["Final: [1,2,2,3,5,6]"]
+    
+    style A fill:#e8f5e8
+    style C fill:#fff3e0
+    style E fill:#ffecb3
+    style G fill:#c8e6c9
 ```
 
-**Example 3: First Array Empty**
+---
+
+## 🛠️ The Algorithm - Problem 4
+
+### 🎯 Three-Pointer Merge Strategy
+
+```mermaid
+flowchart TD
+    A["Copy nums1[0 to m) to temp"] --> B["Initialize i equals 0, j equals 0, k equals 0"]
+    B --> C{"i less than m AND j less than n?"}
+    C -->|"Yes"| D{"temp[i] less than nums2[j]?"}
+    D -->|"Yes"| E["nums1[k] equals temp[i]<br/>i increment, k increment"]
+    D -->|"No"| F["nums1[k] equals nums2[j]<br/>j increment, k increment"]
+    E --> C
+    F --> C
+    C -->|"No"| G{"i less than m?"}
+    G -->|"Yes"| H["Copy rest of temp<br/>to nums1"]
+    G -->|"No"| I{"j less than n?"}
+    I -->|"Yes"| J["Copy rest of nums2<br/>to nums1"]
+    H --> K["Done: nums1 merged"]
+    I -->|"No"| K
+    J --> K
+    
+    style A fill:#e8f5e8
+    style D fill:#fff3e0
+    style K fill:#c8e6c9
 ```
-Input: nums1 = [0], m = 0, nums2 = [1], n = 1
 
-Only nums2 has elements:
-Copy nums2[0] to nums1[0]
-Result: [1]
-```
-
-**Example 4: Interleaved Elements**
-```
-Input: nums1 = [1,3,5,0,0,0], m = 3, nums2 = [2,4,6], n = 3
-
-Merge process:
-1 vs 2 → pick 1: [1,_,_,_,_,_]
-3 vs 2 → pick 2: [1,2,_,_,_,_]
-3 vs 4 → pick 3: [1,2,3,_,_,_]
-5 vs 4 → pick 4: [1,2,3,4,_,_]
-5 vs 6 → pick 5: [1,2,3,4,5,_]
-Copy remaining 6: [1,2,3,4,5,6]
-```
-
-### 🚀 Approach 1: Three-Pointer with Temporary Array
-
-#### 🔍 Core Intuition
-
-Since `nums1` is our target array, we need to avoid overwriting elements we haven't processed yet. Use a temporary array to store `nums1`'s original elements.
-
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(m + n) - Single pass through both arrays
-- **Space Complexity**: O(m) - Temporary array for nums1
-
-#### 💻 Implementation with Comments
+### 💻 The Code
 
 ```cpp
 void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    // Create temporary copy of nums1's valid elements
     vector<int> temp(nums1.begin(), nums1.begin() + m);
     
-    int i = 0;  // Pointer for temp array
-    int j = 0;  // Pointer for nums2
-    int k = 0;  // Pointer for result in nums1
+    int i = 0, j = 0, k = 0;
     
-    // Merge while both arrays have elements
+    // Merge phase
     while (i < m && j < n) {
-        if (temp[i] <= nums2[j]) {
+        if(temp[i] < nums2[j]) {
             nums1[k++] = temp[i++];
         } else {
             nums1[k++] = nums2[j++];
         }
     }
     
-    // Copy remaining elements from temp (if any)
-    while (i < m) {
-        nums1[k++] = temp[i++];
-    }
-    
-    // Copy remaining elements from nums2 (if any)
-    while (j < n) {
-        nums1[k++] = nums2[j++];
-    }
+    // Copy remaining
+    while(i < m) nums1[k++] = temp[i++];
+    while(j < n) nums1[k++] = nums2[j++];
 }
 ```
 
-### 🚀 Approach 2: Optimal Reverse Merge (No Extra Space)
+### 🔍 Why Temporary Array Needed
 
-#### 🔍 Core Intuition
+```mermaid
+flowchart TD
+    A["Problem: nums1 has data"] --> B["If we merge directly<br/>we overwrite unprocessed elements"]
+    B --> C["Solution: Copy to temp<br/>Preserve original nums1"]
+    C --> D["Now safe to write<br/>to nums1 from index 0"]
+    
+    style A fill:#ffebee
+    style B fill:#ffebee
+    style C fill:#fff3e0
+    style D fill:#c8e6c9
+```
 
-**Key Insight**: Start merging from the **end** of `nums1` backwards! This way we never overwrite unprocessed elements.
+---
 
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(m + n) - Single pass through both arrays
-- **Space Complexity**: O(1) - No extra space needed
+## 📊 Complexity Analysis - Problem 4
 
-#### 💻 Optimal Implementation
+### ⏰ Time Complexity: O(m + n)
+
+**Why linear?**
+- Process each element from nums1 once: O(m)
+- Process each element from nums2 once: O(n)
+- Total: O(m + n)
+
+```mermaid
+flowchart TD
+    A["Operations"] --> B["Copy temp: O of m"]
+    A --> C["Merge phase: O of m plus n"]
+    A --> D["Remaining copy: O of m or O of n"]
+    A --> E["Total: O of m plus n"]
+    
+    style A fill:#e3f2fd
+    style E fill:#c8e6c9
+```
+
+### 💾 Space Complexity: O(m)
+
+**Why O(m)?**
+- Temporary array stores m elements
+- Three pointers: O(1)
+- Total: O(m)
+
+---
+
+## 🧪 Test Cases & Edge Cases - Problem 4
+
+### ✅ Normal Cases
+
+| nums1 | m | nums2 | n | Output |
+|-------|---|-------|---|--------|
+| `[1,2,3,0,0,0]` | `3` | `[2,5,6]` | `3` | `[1,2,2,3,5,6]` |
+| `[1,3,5,0,0,0]` | `3` | `[2,4,6]` | `3` | `[1,2,3,4,5,6]` |
+
+### ⚠️ Edge Cases
+
+| nums1 | m | nums2 | n | Output | Why |
+|-------|---|-------|---|--------|-----|
+| `[1]` | `1` | `[]` | `0` | `[1]` | nums2 empty |
+| `[0]` | `0` | `[1]` | `1` | `[1]` | nums1 empty |
+| `[4,5,6,0,0,0]` | `3` | `[1,2,3]` | `3` | `[1,2,3,4,5,6]` | nums2 all smaller |
+
+---
+
+## 🎓 Two-Pointer Pattern Mastery
+
+### 🔢 Common Variations
+
+```mermaid
+flowchart TD
+    A["Two-Pointer Patterns"] --> B["Single Array<br/>Two Pointers"]
+    A --> C["Two Arrays<br/>One Pointer Each"]
+    
+    B --> B1["Slow-Fast<br/>Remove duplicates"]
+    B --> B2["Left-Right<br/>Two sum sorted"]
+    B --> B3["Partition<br/>Quick select"]
+    
+    C --> C1["Merge<br/>Merge sorted arrays"]
+    C --> C2["Intersection<br/>Common elements"]
+    
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+```
+
+### 🎯 When to Use Two-Pointer
+
+**Use when:**
+- Array is sorted or can be partitioned
+- Need in-place modification
+- Looking for pairs or subarrays
+- Merging two sequences
+
+**Don't use when:**
+- Need to maintain exact original order (except stable variants)
+- Random access required
+- Need to track multiple properties per element
+
+---
+
+## 🧩 Pattern Comparison
+
+### Side-by-Side Analysis
+
+```mermaid
+flowchart TD
+    A["Problem Type"] --> B["Apply Operations<br/>Two-phase approach"]
+    A --> C["Remove Element<br/>Filter pattern"]
+    A --> D["Move Zeroes<br/>Stable partition"]
+    A --> E["Merge Arrays<br/>Three-pointer merge"]
+    
+    B --> B1["O of n time, O of 1 space"]
+    C --> C1["O of n time, O of 1 space"]
+    D --> D1["O of n time, O of 1 space"]
+    E --> E1["O of m plus n time, O of m space"]
+    
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#ffecb3
+    style E fill:#e0f2f1
+```
+
+| Feature | Apply Ops | Remove Element | Move Zeroes | Merge Arrays |
+|---------|-----------|----------------|-------------|--------------|
+| **Pointers** | 2 | 2 | 2 | 3 |
+| **Phases** | 2 | 1 | 1 | 2 |
+| **Stable** | Yes | No | Yes | Yes |
+| **Space** | O(1) | O(1) | O(1) | O(m) |
+| **Time** | O(n) | O(n) | O(n) | O(m+n) |
+
+---
+
+## 💼 Interview Questions & Answers
+
+### ❓ Question 1: What's the difference between stable and unstable partitioning?
+
+**Answer:**  
+**Stable**: Maintains relative order of elements (Move Zeroes)  
+**Unstable**: Order may change (Remove Element)
+
+**Simple Explanation:**
+```
+Stable (Move Zeroes):
+Input:  [0, 3, 0, 1, 0, 2]
+Output: [3, 1, 2, 0, 0, 0]  // 3 before 1 before 2 preserved!
+
+Unstable (Remove Element):
+Input:  [3, 2, 2, 3], remove 3
+Output: [2, 2, _, _]  // Order may not be preserved
+```
+
+**When it matters:**
+- Stable: When relative order is important (e.g., maintaining timestamps)
+- Unstable: When only values matter (e.g., filtering duplicates)
+
+---
+
+### ❓ Question 2: Why use swap instead of assignment in two-pointer?
+
+**Answer:**  
+Swap is more versatile and handles all cases elegantly:
 
 ```cpp
-void mergeOptimal(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    int i = m - 1;      // Last element in nums1's valid part
-    int j = n - 1;      // Last element in nums2
-    int k = m + n - 1;  // Last position in nums1
+// Using swap (works for all cases)
+if (nums[j] != 0) {
+    swap(nums[zeroIndex++], nums[j]);
+}
+
+// Using assignment (requires extra logic)
+if (nums[j] != 0) {
+    if (zeroIndex != j) {  // Need to check!
+        nums[zeroIndex] = nums[j];
+        nums[j] = 0;  // May need to clear
+    }
+    zeroIndex++;
+}
+```
+
+**Simple Explanation:**  
+Swap handles the case where `zeroIndex == j` automatically (no-op swap). Assignment would need extra checks.
+
+---
+
+### ❓ Question 3: How do you know when to use two-pointer vs hash map?
+
+**Answer:**  
+
+**Use Two-Pointer when:**
+- Array is sorted or can be rearranged
+- Need O(1) space
+- Working with pairs or subarrays
+- In-place modification allowed
+
+**Use Hash Map when:**
+- Need to track element frequencies
+- Array order must be preserved exactly
+- Need fast lookups
+- Space is not a constraint
+
+**Example:**
+```cpp
+// Two-pointer (sorted array, O(1) space)
+bool hasPairWithSum(vector<int>& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) return true;
+        if (sum < target) left++;
+        else right--;
+    }
+    return false;
+}
+
+// Hash map (unsorted array, O(n) space)
+bool hasPairWithSum(vector<int>& nums, int target) {
+    unordered_set<int> seen;
+    for (int num : nums) {
+        if (seen.count(target - num)) return true;
+        seen.insert(num);
+    }
+    return false;
+}
+```
+
+---
+
+### ❓ Question 4: What's the time complexity of Apply Operations problem?
+
+**Answer:**  
+**Time: O(n)** - Two sequential passes through the array
+
+**Detailed Breakdown:**
+```
+Phase 1: Merge adjacent elements
+- Loop from i = 0 to n-2: O(n)
+- Each operation (multiply, assign): O(1)
+- Total Phase 1: O(n)
+
+Phase 2: Move zeros
+- Loop from j = 0 to n-1: O(n)
+- Each swap operation: O(1)
+- Total Phase 2: O(n)
+
+Combined: O(n) + O(n) = O(n)
+```
+
+**Simple Explanation:**  
+Even though we have two loops, they're sequential (not nested), so we just add them: O(n) + O(n) = O(n).
+
+---
+
+### ❓ Question 5: Why does Move Zeroes preserve order but Remove Element doesn't?
+
+**Answer:**  
+
+**Move Zeroes preserves order because:**
+- `zeroIndex <= j` always (zeroIndex never jumps ahead)
+- Non-zeros are swapped forward in order of discovery
+- The swap maintains their sequence
+
+**Remove Element may change order because:**
+- We don't care about order (problem allows it)
+- Optimization: swap with anything valid
+- Focus is on partitioning, not ordering
+
+**Visual Proof:**
+```
+Move Zeroes: [0,1,0,3]
+Step 1: zeroIndex=0, j=1 → swap → [1,0,0,3], zeroIndex=1
+Step 2: zeroIndex=1, j=3 → swap → [1,3,0,0], zeroIndex=2
+Result: 1 before 3 ✓ (order preserved)
+
+Remove Element: [3,2,2,3], remove 3
+Step 1: Skip 3
+Step 2: Swap 2 to front
+Step 3: Swap 2 to front
+Step 4: Skip 3
+Result: [2,2,_,_] (order happened to be preserved but not guaranteed)
+```
+
+---
+
+### ❓ Question 6: How would you optimize Merge Sorted Array to O(1) space?
+
+**Answer:**  
+Merge from **back to front** instead of front to back!
+
+```cpp
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int i = m - 1;      // Last element of nums1
+    int j = n - 1;      // Last element of nums2
+    int k = m + n - 1;  // Last position in merged array
     
-    // Merge from right to left
+    // Fill from back
     while (i >= 0 && j >= 0) {
         if (nums1[i] > nums2[j]) {
-            nums1[k--] = nums1[i--];  // Take from nums1
+            nums1[k--] = nums1[i--];
         } else {
-            nums1[k--] = nums2[j--];  // Take from nums2
+            nums1[k--] = nums2[j--];
         }
     }
     
-    // Copy remaining elements from nums2 (if any)
-    // Note: if nums1 has remaining elements, they're already in place
+    // Copy remaining nums2 elements (if any)
     while (j >= 0) {
         nums1[k--] = nums2[j--];
     }
 }
 ```
 
-#### 🔄 Reverse Merge Walkthrough
+**Why this works:**
+- Extra space in nums1 is at the **end**
+- By filling from back, we never overwrite unprocessed elements
+- No temporary array needed!
 
-```
-Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+**Simple Explanation:**  
+Think of it like filling a glass from top to bottom - the empty space is where we're filling, so no conflicts!
 
-Initial: i=2, j=2, k=5
-nums1[2]=3, nums2[2]=6 → 6>3 → nums1[5]=6, j=1, k=4
-Result: [1,2,3,0,0,6]
+---
 
-nums1[2]=3, nums2[1]=5 → 5>3 → nums1[4]=5, j=0, k=3  
-Result: [1,2,3,0,5,6]
+### ❓ Question 7: What happens if you forget to increment pointers?
 
-nums1[2]=3, nums2[0]=2 → 3>2 → nums1[3]=3, i=1, k=2
-Result: [1,2,3,3,5,6]
+**Answer:**  
+**Infinite loop!** The most common bug in two-pointer algorithms.
 
-nums1[1]=2, nums2[0]=2 → 2==2 → nums1[2]=2, j=-1, k=1
-Result: [1,2,2,3,5,6]
-
-j<0, so we're done! (remaining nums1 elements already in place)
-```
-
-### 🚨 Edge Cases
-
-**1. One Array Empty**
 ```cpp
-// nums2 empty
-Input: nums1 = [1,2,3], m = 3, nums2 = [], n = 0
-Output: [1,2,3] (no change)
-
-// nums1 empty  
-Input: nums1 = [0,0,0], m = 0, nums2 = [1,2,3], n = 3
-Output: [1,2,3] (copy all from nums2)
-```
-
-**2. All Elements from One Array Smaller**
-```cpp
-Input: nums1 = [4,5,6,0,0,0], m = 3, nums2 = [1,2,3], n = 3
-Output: [1,2,3,4,5,6]
-```
-
-**3. Duplicate Elements**
-```cpp
-Input: nums1 = [1,2,2,0,0,0], m = 3, nums2 = [2,2,3], n = 3
-Output: [1,2,2,2,2,3]
-```
-
-### 🔄 Alternative Approaches
-
-**Approach 3: STL Merge**
-```cpp
-void mergeSTL(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    vector<int> temp(nums1.begin(), nums1.begin() + m);
-    merge(temp.begin(), temp.end(), 
-          nums2.begin(), nums2.end(), 
-          nums1.begin());
-}
-```
-
-**Approach 4: Sort After Concatenation**
-```cpp
-void mergeBruteForce(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    // Copy nums2 to end of nums1
-    for (int i = 0; i < n; i++) {
-        nums1[m + i] = nums2[i];
+// WRONG - Infinite loop
+int zeroIndex = 0;
+for (int j = 0; j < n; j++) {
+    if (nums[j] != 0) {
+        swap(nums[zeroIndex], nums[j]);
+        // Forgot: zeroIndex++
     }
-    
-    // Sort the entire array
-    sort(nums1.begin(), nums1.end());
+}
+// zeroIndex never moves, keeps swapping same position!
+
+// CORRECT
+int zeroIndex = 0;
+for (int j = 0; j < n; j++) {
+    if (nums[j] != 0) {
+        swap(nums[zeroIndex++], nums[j]);  // Post-increment!
+    }
 }
 ```
-**Analysis**: O((m+n)log(m+n)) time - less efficient but simple
 
-### 💡 Key Insights
-
-1. **Reverse Merging**: Start from end to avoid overwriting unprocessed elements
-2. **Space Optimization**: O(1) space solution exists for in-place merging
-3. **Pointer Management**: Three pointers needed for efficient merging
-4. **Edge Case Handling**: Consider empty arrays and remaining elements
+**Debug tip:**  
+Use `zeroIndex++` as post-increment **inside** the swap call - harder to forget!
 
 ---
 
-## 📊 Comprehensive Summary
+### ❓ Question 8: Can two-pointer work on unsorted arrays?
 
-### 🎯 Two-Pointer Pattern Recognition
+**Answer:**  
+**Yes!** But for different purposes:
 
-| Pattern Type | Description | Problems | Key Insight |
-|--------------|-------------|----------|-------------|
-| **Two-Phase Processing** | Break problem into sequential phases | LeetCode 2460 | Separate concerns for cleaner logic |
-| **Filtering** | Remove/keep elements based on condition | LeetCode 27 | Use write pointer for valid elements |
-| **Stable Partitioning** | Separate while preserving order | LeetCode 283 | Maintain relative order of kept elements |
-| **Merging** | Combine sorted sequences | LeetCode 88 | Use multiple pointers for comparison |
+**Works on unsorted:**
+- Partitioning (Move Zeroes, Remove Element)
+- Finding subarrays with properties
+- Dutch National Flag problem
 
-### 📈 Complexity Comparison
+**Requires sorted:**
+- Two Sum on sorted array
+- Container With Most Water
+- Trapping Rain Water
 
-| Problem | Time | Space | Optimal Approach | Key Optimization |
-|---------|------|-------|------------------|------------------|
-| **Apply Operations (2460)** | O(n) | O(1) | Two-Phase Processing | Separate merge and move operations |
-| **Remove Element (27)** | O(n) | O(1) | Two-Pointer Filtering | Single pass with write pointer |
-| **Move Zeroes (283)** | O(n) | O(1) | Stable Partitioning | Preserve non-zero order |
-| **Merge Sorted Array (88)** | O(m+n) | O(1) | Reverse Merge | Start from end to avoid overwrites |
-
-### 🔄 Common Two-Pointer Variations
-
-**1. Same Direction (Fast-Slow)**
-- Both pointers move left to right
-- Different advancement conditions
-- Used in: Filtering, Partitioning
-
-**2. Opposite Direction (Left-Right)**
-- Pointers move toward each other
-- Used in: Two Sum, Palindrome checking
-
-**3. Multiple Pointers**
-- Three or more pointers for complex operations
-- Used in: Merging multiple arrays
-
-### 🧪 Universal Edge Cases
-
-**Array Structure:**
-- Empty arrays: `[]`
-- Single element: `[x]`
-- All same elements: `[x,x,x,x]`
-- Already processed: No changes needed
-
-**Element Distribution:**
-- Target at beginning: `[target,...]`
-- Target at end: `[...,target]`
-- No target elements: `[other,elements]`
-- All target elements: `[target,target,target]`
-
-### 💡 Problem-Solving Framework
-
-**Step 1: Identify Pattern**
-- Filtering → Use write pointer
-- Partitioning → Maintain stability if needed
-- Merging → Consider reverse approach for in-place
-
-**Step 2: Choose Pointer Strategy**
-- Single pass vs multi-pass
-- Forward vs reverse traversal
-- Number of pointers needed
-
-**Step 3: Handle Edge Cases**
-- Empty inputs
-- Single elements
-- Boundary conditions
-
-**Step 4: Optimize**
-- Space complexity (in-place vs extra space)
-- Time complexity (single pass vs multiple)
-- Code clarity vs performance
-
-### 🎮 Practice Exercises
-
-**Exercise 1: Pattern Recognition**
-- Identify which two-pointer pattern applies to new problems
-- Practice converting brute force to two-pointer solutions
-
-**Exercise 2: Implementation Variations**
-- Implement each problem with different approaches
-- Compare performance and space usage
-
-**Exercise 3: Edge Case Testing**
-- Create comprehensive test cases for each pattern
-- Test boundary conditions systematically
-
-**Exercise 4: Optimization Challenges**
-- Convert O(n) space solutions to O(1)
-- Minimize number of array writes/swaps
-
-### 🚀 Advanced Extensions
-
-**1. K-Way Merge**
-- Extend merge concept to multiple sorted arrays
-- Use priority queue or tournament approach
-
-**2. Sliding Window + Two-Pointer**
-- Combine techniques for substring/subarray problems
-- Dynamic window size with pointer management
-
-**3. Two-Pointer on Linked Lists**
-- Apply same concepts to linked list problems
-- Cycle detection, intersection finding
-
-### 📊 Final Progress Summary
-
-| Problem | Difficulty | Status | Approach | Time | Space |
-|---------|------------|--------|----------|------|-------|
-| Apply Operations to Array (2460) | Easy | ✅ Mastered | Two-Phase Processing | O(n) | O(1) |
-| Remove Element (27) | Easy | ✅ Mastered | Two-Pointer Filtering | O(n) | O(1) |
-| Move Zeroes (283) | Easy | ✅ Mastered | Stable Partitioning | O(n) | O(1) |
-| Merge Sorted Array (88) | Easy | ✅ Mastered | Reverse Merge | O(m+n) | O(1) |
-
-### 🎯 Key Takeaways
-
-1. **Two-Pointer Versatility**: Powerful technique for array manipulation problems
-2. **Space Optimization**: Most problems can be solved in O(1) space with proper pointer management
-3. **Pattern Recognition**: Identifying the right two-pointer pattern is crucial for optimal solutions
-4. **Edge Case Mastery**: Systematic handling of boundary conditions ensures robust solutions
-5. **Algorithm Design**: Breaking complex problems into phases often leads to cleaner solutions
-
-### 🔮 Next Steps
-
-- Study advanced two-pointer problems (3Sum, 4Sum)
-- Learn sliding window technique as extension
-- Practice two-pointer on different data structures
-- Explore parallel processing with multiple pointers
+**Example (unsorted is fine):**
+```cpp
+// Partition even/odd - doesn't need sorting
+void partitionEvenOdd(vector<int>& nums) {
+    int evenIndex = 0;
+    for (int j = 0; j < nums.size(); j++) {
+        if (nums[j] % 2 == 0) {
+            swap(nums[evenIndex++], nums[j]);
+        }
+    }
+}
+```
 
 ---
 
-**Total Problems Mastered**: 4 comprehensive problems with multiple approaches each
+### ❓ Question 9: What's the difference between two-pointer and sliding window?
 
-*Master the pointers, master the arrays! 🎯🚀*
+**Answer:**  
+
+**Two-Pointer:**
+- Two independent pointers
+- Can move in opposite directions
+- Used for partitioning, merging, pair finding
+
+**Sliding Window:**
+- Forms a contiguous subarray
+- Both pointers move in same direction (typically right)
+- Used for subarray/substring problems with constraints
+
+```cpp
+// Two-Pointer (opposite directions)
+int left = 0, right = n - 1;
+while (left < right) {
+    // Process
+    left++; right--;
+}
+
+// Sliding Window (same direction)
+int left = 0;
+for (int right = 0; right < n; right++) {
+    // Expand window
+    while (condition) {
+        // Shrink window
+        left++;
+    }
+}
+```
+
+---
+
+### ❓ Question 10: How do you test two-pointer algorithms?
+
+**Answer:**  
+Use these **comprehensive test categories**:
+
+**1. Normal Cases:**
+- Mixed elements
+- Random distribution
+- Typical inputs
+
+**2. Edge Cases:**
+- Empty array: `[]`
+- Single element: `[5]`
+- Two elements: `[1,2]`
+
+**3. Extreme Cases:**
+- All same: `[3,3,3,3]`
+- All targets: `[0,0,0,0]` (for Move Zeroes)
+- No targets: `[1,2,3]` (for Remove Element)
+
+**4. Boundary Cases:**
+- Target at beginning: `[0,1,2,3]`
+- Target at end: `[1,2,3,0]`
+- Alternating: `[0,1,0,2,0,3]`
+
+**5. Already Sorted:**
+- Already in desired state
+- Verify no unnecessary operations
+
+**Testing Template:**
+```cpp
+void testTwoPointer() {
+    // Normal
+    test({3,2,2,3}, 3, 2);
+    
+    // Edge
+    test({}, 0, 0);
+    test({1}, 1, 1);
+    
+    // Extreme
+    test({5,5,5,5}, 5, 0);
+    
+    // Boundary
+    test({5,1,2,3}, 5, 3);
+    test({1,2,3,5}, 5, 3);
+}
+```
+
+---
+
+## 🚀 Practice Problems
+
+Once you master these, try these similar problems:
+
+### Easy Level
+| Problem | LeetCode | Key Concept |
+|---------|----------|-------------|
+| 🔢 Remove Duplicates from Sorted Array | 26 | Two-pointer partition |
+| 🔄 Reverse String | 344 | Left-right pointers |
+| 🎯 Valid Palindrome | 125 | Two-pointer comparison |
+| 📊 Sort Array By Parity | 905 | Partition technique |
+
+### Medium Level
+| Problem | LeetCode | Key Concept |
+|---------|----------|-------------|
+| 🌈 Sort Colors (Dutch Flag) | 75 | Three-way partition |
+| 💧 Container With Most Water | 11 | Optimization with two pointers |
+| 🔢 3Sum | 15 | Two-pointer + iteration |
+| 🎪 Sort Array By Parity II | 922 | Dual partition |
+
+### Advanced Techniques
+| Problem | LeetCode | Key Concept |
+|---------|----------|-------------|
+| 💦 Trapping Rain Water | 42 | Two-pointer optimization |
+| 🎯 Longest Mountain in Array | 845 | Multiple passes |
+| 🔄 Squares of Sorted Array | 977 | Two-pointer merge |
+
+---
+
+## 🎯 Quick Reference
+
+### 🔑 Essential Code Patterns
+
+```cpp
+// Pattern 1: Single Array Partition
+int partition(vector<int>& nums, condition) {
+    int boundary = 0;
+    for (int j = 0; j < nums.size(); j++) {
+        if (condition(nums[j])) {
+            swap(nums[boundary++], nums[j]);
+        }
+    }
+    return boundary;
+}
+
+// Pattern 2: Two Array Merge
+void merge(vector<int>& arr1, vector<int>& arr2) {
+    int i = 0, j = 0, k = 0;
+    while (i < arr1.size() && j < arr2.size()) {
+        if (arr1[i] < arr2[j]) {
+            result[k++] = arr1[i++];
+        } else {
+            result[k++] = arr2[j++];
+        }
+    }
+    // Copy remaining elements
+}
+
+// Pattern 3: Left-Right Pointers
+void processOpposite(vector<int>& nums) {
+    int left = 0, right = nums.size() - 1;
+    while (left < right) {
+        // Process
+        if (condition) left++;
+        else right--;
+    }
+}
+```
+
+### 📝 Important Concepts
+
+```cpp
+// Boundary invariant
+// Elements at indices [0, boundary) satisfy property
+// Elements at indices [boundary, n) don't satisfy property
+
+// Post-increment trick
+swap(nums[boundary++], nums[j]);  // Swap then increment
+
+// Stability check
+// If zeroIndex <= j always, algorithm is stable
+```
+
+---
+
+## 🏆 Mastery Checklist
+
+- [ ] ✅ Understand the two-pointer pattern and its variations
+- [ ] ✅ Master boundary pointer concept (partition line)
+- [ ] ✅ Know when to use stable vs unstable partitioning
+- [ ] ✅ Implement Apply Operations (two-phase approach)
+- [ ] ✅ Implement Remove Element (filter pattern)
+- [ ] ✅ Implement Move Zeroes (stable partition)
+- [ ] ✅ Implement Merge Sorted Array (three-pointer merge)
+- [ ] ✅ Understand time complexity of each approach
+- [ ] ✅ Master O(1) space in-place modifications
+- [ ] ✅ Test all edge cases thoroughly
+- [ ] ✅ Explain why swap maintains order in Move Zeroes
+- [ ] ✅ Optimize Merge Sorted Array to O(1) space
+- [ ] ✅ Distinguish between two-pointer and sliding window
+- [ ] ✅ Answer common interview questions confidently
+- [ ] ✅ Solve 5+ related practice problems
+
+---
+
+## 💡 Pro Tips
+
+1. **🎯 Pointer Naming**: Use descriptive names like `zeroIndex`, `validIndex`, `boundary` instead of generic `i`, `j`
+
+2. **🔄 Swap vs Assignment**: Prefer `swap()` - it's cleaner and handles edge cases automatically
+
+3. **📊 Test Edge Cases First**: Empty array, single element, all same - catch bugs early
+
+4. **🧪 Visualize Invariants**: Draw the array state showing what each pointer represents
+   ```
+   [valid valid valid | garbage garbage]
+                      ↑
+                   boundary
+   ```
+
+5. **⚡ Post-Increment Trick**: Use `nums[boundary++]` to swap and increment in one line
+
+6. **🎓 Learn Pattern Variations**: Master the basic pattern, then apply to different problems
+
+7. **💭 Think About Stability**: Ask yourself "Does order matter?" before choosing approach
+
+8. **🔍 Debug with Print**: Add `cout` statements showing pointer positions at each step
+
+9. **📚 Study Merge Sort**: The merge step is the foundation of many two-pointer algorithms
+
+10. **🎯 Practice Boundary Conditions**: Most bugs occur at array boundaries (start/end)
+
+---
+
+## 🧠 Mental Model
+
+```mermaid
+flowchart TD
+    A["Two-Pointer Problem"] --> B{"Array Properties?"}
+    B -->|"Sorted"| C["Consider:<br/>- Pair finding<br/>- Merge operations<br/>- Binary pattern"]
+    B -->|"Unsorted"| D["Consider:<br/>- Partitioning<br/>- Filtering<br/>- Rearranging"]
+    
+    C --> E{"Need to maintain order?"}
+    D --> E
+    
+    E -->|"Yes"| F["Use Stable Partition<br/>Move Zeroes pattern"]
+    E -->|"No"| G["Use Unstable Partition<br/>Remove Element pattern"]
+    
+    F --> H["Implement with care:<br/>zeroIndex ≤ j always"]
+    G --> I["Optimize freely:<br/>Just partition correctly"]
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style E fill:#f3e5f5
+    style F fill:#e8f5e8
+    style G fill:#ffecb3
+```
+
+---
+
+## 🎓 Key Takeaways
+
+### Core Principles
+
+1. **Boundary Pointer**: Tracks the dividing line between two regions
+2. **Scan Pointer**: Explores the array to find elements to move
+3. **Invariant**: Maintain property that boundary represents throughout
+
+### Pattern Recognition
+
+**When you see:**
+- "Remove all occurrences" → Two-pointer partition
+- "Move all X to end" → Two-pointer stable partition
+- "Merge two sorted arrays" → Three-pointer merge
+- "In-place" + "O(1) space" → Strong hint for two-pointer
+
+### Common Pitfalls
+
+- ❌ Forgetting to increment pointers (infinite loop)
+- ❌ Using wrong boundary condition (off-by-one errors)
+- ❌ Overwriting unprocessed elements
+- ❌ Not testing edge cases (empty, single element)
+
+---
+
+**🎉 Congratulations! You now have a complete understanding of two-pointer array manipulation techniques. You can confidently solve partitioning, merging, and filtering problems efficiently. Keep practicing and happy coding!**
