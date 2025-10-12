@@ -1,112 +1,210 @@
-#include <vector>
-#include <string>
-using namespace std;
+/**
+ * ================================================================================
+ * LeetCode 443: String Compression - In-Place Array Manipulation
+ * ================================================================================
+ * 
+ * ! Problem: Given an array of characters `chars`, compress it using the following 
+ * ! algorithm. Begin with an empty string `s`. For each group of consecutive 
+ * ! repeating characters in `chars`:
+ * ! - If the group's length is 1, append the character to `s`.
+ * ! - Otherwise, append the character followed by the group's length.
+ * ! The compressed string `s` should not be returned separately, but instead be 
+ * ! stored in the input character array `chars`. Return the new length of the array.
+ * ! You must write an algorithm that uses only constant extra space.
+ * 
+ * * Approach:
+ * * 1. Use two pointers: read (scan array) and write (position to write)
+ * * 2. For each character, count consecutive occurrences
+ * * 3. Write the character to the write position
+ * * 4. If count > 1, write each digit of the count
+ * * 5. Return the final write position (new length)
+ * 
+ * ? Time Complexity: O(n) - We traverse the array once with the read pointer
+ * ? Space Complexity: O(1) - Only constant extra space used (two pointers)
+ * 
+ * TODO Key Insight: 
+ * *    - Two-pointer technique allows in-place modification
+ * *    - We read ahead to count characters while writing behind
+ * *    - Converting count to string allows handling multi-digit counts
+ * *    - Write pointer always stays behind or at read pointer
+ * 
+ * * Optimizations: 
+ * *    - Single pass through the array
+ * *    - No additional data structures needed
+ * *    - Handles edge cases naturally (single char, all same, all different)
+ * ================================================================================
+ */
 
-/*
-================================================================================
-LeetCode 443: String Compression
-================================================================================
-🔹 Problem Description:
-Given an array of characters chars, compress it using the following algorithm:
-1. If a group's length is 1, append the character as is.
-2. If a group's length is more than 1, append the character followed by the group's length.
-3. The compressed string should overwrite the input array.
-4. Return the new length of the array after compression.
-
---------------------------------------------------------------------------------
-Examples:
-Input:  chars = ["a","a","b","b","c","c","c"]
-Output: 6, chars = ["a","2","b","2","c","3"]
-
-Input:  chars = ["a"]
-Output: 1, chars = ["a"]
-
-Input:  chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
-Output: 4, chars = ["a","b","1","2"]
-
-================================================================================
-✨ Easy Explanation (Beginner Friendly)
-================================================================================
-👉 Idea: Two-Pointer In-Place Compression
-1. Use read pointer to traverse and count consecutive characters.
-2. Use write pointer to build compressed result in the same array.
-3. For each group: write character, then write count digits if count > 1.
-4. Return write position as new array length.
-
-⏱ Time Complexity: O(n)
-   - Single pass through array
-   - Each character processed exactly once
-📦 Space Complexity: O(1) (in-place modification)
-================================================================================
-*/
-
-class Solution {
-public:
-    int compress(vector<char>& chars) {
-        // Step 1: Initialize two pointers for in-place compression
-        int write = 0;  // Position to write compressed characters
-        int read = 0;   // Position to read and count characters
-
-        // Step 2: Process each group of consecutive characters
-        while (read < chars.size()) {
-            char current = chars[read];  // Store current character
-            int count = 0;               // Count consecutive occurrences
-
-            // Count all consecutive occurrences of current character
-            while (read < chars.size() && chars[read] == current) {
-                read++;
-                count++;
-            }
-
-            // Step 3: Write the character to compressed position
-            chars[write++] = current;
-
-            // Step 4: Write count digits if count > 1
-            if (count > 1) {
-                string countStr = to_string(count);  // Convert count to string
-                for (char digit : countStr) {
-                    chars[write++] = digit;  // Write each digit separately
-                }
-            }
-        }
-
-        // Step 5: Return new length of compressed array
-        return write;
-    }
-};
-
-// ==================== Driver Code for Testing ====================
-#include <iostream>
-int main() {
-    Solution obj;
-
-    // Test Case 1: Basic compression
-    vector<char> chars1 = {'a','a','b','b','c','c','c'};
-    int len1 = obj.compress(chars1);
-    cout << "Test 1 - Length: " << len1 << ", Array: ";
-    for (int i = 0; i < len1; i++) cout << chars1[i] << " ";
-    cout << endl;  // Expected: a 2 b 2 c 3
-
-    // Test Case 2: Single character
-    vector<char> chars2 = {'a'};
-    int len2 = obj.compress(chars2);
-    cout << "Test 2 - Length: " << len2 << ", Array: ";
-    for (int i = 0; i < len2; i++) cout << chars2[i] << " ";
-    cout << endl;  // Expected: a
-
-    // Test Case 3: Double-digit count
-    vector<char> chars3 = {'a','b','b','b','b','b','b','b','b','b','b','b','b'};
-    int len3 = obj.compress(chars3);
-    cout << "Test 3 - Length: " << len3 << ", Array: ";
-    for (int i = 0; i < len3; i++) cout << chars3[i] << " ";
-    cout << endl;  // Expected: a b 1 2
-
-    // Test Case 4: No compression needed
-    vector<char> chars4 = {'a','b','c'};
-    int len4 = obj.compress(chars4);
-    cout << "Test 4 - Length: " << len4 << ", Array: ";
-    for (int i = 0; i < len4; i++) cout << chars4[i] << " ";
-    cout << endl;  // Expected: a b c
-
-    return 0;
-}
+ #include <iostream>
+ #include <vector>
+ #include <string>
+ using namespace std;
+ 
+ class Solution {
+ public:
+     /**
+      * Compresses the character array in-place
+      * @param chars The input character array to compress
+      * @return The new length of the compressed array
+      */
+     int compress(vector<char>& chars) {
+         int write = 0;  // * Position where we write compressed data
+         int read = 0;   // * Position we're currently reading from
+         
+         while (read < chars.size()) {
+             char current = chars[read];  // * Current character to compress
+             int count = 0;  // * Count of consecutive occurrences
+             
+             // ! Count all consecutive occurrences of current character
+             // ? This moves read pointer while counting
+             while (read < chars.size() && chars[read] == current) {
+                 read++;
+                 count++;
+             }
+             
+             // * Write the character at write position
+             chars[write++] = current;
+             
+             // ! If count > 1, write the count digits
+             // ? We skip writing '1' for single characters
+             if (count > 1) {
+                 // * Convert count to string and write each digit
+                 // ? This handles multi-digit counts (e.g., 12 becomes '1', '2')
+                 for (char c : to_string(count)) {
+                     chars[write++] = c;
+                 }
+             }
+         }
+         
+         return write;  // * New length of compressed array
+     }
+ };
+ 
+ // ============================================================
+ // * TESTING SUITE - Verifies solution with various test cases
+ // ============================================================
+ 
+ /**
+  * Helper function to print test result
+  */
+ void printTestResult(vector<char> chars, int result, vector<char> expected, int expectedLen) {
+     cout << "\nInput:  [";
+     for (size_t i = 0; i < chars.size(); i++) {
+         if (i > 0) cout << ",";
+         cout << "\"" << chars[i] << "\"";
+     }
+     cout << "]\n";
+     
+     cout << "Output: [";
+     for (int i = 0; i < result; i++) {
+         if (i > 0) cout << ",";
+         cout << "\"" << chars[i] << "\"";
+     }
+     cout << "]\n";
+     
+     cout << "Length: " << result << "\n";
+     cout << "Expected: [";
+     for (size_t i = 0; i < expected.size(); i++) {
+         if (i > 0) cout << ",";
+         cout << "\"" << expected[i] << "\"";
+     }
+     cout << "]\n";
+     cout << "Expected Length: " << expectedLen << "\n";
+     
+     bool match = (result == expectedLen);
+     if (match) {
+         for (int i = 0; i < result; i++) {
+             if (chars[i] != expected[i]) {
+                 match = false;
+                 break;
+             }
+         }
+     }
+     
+     cout << "Status: " << (match ? "PASS" : "FAIL");
+     if (!match) {
+         cout << " (Mismatch detected)";
+     }
+     cout << "\n";
+ }
+ 
+ int main() {
+     Solution solution;
+     
+     // * Test Case 1: Mixed characters with compression
+     {
+         vector<char> chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
+         vector<char> expected = {'a', '2', 'b', '2', 'c', '3'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 6);
+     }
+     
+     // * Test Case 2: Single character
+     {
+         vector<char> chars = {'a'};
+         vector<char> expected = {'a'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 1);
+     }
+     
+     // * Test Case 3: All different characters (no compression)
+     {
+         vector<char> chars = {'a', 'b', 'c', 'd', 'e'};
+         vector<char> expected = {'a', 'b', 'c', 'd', 'e'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 5);
+     }
+     
+     // * Test Case 4: All same characters
+     {
+         vector<char> chars = {'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'};
+         vector<char> expected = {'a', '1', '0'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 3);
+     }
+     
+     // ! Test Case 5: Long compression (multi-digit count)
+     {
+         vector<char> chars = {'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'};
+         vector<char> expected = {'a', '1', '2', 'b', '2'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 5);
+     }
+     
+     // * Test Case 6: Two consecutive same pairs
+     {
+         vector<char> chars = {'a', 'a', 'b', 'b'};
+         vector<char> expected = {'a', '2', 'b', '2'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 4);
+     }
+     
+     // * Test Case 7: Single char groups mixed with multi-char groups
+     {
+         vector<char> chars = {'a', 'b', 'b', 'c', 'd', 'd', 'd'};
+         vector<char> expected = {'a', 'b', '2', 'c', 'd', '3'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 6);
+     }
+     
+     // * Test Case 8: Edge case - two characters
+     {
+         vector<char> chars = {'a', 'b'};
+         vector<char> expected = {'a', 'b'};
+         int result = solution.compress(chars);
+         printTestResult(chars, result, expected, 2);
+     }
+     
+     return 0;
+ }
+ 
+ /*
+  * ================================================================================
+  * TODO Additional Notes:
+  * * - The two-pointer technique is key to achieving O(1) space complexity
+  * ! - Write pointer always lags behind or equals read pointer, preventing overwrites
+  * * - Converting integers to strings handles any count size elegantly
+  * ? - The algorithm naturally handles all edge cases without special conditions
+  * * - In-place modification requires careful pointer management
+  * ================================================================================
+  */

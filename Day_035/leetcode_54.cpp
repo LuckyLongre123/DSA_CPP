@@ -1,25 +1,33 @@
 /**
  * ================================================================================
- * 🌀 LeetCode 54: Spiral Matrix - Solution with Boundary Shrinking
+ * LeetCode 54: Spiral Matrix - Matrix Traversal
  * ================================================================================
  * 
- * 🎯 Problem: Given an m x n matrix, return all elements in spiral order.
+ * ! Problem: Given an m x n matrix, return all elements of the matrix in spiral order.
+ * ! The spiral order means traversing the matrix layer by layer from outside to inside,
+ * ! moving in a clockwise direction: right → down → left → up, then repeat.
  * 
- * 📝 Approach: Boundary Shrinking Technique
- * 1. Use four boundaries: top, bottom, left, right
- * 2. Traverse in order: right → down → left → up
- * 3. After each full cycle, move boundaries inward
- * 4. Stop when all elements are processed
+ * * Approach:
+ * * 1. Define four boundaries: startingRow, endingRow, startingCol, endingCol
+ * * 2. Process matrix layer by layer in spiral order:
+ * *    - Traverse top row from left to right
+ * *    - Traverse right column from top to bottom
+ * *    - Traverse bottom row from right to left
+ * *    - Traverse left column from bottom to top
+ * * 3. After each direction, update the corresponding boundary
+ * * 4. Continue until all elements are processed
  * 
- * ⚡ Time Complexity: O(m×n) - Each element visited exactly once
- * 💾 Space Complexity: O(1) - Constant extra space (output array not counted)
+ * ? Time Complexity: O(m × n) - We visit each element exactly once
+ * ? Space Complexity: O(1) - Excluding the output array, constant extra space used
  * 
- * 🧠 Key Insight: Think of peeling an orange - remove outer layer by layer
+ * TODO Key Insight: 
+ * *    - The main challenge is handling boundary conditions and avoiding duplicates
+ * *    - We must check count < totalElm in each loop to prevent revisiting elements
+ * *    - After processing each direction, we shrink the corresponding boundary
  * 
- * 🚀 Optimizations: 
- *    - Early termination when count reaches total elements
- *    - In-place boundary updates
- *    - No extra data structures needed
+ * * Optimizations: 
+ * *    - Single pass through all elements
+ * *    - Layer-by-layer processing ensures no element is visited twice
  * ================================================================================
  */
 
@@ -29,60 +37,57 @@ using namespace std;
 
 class Solution {
 public:
-    //! MAIN FUNCTION: Implements spiral order traversal
-    //! @param matrix The 2D input matrix
-    //! @return Vector containing elements in spiral order
+    /**
+     * Returns all elements of the matrix in spiral order
+     * @param matrix The input m x n 2D matrix
+     * @return Vector containing all elements in spiral traversal order
+     */
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        //? Edge case: Empty matrix
-        if (matrix.empty() || matrix[0].empty()) return {};
+        vector<int> ans;  // * Stores the result in spiral order
+        int row = matrix.size();  // * Number of rows
+        int col = matrix[0].size();  // * Number of columns
         
-        vector<int> ans;  //* Output container
-        int m = matrix.size(), n = matrix[0].size();
+        int count = 0;  // * Tracks number of elements processed
+        int totalElm = row * col;  // * Total elements to process
         
-        //* Initialize boundaries
-        //? These define the current "frame" we're processing
-        int top = 0, bottom = m - 1;
-        int left = 0, right = n - 1;
+        // * Initialize four boundaries for the current layer
+        int startingRow = 0;
+        int startingCol = 0;
+        int endingRow = row - 1;
+        int endingCol = col - 1;
         
-        //* Continue until all elements are processed
-        while (top <= bottom && left <= right) {
-            //! 1. Traverse from left to right along top boundary
-            //? Moves: left → right
-            //? Updates: top boundary (moves down)
-            for (int i = left; i <= right; i++) {
-                ans.push_back(matrix[top][i]);
+        while (count < totalElm) {
+            // ! DIRECTION 1: Traverse top row from left to right
+            // ? Process elements in current startingRow from startingCol to endingCol
+            for (int i = startingCol; count < totalElm && i <= endingCol; i++) {
+                ans.push_back(matrix[startingRow][i]);
+                count++;
             }
-            top++;
+            startingRow++;  // * Move top boundary down
             
-            //! 2. Traverse from top to bottom along right boundary
-            //? Moves: top → bottom
-            //? Updates: right boundary (moves left)
-            for (int i = top; i <= bottom; i++) {
-                ans.push_back(matrix[i][right]);
+            // ! DIRECTION 2: Traverse right column from top to bottom
+            // ? Process elements in current endingCol from startingRow to endingRow
+            for (int i = startingRow; count < totalElm && i <= endingRow; i++) {
+                ans.push_back(matrix[i][endingCol]);
+                count++;
             }
-            right--;
+            endingCol--;  // * Move right boundary left
             
-            //* Check if there's a valid row to traverse left
-            if (top <= bottom) {
-                //! 3. Traverse from right to left along bottom boundary
-                //? Moves: right → left
-                //? Updates: bottom boundary (moves up)
-                for (int i = right; i >= left; i--) {
-                    ans.push_back(matrix[bottom][i]);
-                }
-                bottom--;
+            // ! DIRECTION 3: Traverse bottom row from right to left
+            // ? Process elements in current endingRow from endingCol to startingCol
+            for (int i = endingCol; count < totalElm && i >= startingCol; i--) {
+                ans.push_back(matrix[endingRow][i]);
+                count++;
             }
+            endingRow--;  // * Move bottom boundary up
             
-            //* Check if there's a valid column to traverse up
-            if (left <= right) {
-                //! 4. Traverse from bottom to top along left boundary
-                //? Moves: bottom → top
-                //? Updates: left boundary (moves right)
-                for (int i = bottom; i >= top; i--) {
-                    ans.push_back(matrix[i][left]);
-                }
-                left++;
+            // ! DIRECTION 4: Traverse left column from bottom to top
+            // ? Process elements in current startingCol from endingRow to startingRow
+            for (int i = endingRow; count < totalElm && i >= startingRow; i--) {
+                ans.push_back(matrix[i][startingCol]);
+                count++;
             }
+            startingCol++;  // * Move left boundary right
         }
         
         return ans;
@@ -90,71 +95,166 @@ public:
 };
 
 // ============================================================
-// 🧪 TESTING SUITE - Verifies solution with various test cases
+// * TESTING SUITE - Verifies solution with various test cases
 // ============================================================
 
-//! Helper function to print test results
-void printTestResult(const string& testName, const vector<int>& result, const vector<int>& expected) {
-    cout << "\n🔍 " << testName << "\n";
-    cout << "   Result:   [";
-    for (size_t i = 0; i < result.size(); i++) {
-        cout << result[i];
-        if (i < result.size() - 1) cout << ", ";
+/**
+ * Helper function to print matrix
+ */
+void printMatrix(const vector<vector<int>>& matrix) {
+    for (const auto& row : matrix) {
+        cout << "[ ";
+        for (int val : row) {
+            cout << val << " ";
+        }
+        cout << "]\n";
     }
-    cout << "]\n   Expected: [";
-    for (size_t i = 0; i < expected.size(); i++) {
-        cout << expected[i];
-        if (i < expected.size() - 1) cout << ", ";
+}
+
+/**
+ * Helper function to print vector
+ */
+void printVector(const vector<int>& vec) {
+    cout << "[ ";
+    for (int val : vec) {
+        cout << val << " ";
     }
     cout << "]\n";
-    cout << (result == expected ? "✅ PASSED" : "❌ FAILED") << "\n";
+}
+
+/**
+ * Helper function to print test result
+ */
+void printTestResult(int testNum, const vector<int>& result, const vector<int>& expected) {
+    cout << "\n--- Test Case " << testNum << " ---\n";
+    cout << "Result:   ";
+    printVector(result);
+    cout << "Expected: ";
+    printVector(expected);
+    bool pass = (result == expected);
+    cout << "Status:   " << (pass ? "PASS ✓" : "FAIL ✗") << "\n";
 }
 
 int main() {
-    Solution sol;
+    Solution solution;
     
-    //* Test Case 1: 3x3 Matrix
-    vector<vector<int>> matrix1 = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
-    vector<int> expected1 = {1,2,3,6,9,8,7,4,5};
-    printTestResult("3x3 Matrix", sol.spiralOrder(matrix1), expected1);
+    // * Test Case 1: Standard 3x3 matrix
+    {
+        vector<vector<int>> matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        cout << "\nTest Case 1: 3x3 Matrix\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 6, 9, 8, 7, 4, 5};
+        printTestResult(1, result, expected);
+    }
     
-    //* Test Case 2: 3x4 Matrix
-    vector<vector<int>> matrix2 = {
-        {1, 2, 3, 4},
-        {5, 6, 7, 8},
-        {9,10,11,12}
-    };
-    vector<int> expected2 = {1,2,3,4,8,12,11,10,9,5,6,7};
-    printTestResult("3x4 Matrix", sol.spiralOrder(matrix2), expected2);
+    // * Test Case 2: Rectangular matrix (3x4)
+    {
+        vector<vector<int>> matrix = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12}
+        };
+        cout << "\nTest Case 2: 3x4 Matrix\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7};
+        printTestResult(2, result, expected);
+    }
     
-    //* Test Case 3: 1x1 Matrix
-    vector<vector<int>> matrix3 = {{42}};
-    vector<int> expected3 = {42};
-    printTestResult("1x1 Matrix", sol.spiralOrder(matrix3), expected3);
+    // * Test Case 3: Single row matrix
+    {
+        vector<vector<int>> matrix = {{1, 2, 3, 4}};
+        cout << "\nTest Case 3: Single Row (1x4)\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 4};
+        printTestResult(3, result, expected);
+    }
     
-    //* Test Case 4: Single Row
-    vector<vector<int>> matrix4 = {{1,2,3,4,5}};
-    vector<int> expected4 = {1,2,3,4,5};
-    printTestResult("Single Row", sol.spiralOrder(matrix4), expected4);
+    // * Test Case 4: Single column matrix
+    {
+        vector<vector<int>> matrix = {
+            {1},
+            {2},
+            {3},
+            {4}
+        };
+        cout << "\nTest Case 4: Single Column (4x1)\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 4};
+        printTestResult(4, result, expected);
+    }
     
-    //* Test Case 5: Single Column
-    vector<vector<int>> matrix5 = {{1},{2},{3},{4},{5}};
-    vector<int> expected5 = {1,2,3,4,5};
-    printTestResult("Single Column", sol.spiralOrder(matrix5), expected5);
+    // * Test Case 5: Single element matrix
+    {
+        vector<vector<int>> matrix = {{5}};
+        cout << "\nTest Case 5: Single Element (1x1)\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {5};
+        printTestResult(5, result, expected);
+    }
+    
+    // * Test Case 6: Larger rectangular matrix (4x3)
+    {
+        vector<vector<int>> matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 12}
+        };
+        cout << "\nTest Case 6: 4x3 Matrix\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 6, 9, 12, 11, 10, 7, 4, 5, 8};
+        printTestResult(6, result, expected);
+    }
+    
+    // * Test Case 7: 2x2 matrix (smallest multi-element)
+    {
+        vector<vector<int>> matrix = {
+            {1, 2},
+            {3, 4}
+        };
+        cout << "\nTest Case 7: 2x2 Matrix\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 4, 3};
+        printTestResult(7, result, expected);
+    }
+    
+    // * Test Case 8: Large 5x5 matrix with negative numbers
+    {
+        vector<vector<int>> matrix = {
+            {1, 2, 3, 4, 5},
+            {6, 7, 8, 9, 10},
+            {11, 12, 13, 14, 15},
+            {16, 17, 18, 19, 20},
+            {21, 22, 23, 24, 25}
+        };
+        cout << "\nTest Case 8: 5x5 Matrix\n";
+        printMatrix(matrix);
+        vector<int> result = solution.spiralOrder(matrix);
+        vector<int> expected = {1, 2, 3, 4, 5, 10, 15, 20, 25, 24, 23, 22, 21, 16, 11, 6, 7, 8, 9, 14, 19, 18, 17, 12, 13};
+        printTestResult(8, result, expected);
+    }
     
     return 0;
 }
 
 /*
  * ================================================================================
- * 📝 Additional Notes:
- * - The solution handles all edge cases including single row, single column, and empty matrices
- * - The boundary shrinking approach ensures we don't revisit elements
- * - Time complexity is optimal as we visit each element exactly once
- * - Space complexity is O(1) extra space (excluding output array)
+ * TODO Additional Notes:
+ * * - The solution handles all edge cases: single row, single column, 1x1 matrix
+ * ! - The count < totalElm check in each loop prevents processing elements twice
+ * * - Boundaries are updated after each direction to shrink the layer
+ * ? - For empty matrix handling, add check: if (matrix.empty() || matrix[0].empty())
+ * * - This pattern is useful for other matrix traversal problems
  * ================================================================================
  */
