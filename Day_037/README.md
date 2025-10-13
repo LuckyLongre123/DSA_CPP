@@ -1,706 +1,1513 @@
-# Day 37: Matrix Search Algorithms - Binary Search & Elimination
+# Day 37: 🔍 Search a 2D Matrix - Complete Beginner's Guide
 
-## 🎯 Learning Objectives
-
-By the end of this day, you will master:
-- **2D Matrix Binary Search**: Treating matrices as flattened 1D arrays for efficient searching
-- **Index Conversion**: Converting between 1D and 2D coordinates in matrices
-- **Matrix Elimination Strategy**: Using sorted properties to eliminate rows/columns
-- **Search Space Reduction**: Optimizing search by leveraging matrix properties
-- **Comparative Algorithm Analysis**: Understanding when to use different matrix search approaches
+> **Master two powerful search algorithms for 2D matrices step by step!**
 
 ---
 
-## Problems Overview: Matrix Search Techniques
+## 📖 What You'll Learn
 
-### 📋 Problem Set
-
-**Difficulty**: Medium  
-**Category**: Binary Search, Matrix, Two Pointers  
-**Companies**: Amazon, Microsoft, Google, Meta, Apple
-
-This day covers two fundamental matrix search problems that demonstrate different approaches to searching in sorted 2D structures:
-
-1. **LeetCode 74**: Search a 2D Matrix (Fully Sorted)
-2. **LeetCode 240**: Search a 2D Matrix II (Row & Column Sorted)
+By the end of this guide, you'll master:
+- 🎯 **Binary Search on 2D Arrays** - Treating matrices as virtual 1D arrays
+- 🪜 **Staircase Search Algorithm** - Efficient elimination technique
+- 🔢 **Index Conversion Techniques** - Mapping between 1D and 2D coordinates
+- ⚡ **Algorithm Selection** - Choosing the right approach based on matrix properties
+- 🧮 **Complexity Trade-offs** - Understanding O(log(m×n)) vs O(m+n)
 
 ---
 
-## Problem 1: Search a 2D Matrix (LeetCode 74)
+## 🎯 The Problems
 
-### 📋 Problem Statement
+### 📋 Problem 1: Search a 2D Matrix (LeetCode 74)
 
-Write an efficient algorithm that searches for a target value in an `m x n` integer matrix. The matrix has the following properties:
-- Integers in each row are sorted from left to right.
-- The first integer of each row is greater than the last integer of the previous row.
+**Given**: An m × n integer matrix with these properties:
+- Integers in each row are sorted from left to right
+- The first integer of each row is **greater than** the last integer of the previous row
 
-**Task**: Return `true` if target is found, `false` otherwise.
+**Task**: Search for a target value efficiently  
+**Return**: `true` if found, `false` otherwise
 
-### 🔍 Problem Analysis
+**Key Constraint**: The matrix is essentially a sorted 1D array wrapped into 2D format
 
-**Key Insights**:
-- Matrix is **fully sorted** - can be treated as a single 1D sorted array
-- Perfect candidate for **binary search** with O(log(m×n)) complexity
-- Index conversion: `row = index / cols`, `col = index % cols`
-- Maintains all properties of binary search on sorted arrays
+### 📋 Problem 2: Search a 2D Matrix II (LeetCode 240)
 
-**Matrix Structure Visualization**:
+**Given**: An m × n integer matrix with these properties:
+- Integers in each row are sorted in ascending order from left to right
+- Integers in each column are sorted in ascending order from top to bottom
+
+**Task**: Search for a target value efficiently  
+**Return**: `true` if found, `false` otherwise
+
+**Key Constraint**: Rows are sorted independently, columns are sorted independently
+
+### 🌟 Real-World Examples
+
+**Problem 1 Example:**
 ```
-Matrix: [[1,3,5,7],[10,11,16,20],[23,30,34,60]]
-As 1D: [1,3,5,7,10,11,16,20,23,30,34,60]
-Indices: 0 1 2 3 4  5  6  7  8  9  10 11
-
-Index 5 → Row: 5/4 = 1, Col: 5%4 = 1 → matrix[1][1] = 11
-Index 8 → Row: 8/4 = 2, Col: 8%4 = 0 → matrix[2][0] = 23
+Matrix: [[1,  3,  5,  7],
+         [10, 11, 16, 20],
+         [23, 30, 34, 60]]
+Target: 3
 ```
+This is like a **sorted phone book** - perfectly ordered from start to finish.
 
-### 📚 Examples with Detailed Analysis
-
-#### Example 1: Target Found
+**Problem 2 Example:**
 ```
-Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
-Output: true
-
-Step-by-step binary search:
-1D representation: [1,3,5,7,10,11,16,20,23,30,34,60]
-Indices:           [0,1,2,3,4, 5, 6, 7, 8, 9,10,11]
-
-Step 1: s=0, e=11, mid=5
-        matrix[5/4][5%4] = matrix[1][1] = 11
-        11 > 3, so e = mid-1 = 4
-
-Step 2: s=0, e=4, mid=2  
-        matrix[2/4][2%4] = matrix[0][2] = 5
-        5 > 3, so e = mid-1 = 1
-
-Step 3: s=0, e=1, mid=0
-        matrix[0/4][0%4] = matrix[0][0] = 1
-        1 < 3, so s = mid+1 = 1
-
-Step 4: s=1, e=1, mid=1
-        matrix[1/4][1%4] = matrix[0][1] = 3
-        3 == 3, FOUND! Return true
+Matrix: [[1,  4,  7,  11, 15],
+         [2,  5,  8,  12, 19],
+         [3,  6,  9,  16, 22],
+         [10, 13, 14, 17, 24],
+         [18, 21, 23, 26, 30]]
+Target: 5
 ```
-
-#### Example 2: Target Not Found
-```
-Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
-Output: false
-
-Binary search process:
-Step 1: s=0, e=11, mid=5 → matrix[1][1]=11 < 13 → s=6
-Step 2: s=6, e=11, mid=8 → matrix[2][0]=23 > 13 → e=7  
-Step 3: s=6, e=7, mid=6  → matrix[1][2]=16 > 13 → e=5
-Step 4: s=6, e=5 → s > e, exit loop
-Result: false (target not found)
-```
-
-### 🔄 Solution Approach: Binary Search on Flattened Matrix
-
-#### 💡 Core Idea
-Treat the 2D matrix as a conceptual 1D sorted array and apply standard binary search, converting indices as needed.
-
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(log(m × n))
-  - m = number of rows, n = number of columns
-  - Standard binary search on m×n elements
-- **Space Complexity**: O(1) - only using constant extra variables
-
-#### 🔍 Algorithm Steps
-1. **Validation**: Check for empty matrix
-2. **Initialize**: Set binary search bounds (0 to m×n-1)
-3. **Search Loop**: While start ≤ end:
-   - Calculate middle index
-   - Convert to 2D coordinates
-   - Compare with target and adjust bounds
-4. **Return**: True if found, false otherwise
+This is like a **sorted spreadsheet** - rows sorted, columns sorted, but no strict ordering between rows.
 
 ---
 
-## Problem 2: Search a 2D Matrix II (LeetCode 240)
+## 🔍 Understanding the Basics
 
-### 📋 Problem Statement
+### 🏗️ Matrix Properties Comparison
 
-Write an efficient algorithm that searches for a target value in an `m x n` integer matrix. The matrix has the following properties:
-- Integers in each row are sorted in ascending order from left to right.
-- Integers in each column are sorted in ascending order from top to bottom.
-
-**Task**: Return `true` if target is found, `false` otherwise.
-
-### 🔍 Problem Analysis
-
-**Key Insights**:
-- Matrix is **partially sorted** - rows and columns individually sorted
-- Cannot treat as single 1D array (elements between rows aren't ordered)
-- **Elimination strategy** works best: start from corner and eliminate rows/columns
-- Top-right or bottom-left corners provide optimal elimination paths
-
-**Matrix Structure Visualization**:
-```
-Matrix: [[1,4,7,11,15],
-         [2,5,8,12,19],
-         [3,6,9,16,22],
-         [10,13,14,17,24],
-         [18,21,23,26,30]]
-
-Starting from top-right (15):
-- If current > target: move left (eliminate column)
-- If current < target: move down (eliminate row)
-- If current = target: found!
-```
-
-### 📚 Examples with Detailed Analysis
-
-#### Example 1: Target Found
-```
-Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
-Output: true
-
-Step-by-step elimination from top-right:
-Initial position: row=0, col=4 (value=15)
-
-Step 1: matrix[0][4] = 15 > 5
-        Move left: col = 3
-        Position: row=0, col=3 (value=11)
-
-Step 2: matrix[0][3] = 11 > 5  
-        Move left: col = 2
-        Position: row=0, col=2 (value=7)
-
-Step 3: matrix[0][2] = 7 > 5
-        Move left: col = 1  
-        Position: row=0, col=1 (value=4)
-
-Step 4: matrix[0][1] = 4 < 5
-        Move down: row = 1
-        Position: row=1, col=1 (value=5)
-
-Step 5: matrix[1][1] = 5 == 5
-        FOUND! Return true
-```
-
-#### Example 2: Target Not Found
-```
-Input: Same matrix, target = 20
-Output: false
-
-Elimination process:
-Start: row=0, col=4 (value=15)
-Step 1: 15 < 20 → move down → row=1, col=4 (value=19)
-Step 2: 19 < 20 → move down → row=2, col=4 (value=22)  
-Step 3: 22 > 20 → move left → row=2, col=3 (value=16)
-Step 4: 16 < 20 → move down → row=3, col=3 (value=17)
-Step 5: 17 < 20 → move down → row=4, col=3 (value=26)
-Step 6: 26 > 20 → move left → row=4, col=2 (value=23)
-Step 7: 23 > 20 → move left → row=4, col=1 (value=21)
-Step 8: 21 > 20 → move left → row=4, col=0 (value=18)
-Step 9: 18 < 20 → move down → row=5 (out of bounds)
-Result: false (target not found)
-```
-
-### 🔄 Solution Approach: Corner Elimination Strategy
-
-#### 💡 Core Idea
-Start from top-right corner and eliminate entire rows or columns based on comparison with target.
-
-#### 📊 Complexity Analysis
-- **Time Complexity**: O(m + n)
-  - m = number of rows, n = number of columns
-  - At most m+n steps (each step eliminates a row or column)
-- **Space Complexity**: O(1) - only using constant extra variables
-
-#### 🔍 Algorithm Steps
-1. **Validation**: Check for empty matrix
-2. **Initialize**: Start from top-right corner (row=0, col=n-1)
-3. **Elimination Loop**: While within bounds:
-   - If current = target: return true
-   - If current > target: move left (eliminate column)
-   - If current < target: move down (eliminate row)
-4. **Return**: False if bounds exceeded
-
----
-
-## 📖 Complete Guide to Matrix Operations
-
-### 1. Index Conversion in Matrices 🔄
-
-**Purpose**: Convert between 1D array indices and 2D matrix coordinates.
-
-**Formulas**:
-```cpp
-// 1D to 2D conversion
-int row = index / cols;
-int col = index % cols;
-
-// 2D to 1D conversion  
-int index = row * cols + col;
-```
-
-**Detailed Examples**:
-```cpp
-// Matrix: 3×4 (3 rows, 4 columns)
-// [[0, 1, 2, 3],
-//  [4, 5, 6, 7], 
-//  [8, 9,10,11]]
-
-int cols = 4;
-
-// Convert 1D index 5 to 2D
-int row = 5 / 4 = 1;    // Row 1 (0-indexed)
-int col = 5 % 4 = 1;    // Column 1 (0-indexed)
-// Result: matrix[1][1] = 5 ✓
-
-// Convert 1D index 10 to 2D  
-int row = 10 / 4 = 2;   // Row 2
-int col = 10 % 4 = 2;   // Column 2
-// Result: matrix[2][2] = 10 ✓
-
-// Convert 2D coordinate (2,3) to 1D
-int index = 2 * 4 + 3 = 11;
-// Result: matrix[2][3] is at index 11 ✓
-```
-
-**Important Notes**:
-- Division gives row number (how many complete rows fit)
-- Modulo gives column position within the row
-- Works for any rectangular matrix dimensions
-
-### 2. Matrix Boundary Checking 🚧
-
-**Purpose**: Prevent array out-of-bounds errors when navigating matrices.
-
-**Common Patterns**:
-```cpp
-// Check if position is valid
-bool isValid(int row, int col, int rows, int cols) {
-    return row >= 0 && row < rows && col >= 0 && col < cols;
-}
-
-// Safe matrix access
-if (row < matrix.size() && col < matrix[0].size()) {
-    int value = matrix[row][col];
-}
-
-// Loop with bounds checking
-while (row >= 0 && row < matrix.size() && 
-       col >= 0 && col < matrix[0].size()) {
-    // Process matrix[row][col]
-    // Update row and col
-}
-```
-
-### 3. Matrix Search Patterns 🔍
-
-**Pattern 1: Binary Search (Fully Sorted Matrix)**
-```cpp
-// When: Matrix sorted row-wise AND column-wise globally
-// Time: O(log(m×n)), Space: O(1)
-bool searchFullySorted(vector<vector<int>>& matrix, int target) {
-    int m = matrix.size(), n = matrix[0].size();
-    int left = 0, right = m * n - 1;
+```mermaid
+flowchart TD
+    A["Matrix Types"] --> B["Problem 1: Strictly Sorted<br/>Like a 1D sorted array"]
+    A --> C["Problem 2: Row-Column Sorted<br/>Independent sorting"]
     
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        int midValue = matrix[mid / n][mid % n];
+    B --> D["Property: matrix[i][last] < matrix[i+1][0]"]
+    C --> E["Property: Rows sorted, Columns sorted"]
+    
+    D --> F["Best Approach: Binary Search<br/>O(log(m×n))"]
+    E --> G["Best Approach: Staircase Search<br/>O(m+n)"]
+    
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style F fill:#c8e6c9
+    style G fill:#ffecb3
+```
+
+### 🎲 Index Conversion Magic (Problem 1)
+
+```mermaid
+flowchart TD
+    A["2D Matrix: 3×4"] --> B["Virtual 1D Array: 12 elements"]
+    B --> C["Index 0-11"]
+    
+    C --> D["Convert 1D to 2D:"]
+    D --> E["row = index ÷ columns"]
+    D --> F["col = index % columns"]
+    
+    E --> G["Example: index = 7"]
+    G --> H["row = 7 ÷ 4 = 1"]
+    G --> I["col = 7 % 4 = 3"]
+    H --> J["Result: matrix[1][3]"]
+    I --> J
+    
+    style A fill:#e3f2fd
+    style B fill:#f3e5f5
+    style G fill:#fff3e0
+    style J fill:#c8e6c9
+```
+
+**Visual Representation:**
+```
+2D Matrix (3×4):          1D Array (12 elements):
+[0][1][2][3]              [0][1][2][3][4][5][6][7][8][9][10][11]
+[0][1][2][3]               ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓   ↓   ↓
+[0][1][2][3]              [0,0] [0,1] [0,2] [0,3] [1,0] ... [2,3]
+```
+
+### 🪜 Staircase Search Pattern (Problem 2)
+
+```mermaid
+flowchart TD
+    A["Start: Top-Right Corner"] --> B{"Compare with target"}
+    B -->|"Equal"| C["Found! Return true"]
+    B -->|"Current > Target"| D["Move Left<br/>Eliminate column"]
+    B -->|"Current < Target"| E["Move Down<br/>Eliminate row"]
+    
+    D --> F{"Still in bounds?"}
+    E --> F
+    F -->|"Yes"| B
+    F -->|"No"| G["Not Found! Return false"]
+    
+    style A fill:#e8f5e8
+    style C fill:#c8e6c9
+    style D fill:#fff3e0
+    style E fill:#fff3e0
+    style G fill:#ffcdd2
+```
+
+---
+
+## 📚 Step-by-Step Examples
+
+## 🟢 PROBLEM 1: Binary Search Approach
+
+### Example 1: Target Found in Middle
+
+**Input:** 
+```
+matrix = [[1,  3,  5,  7],
+          [10, 11, 16, 20],
+          [23, 30, 34, 60]]
+target = 3
+```
+**Output:** `true`
+
+```mermaid
+flowchart TD
+    A["Start: Virtual 1D array [0-11]"] --> B["s=0, e=11, mid=5"]
+    B --> C["matrix[5÷4][5%4] = matrix[1][1] = 11"]
+    C --> D{"11 > 3?"}
+    D -->|"Yes"| E["Search left: e=4"]
+    
+    E --> F["s=0, e=4, mid=2"]
+    F --> G["matrix[2÷4][2%4] = matrix[0][2] = 5"]
+    G --> H{"5 > 3?"}
+    H -->|"Yes"| I["Search left: e=1"]
+    
+    I --> J["s=0, e=1, mid=0"]
+    J --> K["matrix[0÷4][0%4] = matrix[0][0] = 1"]
+    K --> L{"1 < 3?"}
+    L -->|"Yes"| M["Search right: s=1"]
+    
+    M --> N["s=1, e=1, mid=1"]
+    N --> O["matrix[1÷4][1%4] = matrix[0][1] = 3"]
+    O --> P{"3 == 3?"}
+    P -->|"Yes"| Q["Found! Return true ✅"]
+    
+    style A fill:#e8f5e8
+    style Q fill:#c8e6c9
+```
+
+**Step-by-step breakdown:**
+1. **Start:** Treat 3×4 matrix as 12-element array (indices 0-11)
+2. **Step 1:** `mid = 5` → `matrix[1][1] = 11` → 11 > 3, search left
+3. **Step 2:** `mid = 2` → `matrix[0][2] = 5` → 5 > 3, search left
+4. **Step 3:** `mid = 0` → `matrix[0][0] = 1` → 1 < 3, search right
+5. **Step 4:** `mid = 1` → `matrix[0][1] = 3` → Found! ✅
+
+### Example 2: Target Not Found
+
+**Input:** 
+```
+matrix = [[1,  3,  5,  7],
+          [10, 11, 16, 20],
+          [23, 30, 34, 60]]
+target = 13
+```
+**Output:** `false`
+
+```mermaid
+flowchart TD
+    A["Start: s=0, e=11"] --> B["Binary search continues"]
+    B --> C["Narrows down to range [4,5]"]
+    C --> D["Check matrix[1][0]=10 and matrix[1][1]=11"]
+    D --> E{"10 < 13 < 16?"}
+    E -->|"Yes"| F["Target would be here but isn't"]
+    F --> G["s > e, exit loop"]
+    G --> H["Return false ❌"]
+    
+    style A fill:#e3f2fd
+    style H fill:#ffcdd2
+```
+
+## 🟡 PROBLEM 2: Staircase Search Approach
+
+### Example 3: Target Found Using Staircase
+
+**Input:**
+```
+matrix = [[1,  4,  7,  11, 15],
+          [2,  5,  8,  12, 19],
+          [3,  6,  9,  16, 22],
+          [10, 13, 14, 17, 24],
+          [18, 21, 23, 26, 30]]
+target = 5
+```
+**Output:** `true`
+
+```mermaid
+flowchart TD
+    A["Start: row=0, col=4<br/>Position: [0][4]=15"] --> B{"15 > 5?"}
+    B -->|"Yes"| C["Move left: col=3<br/>Position: [0][3]=11"]
+    
+    C --> D{"11 > 5?"}
+    D -->|"Yes"| E["Move left: col=2<br/>Position: [0][2]=7"]
+    
+    E --> F{"7 > 5?"}
+    F -->|"Yes"| G["Move left: col=1<br/>Position: [0][1]=4"]
+    
+    G --> H{"4 < 5?"}
+    H -->|"Yes"| I["Move down: row=1<br/>Position: [1][1]=5"]
+    
+    I --> J{"5 == 5?"}
+    J -->|"Yes"| K["Found! Return true ✅"]
+    
+    style A fill:#fff8e1
+    style K fill:#c8e6c9
+```
+
+**Staircase Path Visualization:**
+```
+Start → 15 → 11 → 7 → 4 → 5 (Found!)
+        ↓    ↓    ↓   ↓   ↓
+      [0,4][0,3][0,2][0,1][1,1]
+```
+
+### Example 4: Target Not Found Using Staircase
+
+**Input:** Same matrix, `target = 20`  
+**Output:** `false`
+
+```mermaid
+flowchart TD
+    A["Start: [0][4]=15"] --> B["15 < 20, move down"]
+    B --> C["[1][4]=19"]
+    C --> D["19 < 20, move down"]
+    D --> E["[2][4]=22"]
+    E --> F["22 > 20, move left"]
+    F --> G["[2][3]=16"]
+    G --> H["16 < 20, move down"]
+    H --> I["[3][3]=17"]
+    I --> J["17 < 20, move down"]
+    J --> K["[4][3]=26"]
+    K --> L["26 > 20, move left"]
+    L --> M["[4][2]=23"]
+    M --> N["23 > 20, move left"]
+    N --> O["[4][1]=21"]
+    O --> P["21 > 20, move left"]
+    P --> Q["[4][0]=18"]
+    Q --> R["18 < 20, move down"]
+    R --> S["row=5, out of bounds!"]
+    S --> T["Return false ❌"]
+    
+    style A fill:#fff3e0
+    style T fill:#ffcdd2
+```
+
+---
+
+## 🛠️ The Algorithms
+
+## 🎯 ALGORITHM 1: Binary Search on Virtual 1D Array
+
+### Main Strategy
+
+```mermaid
+flowchart TD
+    A["Initialize: s=0, e=rows×cols-1"] --> B{"s ≤ e?"}
+    B -->|"No"| C["Return false"]
+    B -->|"Yes"| D["Calculate mid = s + (e-s)÷2"]
+    
+    D --> E["Convert to 2D:<br/>row = mid÷cols<br/>col = mid%cols"]
+    E --> F["Get cell = matrix[row][col]"]
+    
+    F --> G{"cell == target?"}
+    G -->|"Yes"| H["Return true ✅"]
+    G -->|"No"| I{"cell > target?"}
+    
+    I -->|"Yes"| J["Search left: e = mid-1"]
+    I -->|"No"| K["Search right: s = mid+1"]
+    
+    J --> B
+    K --> B
+    
+    style A fill:#e8f5e8
+    style H fill:#c8e6c9
+    style C fill:#ffcdd2
+```
+
+### The Code (Problem 1)
+
+```cpp
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int row = matrix.size();
+    int col = matrix[0].size();
+    
+    int s = 0;                  // Start of virtual 1D array
+    int e = row * col - 1;      // End of virtual 1D array
+    
+    int mid = s + (e - s) / 2;  // Prevent overflow
+    
+    while (s <= e) {
+        // 🔧 Convert 1D index to 2D coordinates
+        int cell = matrix[mid / col][mid % col];
         
-        if (midValue == target) return true;
-        else if (midValue < target) left = mid + 1;
-        else right = mid - 1;
+        if (cell == target)
+            return 1;           // ✅ Found!
+        
+        if (cell > target)
+            e = mid - 1;        // Search left half
+        else
+            s = mid + 1;        // Search right half
+        
+        mid = s + (e - s) / 2;  // Recalculate middle
     }
-    return false;
+    return 0;                   // ❌ Not found
 }
 ```
 
-**Pattern 2: Corner Elimination (Partially Sorted Matrix)**
-```cpp
-// When: Rows sorted, columns sorted, but not globally sorted
-// Time: O(m+n), Space: O(1)
-bool searchPartiallySorted(vector<vector<int>>& matrix, int target) {
-    int row = 0, col = matrix[0].size() - 1;
+### Index Conversion Deep Dive
+
+```mermaid
+flowchart TD
+    A["1D Index: mid"] --> B["Calculate Row"]
+    A --> C["Calculate Column"]
     
-    while (row < matrix.size() && col >= 0) {
-        if (matrix[row][col] == target) return true;
-        else if (matrix[row][col] > target) col--;
-        else row++;
+    B --> D["row = mid ÷ total_columns"]
+    C --> E["col = mid % total_columns"]
+    
+    D --> F["Example: mid=7, cols=4"]
+    E --> F
+    F --> G["row = 7 ÷ 4 = 1"]
+    F --> H["col = 7 % 4 = 3"]
+    
+    G --> I["Access: matrix[1][3]"]
+    H --> I
+    
+    style A fill:#e3f2fd
+    style I fill:#c8e6c9
+```
+
+**Why This Works:**
+- Division (`/`) tells us which row (how many complete rows fit)
+- Modulo (`%`) tells us position within that row (remainder)
+
+## 🪜 ALGORITHM 2: Staircase Search
+
+### Main Strategy
+
+```mermaid
+flowchart TD
+    A["Start: row=0, col=cols-1<br/>(Top-Right Corner)"] --> B{"In bounds?"}
+    B -->|"No"| C["Return false"]
+    B -->|"Yes"| D["Get cell = matrix[row][col]"]
+    
+    D --> E{"cell == target?"}
+    E -->|"Yes"| F["Return true ✅"]
+    E -->|"No"| G{"cell < target?"}
+    
+    G -->|"Yes"| H["Move down: row++<br/>(Eliminate row)"]
+    G -->|"No"| I["Move left: col--<br/>(Eliminate column)"]
+    
+    H --> B
+    I --> B
+    
+    style A fill:#fff8e1
+    style F fill:#c8e6c9
+    style C fill:#ffcdd2
+```
+
+### The Code (Problem 2)
+
+```cpp
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int row = matrix.size();
+    int col = matrix[0].size();
+    
+    int rowIndex = 0;           // Start from top row
+    int colIndex = col - 1;     // Start from rightmost column
+    
+    while (rowIndex < row && colIndex >= 0) {
+        int cell = matrix[rowIndex][colIndex];
+        
+        if (cell == target)
+            return 1;           // ✅ Found!
+        
+        if (cell < target)
+            rowIndex++;         // Move down (eliminate row)
+        else
+            colIndex--;         // Move left (eliminate column)
     }
-    return false;
+    return 0;                   // ❌ Not found
 }
 ```
 
-**Pattern 3: Linear Search (Unsorted Matrix)**
+### Why Start from Top-Right?
+
+```mermaid
+flowchart LR
+    A["Position Options"] --> B["Top-Left ❌"]
+    A --> C["Top-Right ✅"]
+    A --> D["Bottom-Left ✅"]
+    A --> E["Bottom-Right ❌"]
+    
+    B --> F["Can't eliminate:<br/>Both down and right increase"]
+    C --> G["Can eliminate:<br/>Left decreases, down increases"]
+    D --> H["Can eliminate:<br/>Right increases, up decreases"]
+    E --> I["Can't eliminate:<br/>Both left and up decrease"]
+    
+    style C fill:#c8e6c9
+    style D fill:#c8e6c9
+    style B fill:#ffcdd2
+    style E fill:#ffcdd2
+```
+
+**Key Insight:**
+- From **top-right**: Left is smaller, down is larger → Clear decision!
+- From **top-left**: Both right and down are larger → Ambiguous!
+
+### Staircase Elimination Visualization
+
+```mermaid
+flowchart TD
+    A["Current Position"] --> B{"Compare with target"}
+    
+    B -->|"Cell > Target"| C["Move LEFT<br/>Entire column eliminated"]
+    B -->|"Cell < Target"| D["Move DOWN<br/>Entire row eliminated"]
+    
+    C --> E["All values to right are larger<br/>So they can't be target"]
+    D --> F["All values above are smaller<br/>So they can't be target"]
+    
+    style A fill:#e3f2fd
+    style C fill:#fff3e0
+    style D fill:#fff3e0
+    style E fill:#ffebee
+    style F fill:#ffebee
+```
+
+---
+
+## 🧪 Test Cases & Edge Cases
+
+## ✅ PROBLEM 1: Binary Search Test Cases
+
+### Normal Cases
+
+| Input Matrix | Target | Output | Why |
+|--------------|--------|--------|-----|
+| `[[1,3,5,7],[10,11,16,20],[23,30,34,60]]` | `3` | `true` | Exists in first row |
+| `[[1,3,5,7],[10,11,16,20],[23,30,34,60]]` | `13` | `false` | Falls between elements |
+| `[[1,3,5,7],[10,11,16,20],[23,30,34,60]]` | `11` | `true` | Exists in middle row |
+
+### Edge Cases
+
+| Input Matrix | Target | Output | Why |
+|--------------|--------|--------|-----|
+| `[[1,3,5,7],[10,11,16,20],[23,30,34,60]]` | `1` | `true` | First element |
+| `[[1,3,5,7],[10,11,16,20],[23,30,34,60]]` | `60` | `true` | Last element |
+| `[[5]]` | `5` | `true` | Single element match |
+| `[[5]]` | `1` | `false` | Single element no match |
+| `[[1,3,5,7]]` | `5` | `true` | Single row |
+| `[[1],[3],[5],[7]]` | `3` | `true` | Single column |
+
+### Boundary Testing (Problem 1)
+
+```mermaid
+flowchart TD
+    A["Test Categories"] --> B["Normal Search<br/>✅ Mid-range values"]
+    A --> C["Boundary Search<br/>⚠️ First/Last elements"]
+    A --> D["Edge Cases<br/>🔍 Special matrices"]
+    
+    B --> B1["Target in middle"]
+    B --> B2["Target not present"]
+    
+    C --> C1["First element: [0][0]"]
+    C --> C2["Last element: [m-1][n-1]"]
+    
+    D --> D1["1×1 matrix"]
+    D --> D2["1×n matrix (single row)"]
+    D --> D3["m×1 matrix (single column)"]
+    
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#e3f2fd
+```
+
+## ✅ PROBLEM 2: Staircase Test Cases
+
+### Normal Cases
+
+| Input Matrix | Target | Output | Why |
+|--------------|--------|--------|-----|
+| 5×5 sorted matrix | `5` | `true` | Exists at [1][1] |
+| 5×5 sorted matrix | `20` | `false` | Would be between elements |
+| 5×5 sorted matrix | `14` | `true` | Exists at [3][2] |
+
+### Edge Cases
+
+| Input Matrix | Target | Output | Why |
+|--------------|--------|--------|-----|
+| 5×5 sorted matrix | `1` | `true` | Top-left corner |
+| 5×5 sorted matrix | `30` | `true` | Bottom-right corner |
+| 5×5 sorted matrix | `15` | `true` | Top-right corner (start) |
+| `[[5]]` | `5` | `true` | Single element match |
+| `[[1,2,3,4,5]]` | `3` | `true` | Single row |
+| `[[1],[2],[3],[4],[5]]` | `3` | `true` | Single column |
+
+### Boundary Testing (Problem 2)
+
+```mermaid
+flowchart TD
+    A["Test Categories"] --> B["Corner Tests<br/>✅ Four corners"]
+    A --> C["Path Tests<br/>🪜 Staircase paths"]
+    A --> D["Edge Cases<br/>🔍 Degenerate matrices"]
+    
+    B --> B1["Top-left minimum"]
+    B --> B2["Top-right (start position)"]
+    B --> B3["Bottom-left"]
+    B --> B4["Bottom-right maximum"]
+    
+    C --> C1["Long left path"]
+    C --> C2["Long down path"]
+    C --> C3["Zigzag path"]
+    
+    D --> D1["Single element"]
+    D --> D2["Single row"]
+    D --> D3["Single column"]
+    
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#e3f2fd
+```
+
+---
+
+## 🎓 Key Concepts Mastery
+
+### 🔢 Index Conversion Techniques (Problem 1)
+
+```mermaid
+flowchart LR
+    A["2D to 1D"] --> B["index = row × cols + col"]
+    C["1D to 2D"] --> D["row = index ÷ cols"]
+    C --> E["col = index % cols"]
+    
+    style A fill:#e3f2fd
+    style C fill:#f3e5f5
+    style B fill:#e8f5e8
+    style D fill:#e8f5e8
+    style E fill:#e8f5e8
+```
+
+**Examples:**
 ```cpp
-// When: No sorting guarantees
-// Time: O(m×n), Space: O(1)
-bool searchUnsorted(vector<vector<int>>& matrix, int target) {
+// Matrix: 3 rows × 4 cols
+// Convert [1][2] to 1D index:
+int index = 1 * 4 + 2 = 6
+
+// Convert 1D index 7 to 2D:
+int row = 7 / 4 = 1
+int col = 7 % 4 = 3
+// Result: [1][3]
+```
+
+### 🪜 Elimination Strategy (Problem 2)
+
+```mermaid
+flowchart TD
+    A["Each Comparison"] --> B["Eliminates Entire<br/>Row or Column"]
+    
+    B --> C["If current > target:<br/>Move LEFT"]
+    B --> D["If current < target:<br/>Move DOWN"]
+    
+    C --> E["Why? All elements to right<br/>are even larger"]
+    D --> F["Why? All elements above<br/>are even smaller"]
+    
+    style A fill:#fff8e1
+    style C fill:#ffecb3
+    style D fill:#ffecb3
+    style E fill:#fff3e0
+    style F fill:#fff3e0
+```
+
+### ⚖️ Algorithm Selection Framework
+
+```mermaid
+flowchart TD
+    A["Matrix Properties"] --> B{"First int of row ><br/>Last int of prev row?"}
+    
+    B -->|"Yes<br/>(Strictly ordered)"| C["Use Binary Search<br/>O(log(m×n))"]
+    B -->|"No<br/>(Independent sorting)"| D["Use Staircase Search<br/>O(m+n)"]
+    
+    C --> E["Problem 1 Type:<br/>Like sorted 1D array"]
+    D --> F["Problem 2 Type:<br/>Sorted rows + columns"]
+    
+    style A fill:#e1f5fe
+    style C fill:#c8e6c9
+    style D fill:#ffecb3
+    style E fill:#e8f5e8
+    style F fill:#fff8e1
+```
+
+### 🎯 Problem-Solving Decision Tree
+
+```mermaid
+flowchart TD
+    A["Given Matrix"] --> B{"Check row transition"}
+    
+    B --> C{"matrix[i][last] <<br/>matrix[i+1][0]?"}
+    
+    C -->|"Always True"| D["Treat as 1D sorted array"]
+    C -->|"Not Always"| E["Treat as 2D sorted grid"]
+    
+    D --> F["Apply Binary Search<br/>Time: O(log(m×n))<br/>Space: O(1)"]
+    E --> G["Apply Staircase Search<br/>Time: O(m+n)<br/>Space: O(1)"]
+    
+    style A fill:#e3f2fd
+    style D fill:#c8e6c9
+    style E fill:#ffecb3
+    style F fill:#e8f5e8
+    style G fill:#fff8e1
+```
+
+---
+
+## 📊 Complexity Analysis
+
+## ⏰ PROBLEM 1: Binary Search Complexity
+
+### Time Complexity: O(log(m × n))
+
+```mermaid
+flowchart TD
+    A["Total Elements: m × n"] --> B["Each iteration halves<br/>search space"]
+    B --> C["Number of iterations:<br/>log₂(m × n)"]
+    
+    C --> D["Example: 3×4 matrix"]
+    D --> E["12 elements total"]
+    E --> F["log₂(12) ≈ 3.58<br/>≈ 4 iterations max"]
+    
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8
+    style F fill:#c8e6c9
+```
+
+**Breakdown:**
+```
+Matrix size: m × n = 12 elements
+Binary search iterations: ⌈log₂(12)⌉ = 4
+
+Iteration 1: Check 6  (12 → 6 elements)
+Iteration 2: Check 3  (6 → 3 elements)  
+Iteration 3: Check 2  (3 → 2 elements)
+Iteration 4: Check 1  (2 → 1 element)
+```
+
+### Space Complexity: O(1)
+
+```mermaid
+flowchart LR
+    A["Variables Used"] --> B["s: start index"]
+    A --> C["e: end index"]
+    A --> D["mid: middle index"]
+    A --> E["row, col counts"]
+    
+    B --> F["All primitive types<br/>Constant space"]
+    C --> F
+    D --> F
+    E --> F
+    
+    style A fill:#e3f2fd
+    style F fill:#c8e6c9
+```
+
+## ⏰ PROBLEM 2: Staircase Complexity
+
+### Time Complexity: O(m + n)
+
+```mermaid
+flowchart TD
+    A["Start: Top-Right"] --> B["Each step eliminates<br/>row OR column"]
+    B --> C["Maximum moves:<br/>m rows + n columns"]
+    
+    C --> D["Example: 5×5 matrix"]
+    D --> E["Max moves: 5 + 5 = 10"]
+    E --> F["Worst case: traverse<br/>entire perimeter"]
+    
+    style A fill:#fff8e1
+    style C fill:#ffecb3
+    style F fill:#fff3e0
+```
+
+**Worst Case Path:**
+```
+Start: [0][4] → Move left 4 times → [0][0]
+Then:  [0][0] → Move down 4 times → [4][0]
+Total: 4 + 4 = 8 moves (for 5×5 matrix)
+```
+
+### Space Complexity: O(1)
+
+```mermaid
+flowchart LR
+    A["Variables Used"] --> B["rowIndex: current row"]
+    A --> C["colIndex: current column"]
+    A --> D["row, col bounds"]
+    
+    B --> E["All primitive types<br/>Constant space"]
+    C --> E
+    D --> E
+    
+    style A fill:#fff8e1
+    style E fill:#c8e6c9
+```
+
+## 📊 Comparison of Both Approaches
+
+```mermaid
+flowchart TD
+    A["Complexity Comparison"] --> B["Binary Search<br/>O(log(m×n))"]
+    A --> C["Staircase Search<br/>O(m+n)"]
+    
+    B --> D["Faster for large matrices"]
+    B --> E["Requires strict ordering"]
+    
+    C --> F["Linear in dimensions"]
+    C --> G["Works with relaxed ordering"]
+    
+    D --> H["Example: 1000×1000<br/>~20 operations"]
+    F --> I["Example: 1000×1000<br/>~2000 operations"]
+    
+    style B fill:#c8e6c9
+    style C fill:#ffecb3
+    style H fill:#e8f5e8
+    style I fill:#fff3e0
+```
+
+### Performance Table
+
+| Matrix Size | Binary Search | Staircase | Winner |
+|-------------|---------------|-----------|--------|
+| 10 × 1000 | log₂(10000) ≈ 13 | 10 + 1000 = 1010 | Binary |
+
+**Key Takeaway:** Binary search is asymptotically faster, but requires stricter matrix properties!
+
+---
+
+## 🚀 Practice Problems
+
+Once you master these, try these similar problems:
+
+### Related to Problem 1 (Binary Search)
+
+| Problem | Difficulty | Key Concept |
+|---------|------------|-------------|
+| 🔢 Search Insert Position | Easy | Binary search basics |
+| 🎯 Find First and Last Position | Medium | Binary search variants |
+| 🔍 Search in Rotated Sorted Array | Medium | Modified binary search |
+| 📊 Find Peak Element | Medium | Binary search on implicit conditions |
+
+### Related to Problem 2 (Staircase)
+
+| Problem | Difficulty | Key Concept |
+|---------|------------|-------------|
+| 🪜 Kth Smallest Element in Sorted Matrix | Medium | Binary search + matrix properties |
+| 🔢 Count Negative Numbers in Sorted Matrix | Easy | Staircase traversal |
+| 🎯 Search in Rotated Sorted Array II | Medium | Modified search with duplicates |
+| 📈 Find K Pairs with Smallest Sums | Medium | Merge technique on sorted data |
+
+---
+
+## 💼 Interview Questions & Answers
+
+## 🎯 PROBLEM 1: Binary Search on 2D Matrix
+
+### ❓ Question 1: Why can we treat the matrix as a 1D array?
+
+**Answer:**  
+Because of the strict ordering property: `matrix[i][last] < matrix[i+1][0]`
+
+This means if we "unroll" the matrix row by row, we get a perfectly sorted 1D array:
+```
+Matrix:     [[1, 3, 5],
+             [7, 9, 11],
+             [13, 15, 17]]
+
+Unrolled:   [1, 3, 5, 7, 9, 11, 13, 15, 17]
+            ↑ Still perfectly sorted!
+```
+
+**Simple Explanation:**  
+It's like reading a book - you finish one line and start the next. The last word of line 1 comes before the first word of line 2!
+
+---
+
+### ❓ Question 2: How does the index conversion work?
+
+**Answer:**  
+We use division and modulo to convert between 1D and 2D coordinates:
+
+```cpp
+// Given: 1D index, columns count
+row = index / columns    // How many complete rows?
+col = index % columns    // Position within the row?
+
+// Example: index=7, columns=4
+row = 7 / 4 = 1         // Second row (0-indexed)
+col = 7 % 4 = 3         // Fourth column (0-indexed)
+```
+
+**Visual Example:**
+```
+Matrix (3×4):    1D Array:
+[0][1][2][3]     [0][1][2][3][4][5][6][7][8][9][10][11]
+[0][1][2][3]      
+[0][1][2][3]     Index 7 = Row 1, Col 3 = [1][3]
+```
+
+**Simple Explanation:**  
+Division tells us "which row" (how many complete rows of 4 fit into 7? → 1)  
+Modulo tells us "position in row" (what's left after removing complete rows? → 3)
+
+---
+
+### ❓ Question 3: Why use `mid = s + (e - s) / 2` instead of `mid = (s + e) / 2`?
+
+**Answer:**  
+To prevent integer overflow!
+
+```cpp
+// If s and e are both large:
+int s = 2147483647;  // Near INT_MAX
+int e = 2147483647;
+
+// BAD: (s + e) overflows!
+int mid = (s + e) / 2;  // ❌ Overflow!
+
+// GOOD: (e - s) stays small
+int mid = s + (e - s) / 2;  // ✅ Safe!
+```
+
+**Simple Explanation:**  
+It's like adding two full buckets - they might overflow. But if you measure the *difference* first, then add it to one bucket, it's safer!
+
+---
+
+### ❓ Question 4: What if the matrix is empty or has one element?
+
+**Answer:**  
+The algorithm handles these naturally:
+
+```cpp
+// Empty matrix: matrix.size() == 0
+// Would need to check before: if (matrix.empty()) return false;
+
+// Single element: [[5]]
+row = 1, col = 1
+s = 0, e = 1*1-1 = 0
+mid = 0
+Check matrix[0][0], return result
+```
+
+**Simple Explanation:**  
+Single element works because `s = e = 0`, so we check once and return. Always add an empty check at the start for safety!
+
+---
+
+### ❓ Question 5: What's the time complexity and why is it better than linear search?
+
+**Answer:**  
+**Time: O(log(m × n))** because we use binary search on m×n elements
+
+**Comparison:**
+```
+Linear search: Check all elements = O(m × n)
+Binary search:  Halve each time   = O(log(m × n))
+
+Example (100×100 matrix):
+Linear:  10,000 operations
+Binary:  log₂(10,000) ≈ 13 operations
+```
+
+**Simple Explanation:**  
+Binary search is like looking for a word in a dictionary - you open to the middle, decide which half, repeat. Much faster than reading every page!
+
+---
+
+### ❓ Question 6: Can this approach work for Problem 2 (independent row/column sorting)?
+
+**Answer:**  
+**NO!** Binary search requires the entire matrix to be one sorted sequence.
+
+```cpp
+Problem 2 matrix:
+[[1,  4,  7,  11],
+ [2,  5,  8,  12],   // Notice: 2 < 4 (not strictly ordered)
+ [3,  6,  9,  16]]
+
+Virtual 1D: [1, 4, 7, 11, 2, 5, 8, 12, 3, 6, 9, 16]
+                          ↑  ↑  Not sorted!
+```
+
+**Simple Explanation:**  
+Problem 1 is like a sorted phone book (one sequence). Problem 2 is like a spreadsheet (rows sorted, columns sorted, but not one sequence). Need different approaches!
+
+---
+
+## 🎯 PROBLEM 2: Staircase Search Algorithm
+
+### ❓ Question 7: Why start from top-right corner? Why not top-left?
+
+**Answer:**  
+From **top-right**, we have clear elimination rules:
+- If `current > target` → move LEFT (eliminate column)
+- If `current < target` → move DOWN (eliminate row)
+
+From **top-left**, both directions increase:
+- Moving right increases value
+- Moving down increases value
+- Can't decide which way to eliminate!
+
+```mermaid
+flowchart TD
+    A["Top-Right [0][n-1]"] --> B["Left: Decreases"]
+    A --> C["Down: Increases"]
+    
+    D["Top-Left [0][0]"] --> E["Right: Increases"]
+    D --> F["Down: Increases"]
+    
+    B --> G["Clear decision! ✅"]
+    C --> G
+    E --> H["Ambiguous! ❌"]
+    F --> H
+    
+    style A fill:#c8e6c9
+    style D fill:#ffcdd2
+```
+
+**Simple Explanation:**  
+From top-right, you're at a "crossroads" - one path goes down (bigger), one goes left (smaller). Clear choice! From top-left, both paths go "up" - confusing!
+
+---
+
+### ❓ Question 8: Can we start from bottom-left instead?
+
+**Answer:**  
+**YES!** Bottom-left is equally valid:
+- If `current > target` → move UP (eliminate row)
+- If `current < target` → move RIGHT (eliminate column)
+
+```cpp
+// Starting from bottom-left
+int rowIndex = row - 1;     // Bottom row
+int colIndex = 0;           // Leftmost column
+
+while (rowIndex >= 0 && colIndex < col) {
+    int cell = matrix[rowIndex][colIndex];
+    
+    if (cell == target) return 1;
+    
+    if (cell > target)
+        rowIndex--;         // Move up
+    else
+        colIndex++;         // Move right
+}
+```
+
+**Simple Explanation:**  
+Top-right and bottom-left are like two corners of a staircase - both work! Top-left and bottom-right are "blocked corners" - don't work!
+
+---
+
+### ❓ Question 9: What's the worst-case number of steps?
+
+**Answer:**  
+**Worst case: m + n - 1 steps**
+
+This happens when target isn't in matrix and we traverse from one corner to opposite side:
+
+```
+5×5 matrix, target not present:
+Start: [0][4] (top-right)
+Move left 4 times → [0][0]
+Move down 4 times → [4][0]
+Total: 4 + 4 = 8 steps = 5 + 5 - 2
+```
+
+**Why m + n - 1?**
+- Maximum left moves: n - 1 (from rightmost to leftmost)
+- Maximum down moves: m - 1 (from top to bottom)
+- Total: (n-1) + (m-1) = m + n - 2, plus 1 for final check = m + n - 1
+
+**Simple Explanation:**  
+In worst case, you walk along two edges of the matrix - like walking around an "L" shape from top-right to bottom-left!
+
+---
+
+### ❓ Question 10: How does this algorithm "eliminate" rows and columns?
+
+**Answer:**  
+Each move eliminates an entire row or column based on sorted property:
+
+**Moving LEFT (current > target):**
+```
+If matrix[row][col] > target:
+→ All elements in column 'col' below are even larger
+→ Target can't be in this column
+→ Eliminate entire column by moving left
+```
+
+**Moving DOWN (current < target):**
+```
+If matrix[row][col] < target:
+→ All elements in row 'row' to the left are even smaller
+→ Target can't be in this row
+→ Eliminate entire row by moving down
+```
+
+**Visual Example:**
+```
+Matrix:     Start: [0][4]=15
+[1  4  7 ]  15 > 5, move left
+[2  5  8 ]  Eliminates column 4
+[3  6  9 ]
+```
+
+**Simple Explanation:**  
+It's like playing "hot and cold" - when told "colder", you know not to go that direction, eliminating a whole area at once!
+
+---
+
+### ❓ Question 11: Why is this O(m + n) and not O(m × n)?
+
+**Answer:**  
+We visit at most **m + n elements**, not all m × n elements:
+
+```
+Total elements in matrix: m × n
+Maximum elements visited: m + n
+
+Example: 100×100 matrix
+Total elements: 10,000
+Max visited: 100 + 100 = 200
+```
+
+**Why?**
+- We either move down (visit new row) OR move left (visit new column)
+- Never visit same element twice
+- Can't move more than m times down + n times left
+
+**Simple Explanation:**  
+You're walking along edges of a rectangle, not filling in the entire area. Walking the perimeter (m + n) is much faster than painting the whole thing (m × n)!
+
+---
+
+### ❓ Question 12: What if there are duplicate values in the matrix?
+
+**Answer:**  
+The algorithm still works correctly! Duplicates don't affect the sorted property:
+
+```cpp
+Matrix with duplicates:
+[[1, 4, 7, 11],
+ [2, 5, 8, 12],
+ [3, 5, 9, 16]]  // Note: 5 appears twice
+
+Target: 5
+Algorithm finds it at [1][1] or [2][1] - both correct!
+```
+
+**Simple Explanation:**  
+Finding *any* occurrence of target counts as success. The sorted property (rows and columns increasing) still holds with duplicates, so elimination logic remains valid!
+
+---
+
+### ❓ Question 13: How would you modify this to find the COUNT of occurrences?
+
+**Answer:**  
+Modify to continue searching after finding first occurrence:
+
+```cpp
+int countOccurrences(vector<vector<int>>& matrix, int target) {
+    int count = 0;
+    int rowIndex = 0;
+    int colIndex = matrix[0].size() - 1;
+    
+    while (rowIndex < matrix.size() && colIndex >= 0) {
+        int cell = matrix[rowIndex][colIndex];
+        
+        if (cell == target) {
+            count++;
+            // Continue searching (could be in row below or column left)
+            colIndex--;  // Move left to find more
+        }
+        else if (cell < target)
+            rowIndex++;
+        else
+            colIndex--;
+    }
+    return count;
+}
+```
+
+**Simple Explanation:**  
+Instead of returning when found, keep a counter and continue the staircase walk. When you find it, count it and keep moving!
+
+---
+
+### ❓ Question 14: Compare the two approaches - when to use which?
+
+**Answer:**  
+
+| Criteria | Binary Search (Problem 1) | Staircase (Problem 2) |
+|----------|---------------------------|------------------------|
+| **Matrix Property** | Strictly sorted (each row starts > prev row ends) | Rows sorted, columns sorted |
+| **Time Complexity** | O(log(m×n)) - Faster | O(m+n) - Slower |
+| **When to Use** | When matrix is like 1D sorted array | When rows/columns independent |
+| **Code Complexity** | More complex (index conversion) | Simpler (direct movement) |
+
+**Decision Tree:**
+```
+Is matrix[i][last] < matrix[i+1][0] for all i?
+├─ YES → Use Binary Search (Problem 1)
+└─ NO  → Use Staircase Search (Problem 2)
+```
+
+**Simple Explanation:**  
+- **Binary Search**: For "super sorted" matrices (like reading a book line by line)
+- **Staircase**: For "grid sorted" matrices (like a spreadsheet where rows and columns sort independently)
+
+---
+
+### ❓ Question 15: Can you combine both approaches?
+
+**Answer:**  
+Yes! For Problem 2 matrices, you can use binary search on each row:
+
+```cpp
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
     for (int i = 0; i < matrix.size(); i++) {
-        for (int j = 0; j < matrix[0].size(); j++) {
-            if (matrix[i][j] == target) return true;
-        }
-    }
-    return false;
-}
-```
-
----
-
-## 🔬 Algorithm Deep Dive
-
-### Visual Comparison: LeetCode 74 vs 240
-
-```
-LeetCode 74 Matrix (Fully Sorted):
-[[ 1,  3,  5,  7],     ← Each row sorted
- [10, 11, 16, 20],     ← First element > previous row's last
- [23, 30, 34, 60]]     ← Can treat as: [1,3,5,7,10,11,16,20,23,30,34,60]
-
-Search for 16:
-Binary Search: O(log(12)) = ~3.6 steps
-Step 1: mid=5 → matrix[1][1]=11 < 16 → search right half
-Step 2: mid=8 → matrix[2][0]=23 > 16 → search left half  
-Step 3: mid=6 → matrix[1][2]=16 = 16 → FOUND!
-
----
-
-LeetCode 240 Matrix (Partially Sorted):
-[[ 1,  4,  7, 11, 15],  ← Each row sorted
- [ 2,  5,  8, 12, 19],  ← Each column sorted
- [ 3,  6,  9, 16, 22],  ← But NOT globally sorted
- [10, 13, 14, 17, 24],  ← Cannot treat as 1D array
- [18, 21, 23, 26, 30]]
-
-Search for 16:
-Corner Elimination: O(5+5) = O(10) steps max
-Start at top-right (15): 15 < 16 → move down
-Position (19): 19 > 16 → move left
-Position (12): 12 < 16 → move down  
-Position (16): 16 = 16 → FOUND!
-```
-
-### Performance Analysis
-
-| Aspect | LeetCode 74 | LeetCode 240 |
-|--------|-------------|--------------|
-| **Matrix Type** | Fully Sorted | Partially Sorted |
-| **Search Strategy** | Binary Search | Corner Elimination |
-| **Time Complexity** | O(log(m×n)) | O(m + n) |
-| **Space Complexity** | O(1) | O(1) |
-| **Best Case** | O(1) | O(1) |
-| **Worst Case** | O(log(m×n)) | O(m + n) |
-| **When to Use** | Globally sorted matrices | Row/column sorted matrices |
-
----
-
-## 🧪 Comprehensive Testing
-
-### Test Cases for LeetCode 74
-
-```cpp
-// Test Case 1: Target exists in middle
-searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 11) → true
-
-// Test Case 2: Target doesn't exist
-searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13) → false
-
-// Test Case 3: Target at boundaries
-searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 1) → true   // First element
-searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 60) → true  // Last element
-
-// Test Case 4: Single element matrix
-searchMatrix([[1]], 1) → true
-searchMatrix([[1]], 2) → false
-
-// Test Case 5: Single row matrix
-searchMatrix([[1,3,5,7]], 5) → true
-searchMatrix([[1,3,5,7]], 4) → false
-
-// Test Case 6: Single column matrix
-searchMatrix([[1],[3],[5]], 3) → true
-searchMatrix([[1],[3],[5]], 2) → false
-```
-
-### Test Cases for LeetCode 240
-
-```cpp
-// Test Case 1: Target exists
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 5) → true
-
-// Test Case 2: Target doesn't exist  
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 20) → false
-
-// Test Case 3: Target at corners
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 1) → true   // Top-left
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 30) → true  // Bottom-right
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 15) → true  // Top-right
-searchMatrix([[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], 18) → true  // Bottom-left
-
-// Test Case 4: Single element
-searchMatrix([[5]], 5) → true
-searchMatrix([[5]], 3) → false
-
-// Test Case 5: Duplicate elements
-searchMatrix([[1,2,3],[2,3,4],[3,4,5]], 3) → true
-```
-
-### Edge Cases Analysis
-
-#### 1. **Empty and Invalid Inputs**
-```cpp
-// Empty matrix
-searchMatrix([], target) → false
-
-// Matrix with empty rows  
-searchMatrix([[]], target) → false
-
-// Very large target
-searchMatrix([[1,2],[3,4]], 1000) → false
-
-// Very small target
-searchMatrix([[1,2],[3,4]], -1000) → false
-```
-
-#### 2. **Matrix Size Variations**
-```cpp
-// 1×1 matrix
-searchMatrix([[x]], target) → (x == target)
-
-// 1×n matrix (single row)
-searchMatrix([[1,2,3,4,5]], target) → binary search behavior
-
-// n×1 matrix (single column)  
-searchMatrix([[1],[2],[3],[4],[5]], target) → linear search behavior
-
-// Large matrix (stress test)
-// 1000×1000 matrix with target at various positions
-```
-
-#### 3. **Boundary Value Testing**
-```cpp
-// Target equals matrix boundaries
-searchMatrix(matrix, matrix[0][0])                    → true  // Top-left
-searchMatrix(matrix, matrix[m-1][n-1])               → true  // Bottom-right
-searchMatrix(matrix, matrix[0][0] - 1)               → false // Below minimum
-searchMatrix(matrix, matrix[m-1][n-1] + 1)           → false // Above maximum
-```
-
----
-
-## 📊 Alternative Approaches and Optimizations
-
-### Approach 1: Row-by-Row Binary Search (LeetCode 240)
-```cpp
-bool searchMatrix(vector<vector<int>>& matrix, int target) {
-    for (auto& row : matrix) {
-        if (binary_search(row.begin(), row.end(), target)) {
+        // Binary search on row i
+        if (binarySearch(matrix[i], target))
             return true;
-        }
     }
     return false;
 }
-```
-**Time**: O(m × log n), **Space**: O(1)  
-**Pros**: Simple implementation  
-**Cons**: Slower than corner elimination for large matrices
 
-### Approach 2: Divide and Conquer (LeetCode 240)
+// Time: O(m × log n) - m rows, log n per row
+```
+
+**Comparison:**
+- Staircase: O(m + n)
+- Row-wise binary search: O(m log n)
+
+**Which is better?**
+- If `m << n` (few rows, many columns): Binary search wins
+- If `m ≈ n`: Staircase wins
+- Example: 10×1000 matrix → 10×log(1000) ≈ 100 vs 10+1000 = 1010
+
+**Simple Explanation:**  
+You can search each row individually with binary search. Sometimes faster, sometimes slower than staircase - depends on matrix shape!
+
+---
+
+## 🎯 Quick Reference
+
+### 🔑 Essential Code Patterns
+
+**Problem 1: Binary Search**
 ```cpp
-bool searchMatrix(vector<vector<int>>& matrix, int target) {
-    return searchHelper(matrix, target, 0, 0, matrix.size()-1, matrix[0].size()-1);
+// Treat 2D as 1D virtual array
+int s = 0, e = rows * cols - 1;
+
+while (s <= e) {
+    int mid = s + (e - s) / 2;
+    
+    // Convert 1D index to 2D coordinates
+    int cell = matrix[mid / cols][mid % cols];
+    
+    if (cell == target) return true;
+    if (cell > target) e = mid - 1;
+    else s = mid + 1;
+}
+```
+
+**Problem 2: Staircase Search**
+```cpp
+// Start from top-right corner
+int row = 0, col = cols - 1;
+
+while (row < rows && col >= 0) {
+    int cell = matrix[row][col];
+    
+    if (cell == target) return true;
+    if (cell < target) row++;      // Move down
+    else col--;                     // Move left
+}
+```
+
+### 📝 Important Formulas
+
+**Index Conversion (Problem 1):**
+```cpp
+// 1D to 2D
+row = index / total_columns
+col = index % total_columns
+
+// 2D to 1D
+index = row * total_columns + col
+```
+
+**Complexity Summary:**
+```
+Problem 1: O(log(m × n)) time, O(1) space
+Problem 2: O(m + n) time, O(1) space
+```
+
+### 🧠 Mental Models
+
+**Problem 1: Virtual 1D Array**
+```mermaid
+flowchart LR
+    A["2D Matrix"] --> B["Imagine as<br/>1D sorted array"]
+    B --> C["Apply standard<br/>binary search"]
+    C --> D["Convert index<br/>when accessing"]
+    
+    style A fill:#e3f2fd
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+```
+
+**Problem 2: Staircase Walk**
+```mermaid
+flowchart LR
+    A["Start top-right"] --> B["Like walking<br/>down stairs"]
+    B --> C["Too big? Go left<br/>Too small? Go down"]
+    C --> D["Eliminate row/col<br/>each step"]
+    
+    style A fill:#fff8e1
+    style B fill:#ffecb3
+    style C fill:#fff3e0
+    style D fill:#ffcc80
+```
+
+---
+
+## 🏆 Mastery Checklist
+
+### Problem 1: Binary Search on 2D Matrix
+
+- [ ] ✅ Understand when matrix can be treated as 1D array
+- [ ] ✅ Master index conversion (1D ↔ 2D)
+- [ ] ✅ Implement overflow-safe binary search
+- [ ] ✅ Handle edge cases (empty, single element)
+- [ ] ✅ Achieve O(log(m×n)) time complexity
+- [ ] ✅ Use O(1) space only
+- [ ] ✅ Test with various matrix sizes
+- [ ] ✅ Explain the approach clearly in interviews
+
+### Problem 2: Staircase Search
+
+- [ ] ✅ Understand why top-right/bottom-left work
+- [ ] ✅ Master the elimination logic
+- [ ] ✅ Implement the staircase algorithm
+- [ ] ✅ Handle edge cases (single row/column)
+- [ ] ✅ Achieve O(m+n) time complexity
+- [ ] ✅ Use O(1) space only
+- [ ] ✅ Compare with other approaches
+- [ ] ✅ Answer interview questions confidently
+
+### Both Problems
+
+- [ ] ✅ Know when to use which approach
+- [ ] ✅ Understand complexity trade-offs
+- [ ] ✅ Handle matrices with different properties
+- [ ] ✅ Test all corner cases thoroughly
+- [ ] ✅ Explain elimination strategies clearly
+- [ ] ✅ Code both approaches from memory
+
+---
+
+## 💡 Pro Tips
+
+### For Problem 1 (Binary Search)
+
+1. **🛡️ Safety First**: Always use `mid = s + (e - s) / 2` to prevent overflow
+2. **🔢 Practice Conversion**: Master the `mid / cols` and `mid % cols` formulas
+3. **🧪 Test Boundaries**: Check first element, last element, and not-found cases
+4. **📚 Remember Property**: This only works when matrix is strictly sorted like 1D array
+5. **🎯 Visualization**: Draw out the virtual 1D array to understand better
+
+### For Problem 2 (Staircase)
+
+1. **🪜 Choose Corner Wisely**: Top-right or bottom-left only (not other corners!)
+2. **💭 Think Elimination**: Each move eliminates entire row or column
+3. **🔄 Practice Path**: Trace through examples to build intuition
+4. **📊 Compare Approaches**: Know when this beats binary search
+5. **🎓 Explain Well**: The staircase metaphor helps in interviews
+
+### General Interview Tips
+
+1. **🗣️ Clarify Properties**: Always ask about matrix properties first!
+2. **📝 State Assumptions**: Mention what you assume about the matrix
+3. **⏱️ Discuss Complexity**: Compare time/space trade-offs of different approaches
+4. **🧪 Test Edge Cases**: Empty matrix, single element, single row/column
+5. **💼 Real-World Context**: Explain where these algorithms apply (databases, search engines)
+6. **🎯 Code Cleanly**: Use meaningful variable names and comments
+
+---
+
+## 🎓 Advanced Insights
+
+### When Matrix Properties Change
+
+**What if rows are sorted but columns are not?**
+- Staircase doesn't work
+- Use binary search on each row: O(m log n)
+
+**What if matrix has negative numbers?**
+- Both algorithms still work!
+- Sorted property is what matters, not sign
+
+**What if you need to find k-th smallest element?**
+- Binary search on value range
+- Use matrix properties to count elements smaller than mid
+
+### Optimization Opportunities
+
+**Problem 1 Optimization:**
+```cpp
+// Skip empty rows/columns if applicable
+if (matrix[0][0] > target) return false;  // Target too small
+if (matrix[m-1][n-1] < target) return false;  // Target too large
+```
+
+**Problem 2 Optimization:**
+```cpp
+// Start from corner closer to target
+// If target < matrix[0][0], return false immediately
+// If target > matrix[m-1][n-1], return false immediately
+```
+
+### Related Algorithms
+
+Both problems relate to:
+- **Binary Search Trees**: Similar elimination strategy
+- **QuadTrees**: Spatial data structures use similar ideas
+- **Database Indexing**: Multi-dimensional index structures
+- **Image Processing**: Finding values in sorted pixel matrices
+
+---
+
+## 🌍 Real-World Applications
+
+### Problem 1: Binary Search on Strictly Sorted Matrix
+
+1. **Database Index Scans**: When data is partitioned and sorted
+2. **Time-Series Data**: Events stored in chronological order across multiple files
+3. **Log File Analysis**: Searching through timestamped logs split into segments
+4. **Pagination Systems**: Finding content across sorted pages
+
+### Problem 2: Staircase Search
+
+1. **Spreadsheet Search**: Finding values in sorted Excel sheets
+2. **Image Processing**: Finding pixels in gradient-sorted images  
+3. **Game Development**: Path-finding in sorted terrain height maps
+4. **Financial Data**: Searching price/time matrices in trading systems
+
+---
+
+## 📈 Performance Optimization Tips
+
+### Memory Access Patterns
+
+**Problem 1:**
+```cpp
+// Good: Sequential access (cache-friendly)
+for (int i = s; i <= e; i++) {
+    int cell = matrix[i / cols][i % cols];
 }
 
-bool searchHelper(vector<vector<int>>& matrix, int target, 
-                  int r1, int c1, int r2, int c2) {
-    if (r1 > r2 || c1 > c2) return false;
-    
-    int midRow = (r1 + r2) / 2;
-    int midCol = (c1 + c2) / 2;
-    
-    if (matrix[midRow][midCol] == target) return true;
-    else if (matrix[midRow][midCol] > target) {
-        return searchHelper(matrix, target, r1, c1, midRow-1, c2) ||
-               searchHelper(matrix, target, midRow, c1, r2, midCol-1);
-    } else {
-        return searchHelper(matrix, target, r1, midCol+1, r2, c2) ||
-               searchHelper(matrix, target, midRow+1, c1, r2, midCol);
-    }
-}
+// Bad: Random access (cache-unfriendly)  
+// Binary search naturally does this, but still faster overall
 ```
-**Time**: O(n^1.58), **Space**: O(log n)  
-**Pros**: Elegant recursive solution  
-**Cons**: More complex, higher space complexity
 
-### Approach 3: Bottom-Left Start (LeetCode 240)
+**Problem 2:**
 ```cpp
-bool searchMatrix(vector<vector<int>>& matrix, int target) {
-    int row = matrix.size() - 1;  // Start from bottom-left
-    int col = 0;
-    
-    while (row >= 0 && col < matrix[0].size()) {
-        if (matrix[row][col] == target) return true;
-        else if (matrix[row][col] > target) row--;  // Move up
-        else col++;  // Move right
-    }
+// Good: Local access pattern (cache-friendly)
+// Staircase search moves to adjacent cells
+// Better cache utilization than random access
+```
+
+### Branch Prediction
+
+Both algorithms have predictable branches:
+```cpp
+// Compiler can optimize these well
+if (cell == target) return true;
+if (cell > target) /* go one way */
+else /* go other way */
+```
+
+### Early Termination
+
+```cpp
+// Add bounds checking for quick rejection
+if (target < matrix[0][0] || target > matrix[m-1][n-1])
     return false;
-}
-```
-**Time**: O(m + n), **Space**: O(1)  
-**Pros**: Alternative corner approach  
-**Cons**: Same complexity as top-right approach
-
----
-
-## 🎯 Key Learning Points
-
-### ✅ **Matrix Search Strategy Selection**
-
-#### **When to Use Binary Search (LeetCode 74 approach)**:
-```cpp
-// ✅ Good for: Fully sorted matrices
-if (matrix_is_globally_sorted) {
-    use_binary_search();  // O(log(m×n))
-}
-
-// Matrix properties required:
-// 1. Each row sorted left to right
-// 2. First element of row > last element of previous row
-// 3. Can be treated as single 1D sorted array
-```
-
-#### **When to Use Corner Elimination (LeetCode 240 approach)**:
-```cpp
-// ✅ Good for: Partially sorted matrices  
-if (rows_sorted && columns_sorted && !globally_sorted) {
-    use_corner_elimination();  // O(m + n)
-}
-
-// Matrix properties required:
-// 1. Each row sorted left to right
-// 2. Each column sorted top to bottom  
-// 3. No global ordering between rows
-```
-
-### ✅ **Index Conversion Mastery**
-
-#### **Critical Formulas**:
-```cpp
-// ✅ 1D to 2D conversion
-int row = index / total_columns;
-int col = index % total_columns;
-
-// ✅ 2D to 1D conversion
-int index = row * total_columns + col;
-
-// ✅ Bounds checking
-bool valid = (row >= 0 && row < rows && col >= 0 && col < cols);
-```
-
-#### **Common Pitfalls to Avoid**:
-```cpp
-// ❌ Wrong: Using rows instead of columns for conversion
-int row = index / total_rows;  // INCORRECT
-
-// ❌ Wrong: Forgetting bounds checking
-int value = matrix[row][col];  // May cause segfault
-
-// ✅ Correct: Always validate before access
-if (row < matrix.size() && col < matrix[0].size()) {
-    int value = matrix[row][col];
-}
-```
-
-### ✅ **Algorithm Complexity Understanding**
-
-#### **Time Complexity Comparison**:
-```
-Problem Size: m×n matrix
-
-Linear Search:     O(m × n)     - Check every element
-Row Binary Search: O(m × log n) - Binary search each row  
-Binary Search:     O(log(m×n))  - Single binary search (LeetCode 74)
-Corner Elimination: O(m + n)    - Eliminate rows/columns (LeetCode 240)
-
-For 1000×1000 matrix:
-Linear:       1,000,000 operations
-Row Binary:   ~10,000 operations  
-Binary:       ~20 operations
-Corner:       ~2,000 operations
 ```
 
 ---
 
-## 📏 Constraints and Implications
+## 🎯 Common Mistakes to Avoid
 
-**Given Constraints:**
-- `m == matrix.length`
-- `n == matrix[i].length`  
-- `1 ≤ m, n ≤ 100`
-- `-10^4 ≤ matrix[i][j], target ≤ 10^4`
+### Problem 1 Mistakes
 
-**Constraint Analysis:**
+❌ **Using `(s + e) / 2`** instead of `s + (e - s) / 2`  
+✅ Always prevent overflow with safe mid calculation
+
+❌ **Wrong index conversion**: `matrix[mid % col][mid / col]`  
+✅ Correct: `matrix[mid / col][mid % col]` (divide first!)
+
+❌ **Forgetting to update mid** inside loop  
+✅ Recalculate `mid = s + (e - s) / 2` after updating s or e
+
+❌ **Off-by-one errors**: `e = row * col` instead of `row * col - 1`  
+✅ Remember: last index is always `total_elements - 1`
+
+### Problem 2 Mistakes
+
+❌ **Starting from top-left or bottom-right**  
+✅ Only top-right or bottom-left work!
+
+❌ **Wrong movement logic**: Moving diagonally  
+✅ Move only horizontally OR vertically each step
+
+❌ **Not checking bounds**: `while (rowIndex < row || colIndex >= 0)`  
+✅ Use AND: `while (rowIndex < row && colIndex >= 0)`
+
+❌ **Forgetting the sorted property** applies to rows AND columns  
+✅ Remember both dimensions are sorted independently
+
+---
+
+## 🎬 Step-by-Step Problem-Solving Framework
+
+### Framework for Problem 1
+
+```mermaid
+flowchart TD
+    A["1. Identify Matrix Properties"] --> B{"Strictly sorted?"}
+    B -->|"Yes"| C["2. Calculate total elements"]
+    C --> D["3. Set up binary search bounds"]
+    D --> E["4. In loop: Convert mid to 2D"]
+    E --> F["5. Compare and adjust bounds"]
+    F --> G["6. Return result"]
+    
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8
+    style G fill:#c8e6c9
 ```
-Small to Medium Matrices: up to 100×100 = 10,000 elements
-→ All approaches (O(log n), O(m+n), O(mn)) are feasible
-→ Focus on correctness and code clarity over micro-optimizations
 
-Integer Range: -10^4 to 10^4
-→ No overflow concerns with standard int operations
-→ No special handling needed for extreme values
+### Framework for Problem 2
 
-Matrix Dimensions: At least 1×1
-→ No need to handle completely empty matrices
-→ Single element matrices are valid edge cases
+```mermaid
+flowchart TD
+    A["1. Identify Matrix Properties"] --> B{"Rows + Columns sorted?"}
+    B -->|"Yes"| C["2. Choose starting corner"]
+    C --> D["3. Initialize row=0, col=n-1"]
+    D --> E["4. Compare current with target"]
+    E --> F["5. Move down or left"]
+    F --> G["6. Return result"]
+    
+    style A fill:#fff8e1
+    style C fill:#ffecb3
+    style G fill:#c8e6c9
 ```
 
 ---
 
-## 🚀 Advanced Topics and Extensions
-
-### 1. **Matrix Search Variations**
-- **Rotated Sorted Matrix**: Search in matrices rotated by 90/180/270 degrees
-- **Sparse Matrix Search**: Optimized search for matrices with many zeros
-- **Multi-dimensional Arrays**: Extending search to 3D+ structures
-
-### 2. **Related Algorithms**
-- **KD-Trees**: For multi-dimensional range searching
-- **Quad-trees**: For 2D spatial data structures
-- **Range Trees**: For orthogonal range queries
-
-### 3. **Related LeetCode Problems**
-- **LeetCode 378**: Kth Smallest Element in a Sorted Matrix
-- **LeetCode 668**: Kth Smallest Number in Multiplication Table
-- **LeetCode 719**: Find K-th Smallest Pair Distance
-- **LeetCode 786**: K-th Smallest Prime Fraction
-
-### 4. **Real-World Applications**
-- **Image Processing**: Searching for patterns in pixel matrices
-- **Game Development**: Pathfinding in grid-based games
-- **Data Analysis**: Searching in structured datasets
-- **Computer Graphics**: Texture and sprite lookup operations
-
----
-
-## 📊 Progress Summary
-
-| Problem | Difficulty | Status | Approach | Time Complexity | Space Complexity |
-|---------|------------|--------|----------|-----------------|------------------|
-| Search a 2D Matrix (74) | Medium | ✅ Solved | Binary Search | O(log(m×n)) | O(1) |
-| Search a 2D Matrix II (240) | Medium | ✅ Solved | Corner Elimination | O(m + n) | O(1) |
-
-## 🎯 Key Learnings Achieved
-
-### ✅ **Matrix Search Algorithm Mastery**
-- **Binary Search on Matrices**: Converting 2D problems to 1D for optimal searching
-- **Index Conversion**: Seamless translation between 1D and 2D coordinates
-- **Corner Elimination**: Strategic row/column elimination for partially sorted matrices
-- **Algorithm Selection**: Choosing optimal approach based on matrix properties
-
-### ✅ **Problem-Solving Pattern Recognition**
-- **Fully vs Partially Sorted**: Identifying matrix sorting characteristics
-- **Search Space Reduction**: Leveraging sorted properties to eliminate possibilities
-- **Boundary Handling**: Robust edge case management in matrix operations
-- **Complexity Trade-offs**: Understanding when different approaches are optimal
-
----
-
-**Total Problems Solved**: 27/∞
-
-*Master matrix algorithms, master structured data search! 🔍*
+**🎉 Congratulations! You now have complete mastery of both 2D matrix search algorithms. You can confidently tackle these problems in interviews, optimize them for different scenarios, and explain the trade-offs between approaches. Keep practicing and happy coding!**
