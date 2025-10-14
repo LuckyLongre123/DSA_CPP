@@ -1,365 +1,194 @@
 /**
  * ================================================================================
- * 📐 LeetCode 976: Largest Perimeter Triangle - Geometric Optimization
+ * LeetCode 976: Largest Perimeter Triangle - Geometry & Greedy Algorithm
  * ================================================================================
  * 
- * 🎯 Problem: Given an integer array nums representing stick lengths, return the 
- * largest possible perimeter of a triangle with a non-zero area. If no triangle 
- * can be formed, return 0.
+ * ! Problem: Given an integer array `nums`, return the largest perimeter of a 
+ * ! triangle with a non-zero area, formed from three of these lengths. If it is 
+ * ! impossible to form any triangle of a non-zero area, return 0.
  * 
- * 📝 Approach: Greedy Algorithm with Sorting
- * 1. Sort the array in descending order to prioritize larger perimeters
- * 2. Check each consecutive triplet from largest to smallest
- * 3. Apply triangle inequality: for sides a ≥ b ≥ c, check if a < b + c
- * 4. Return the first valid triangle's perimeter (guaranteed to be maximum)
- * 5. If no valid triangle exists, return 0
+ * * Approach:
+ * * 1. Sort the array in descending order (largest to smallest)
+ * * 2. Iterate through consecutive triplets from the largest values
+ * * 3. Check triangle inequality: a < b + c (where a is largest side)
+ * * 4. Return the first valid triangle's perimeter
+ * * 5. If no valid triangle found, return 0
  * 
- * ⚡ Time Complexity: O(n log n) - Dominated by sorting operation
- * 💾 Space Complexity: O(log n) - Space used by sorting algorithm (recursion stack)
+ * ? Time Complexity: O(n log n) - Dominated by sorting operation
+ * ? Space Complexity: O(1) - Only constant extra space (sorting is in-place)
  * 
- * 🧠 Key Insight: 
- *    - Triangle Inequality: For any triangle with sides a, b, c:
- *      a + b > c AND a + c > b AND b + c > a
- *    - Optimization: If a ≥ b ≥ c and a < b + c, then other conditions are automatically satisfied
- *    - Greedy Property: First valid triangle in descending order has maximum perimeter
+ * TODO Key Insight: 
+ * *    - Triangle Inequality: Sum of any two sides must be greater than the third
+ * *    - For sorted array, only need to check: largest < (second + third)
+ * *    - Greedy approach: Check largest values first to maximize perimeter
+ * *    - If a triplet fails, all smaller values with same 'a' will also fail
  * 
- * 🚀 Optimizations: 
- *    - Single inequality check instead of three (mathematical optimization)
- *    - Early termination when first valid triangle is found
- *    - Descending sort enables greedy approach for maximum perimeter
+ * * Optimizations: 
+ * *    - Sort in descending order to find maximum perimeter early
+ * *    - Single pass after sorting - early termination on first valid triangle
+ * *    - No need to check all three inequalities (a<b+c, b<a+c, c<a+b)
+ * *    - Since sorted: if a < b+c holds, other inequalities automatically hold
  * ================================================================================
  */
 
- #include <iostream>
- #include <vector>
- #include <algorithm>
- #include <climits>
- #include <cassert>
- #include <chrono>
- #include <iomanip>
- using namespace std;
- 
- class Solution {
- public:
-     /**
-      * !! MAIN FUNCTION: Finds the largest possible perimeter of a triangle
-      * ? Uses greedy approach with sorting to optimize for maximum perimeter
-      * * Algorithm Strategy:
-      *    Time Complexity: O(n log n) - sorting dominates the complexity
-      *    Space Complexity: O(log n) - recursion stack space for sorting
-      * ! @param nums: vector of positive integers representing stick lengths
-      * ! @return: largest possible triangle perimeter, or 0 if no triangle possible
-      * ! @throws: none - handles all edge cases gracefully
-      * * Edge Cases Handled:
-      *    - Empty array: returns 0 (no sticks available)
-      *    - Less than 3 elements: returns 0 (insufficient sticks for triangle)
-      *    - No valid triangles: returns 0 (all triplets violate triangle inequality)
-      *    - All elements same: returns sum of any three (equilateral triangle)
-      * ? Example Usage:
-      *    vector<int> sticks = {2, 1, 2};
-      *    int result = largestPerimeter(sticks); // returns 5
-      */
-     int largestPerimeter(vector<int>& nums) {
-         //// !! Input validation - ensure minimum requirements for triangle formation
-         if (nums.size() < 3) {
-             return 0; //// * Insufficient elements to form any triangle
-         }
-         
-         //// !! Step 1: Sort in descending order for greedy optimization
-         //// ? Descending sort ensures we check largest possible perimeters first
-         //// * This enables early termination when first valid triangle is found
-         sort(nums.begin(), nums.end(), greater<int>());
-         
-         int n = static_cast<int>(nums.size()); //// ! Safe conversion from size_t
-         
-         //// !! Step 2: Iterate through all possible consecutive triplets
-         //// ? We check consecutive triplets because sorting guarantees a ≥ b ≥ c
-         //// * Loop invariant: nums[i] ≥ nums[i+1] ≥ nums[i+2] for all valid i
-         for (int i = 0; i < n - 2; i++) {
-             int a = nums[i];     //// * Largest side of current triplet
-             int b = nums[i + 1]; //// * Second largest side
-             int c = nums[i + 2]; //// * Smallest side
-             
-             //// !! Step 3: Apply triangle inequality theorem
-             //// ? For sorted sides a ≥ b ≥ c, only need to check: a < b + c
-             //// * Mathematical proof: if a < b + c, then b < a + c and c < a + b automatically hold
-             if (a < b + c) {
-                 //// !! Valid triangle found - return perimeter immediately
-                 //// ? Since array is sorted descending, this is guaranteed to be maximum perimeter
-                 //// * Greedy property: first valid triangle has largest possible perimeter
-                 return a + b + c;
-             }
-             //// ? If triangle inequality fails, continue to next triplet
-             //// * Current triplet: a ≥ b + c, so no valid triangle with these sides
-         }
-         
-         //// !! Step 4: No valid triangle found after checking all triplets
-         //// ? All possible triplets violated the triangle inequality
-         //// * This happens when the largest side is always ≥ sum of other two sides
-         return 0;
-     }
-     
-     
-     /**
-      * !! UTILITY FUNCTION: Validates if three sides can form a valid triangle
-      * ? Implements complete triangle inequality check for educational purposes
-      * * Mathematical Foundation:
-      *    - Triangle Inequality Theorem: sum of any two sides > third side
-      *    - All three conditions must be satisfied simultaneously
-      * ! @param a, b, c: three side lengths (any order)
-      * ! @return: true if sides can form valid triangle, false otherwise
-      */
-     bool isValidTriangle(int a, int b, int c) {
-         //// !! Check all three triangle inequality conditions
-         //// ? Condition 1: a + b > c
-         //// ? Condition 2: a + c > b  
-         //// ? Condition 3: b + c > a
-         //// * All must be true for valid triangle formation
-         return (a + b > c) && (a + c > b) && (b + c > a);
-     }
-     
- };
- 
- // ============================================================
- // COMPREHENSIVE TESTING SUITE - Validates solution correctness
- // ============================================================
- 
- /**
-  * !! HELPER FUNCTION: Prints formatted test results with status indicators
-  * ? Provides clear pass/fail status with detailed information
-  * * Output Format:
-  *    - Test input and expected/actual results
-  *    - Status indicators (PASS/FAIL)
-  *    - Detailed explanation for failures
-  */
- void printTestResult(const vector<int>& input, int result, int expected, const string& testName) {
-     cout << "\n" << testName << "\n";
-     cout << "   Input:    [";
-     for (size_t i = 0; i < input.size(); ++i) {
-         cout << input[i];
-         if (i < input.size() - 1) cout << ", ";
-     }
-     cout << "]\n";
-     cout << "   Result:   " << result << "\n";
-     cout << "   Expected: " << expected << "\n";
-     cout << "   Status:   " << (result == expected ? "PASS" : "FAIL");
-     if (result != expected) {
-         cout << " (Got: " << result << ", Expected: " << expected << ")";
-     }
-     cout << "\n";
- }
- 
- /**
-  * !! COMPREHENSIVE TEST RUNNER: Executes all test categories
-  * ? Covers normal cases, edge cases, and performance scenarios
-  * * Test Categories:
-  *    1. Basic valid triangles
-  *    2. Invalid triangle cases  
-  *    3. Edge cases (empty, small arrays)
-  *    4. Large input performance tests
-  *    5. Mathematical boundary conditions
-  */
- int main() {
-     Solution solution;
-     
-     cout << "LeetCode 976: Largest Perimeter Triangle - Comprehensive Test Suite\n";
-     cout << string(70, '=') << "\n";
-     
-     //// !! Test Category 1: Basic Valid Triangles
-     cout << "\nCategory 1: Basic Valid Triangle Cases\n";
-     cout << string(40, '-') << "\n";
-     
-     // Test Case 1.1: Simple valid triangle
-     {
-         vector<int> nums = {2, 1, 2};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 5, "Simple Valid Triangle");
-     }
-     
-     // Test Case 1.2: Multiple valid triangles - choose largest
-     {
-         vector<int> nums = {3, 2, 3, 4};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 10, "Multiple Valid Triangles");
-     }
-     
-     // Test Case 1.3: Equilateral triangle
-     {
-         vector<int> nums = {5, 5, 5};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 15, "Equilateral Triangle");
-     }
-     
-     // Test Case 1.4: Scalene triangle with larger array
-     {
-         vector<int> nums = {1, 2, 2, 3, 4, 5};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 12, "Scalene Triangle (Large Array)");
-     }
-     
-     //// !! Test Category 2: Invalid Triangle Cases
-     cout << "\nCategory 2: Invalid Triangle Cases\n";
-     cout << string(40, '-') << "\n";
-     
-     // Test Case 2.1: Triangle inequality violation
-     {
-         vector<int> nums = {1, 1, 10};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Triangle Inequality Violation");
-     }
-     
-     // Test Case 2.2: All triplets invalid
-     {
-         vector<int> nums = {3, 6, 2};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "All Triplets Invalid");
-     }
-     
-     // Test Case 2.3: Geometric progression (no valid triangles)
-     {
-         vector<int> nums = {1, 2, 4, 8};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Geometric Progression");
-     }
-     
-     //// !! Test Category 3: Edge Cases
-     cout << "\nCategory 3: Edge Cases\n";
-     cout << string(40, '-') << "\n";
-     
-     // Test Case 3.1: Minimum size (less than 3 elements)
-     {
-         vector<int> nums = {1, 2};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Insufficient Elements");
-     }
-     
-     // Test Case 3.2: Empty array
-     {
-         vector<int> nums = {};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Empty Array");
-     }
-     
-     // Test Case 3.3: Single element
-     {
-         vector<int> nums = {42};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Single Element");
-     }
-     
-     // Test Case 3.4: Exactly three elements - valid
-     {
-         vector<int> nums = {3, 4, 5};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 12, "Exactly Three Elements (Valid)");
-     }
-     
-     // Test Case 3.5: Exactly three elements - invalid
-     {
-         vector<int> nums = {1, 10, 12};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Exactly Three Elements (Invalid)");
-     }
-     
-     //// !! Test Category 4: Boundary and Large Number Cases
-     cout << "\nCategory 4: Boundary Cases\n";
-     cout << string(40, '-') << "\n";
-     
-     // Test Case 4.1: Large numbers
-     {
-         vector<int> nums = {1000000, 999999, 999998};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 2999997, "Large Numbers");
-     }
-     
-     // Test Case 4.2: All elements identical
-     {
-         vector<int> nums = {7, 7, 7, 7, 7};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 21, "All Elements Identical");
-     }
-     
-     // Test Case 4.3: Mixed small and large numbers
-     {
-         vector<int> nums = {1, 1, 1000000};
-         int result = solution.largestPerimeter(nums);
-         printTestResult(nums, result, 0, "Mixed Small and Large");
-     }
-     
-     //// !! Test Category 5: Performance Testing
-     cout << "\nCategory 5: Performance Analysis\n";
-     cout << string(40, '-') << "\n";
-     
-     // Performance test with large input (optimal algorithm only)
-     {
-         vector<int> largeInput;
-         for (int i = 1; i <= 10000; ++i) {
-             largeInput.push_back(i % 100 + 1); //// * Create realistic distribution
-         }
-         
-         auto start = chrono::high_resolution_clock::now();
-         int result = solution.largestPerimeter(largeInput);
-         auto end = chrono::high_resolution_clock::now();
-         auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-         
-         cout << "\nLarge Input Performance Test (n=10,000):\n";
-         cout << "   Result: " << result << "\n";
-         cout << "   Time: " << duration.count() << " microseconds\n";
-         cout << "   Status: " << (duration.count() < 10000 ? "Efficient" : "Slow") << "\n";
-     }
-     
-     //// !! Test Summary and Algorithm Validation
-     cout << "\nAlgorithm Correctness Validation\n";
-     cout << string(40, '-') << "\n";
-     
-     // Validate triangle inequality understanding
-     {
-         vector<int> testSides = {3, 4, 5}; //// * Classic 3-4-5 right triangle
-         bool isValid = solution.isValidTriangle(3, 4, 5);
-         cout << "Triangle Inequality Validation: " << (isValid ? "PASS" : "FAIL") << "\n";
-         
-         bool isInvalid = !solution.isValidTriangle(1, 1, 10);
-         cout << "Invalid Triangle Detection: " << (isInvalid ? "PASS" : "FAIL") << "\n";
-     }
-     
-     cout << "\nTest Suite Completed Successfully!\n";
-     cout << "All geometric algorithms validated and performance benchmarked.\n";
-     cout << string(70, '=') << "\n";
-     
-     return 0;
- }
- 
- /*
-  * ================================================================================
-  * ALGORITHM ANALYSIS & MATHEMATICAL FOUNDATIONS
-  * ================================================================================
-  * 
-  * Triangle Inequality Theorem:
-  *    For any triangle with sides a, b, c: a + b > c AND a + c > b AND b + c > a
-  *    
-  * Optimization Insight:
-  *    If sides are sorted as a ≥ b ≥ c, then checking a < b + c is sufficient
-  *    because: b < a + c and c < a + b are automatically satisfied
-  *    
-  * Time Complexity Breakdown:
-  *    - Sorting: O(n log n) using comparison-based algorithm
-  *    - Linear scan: O(n) to check consecutive triplets
-  *    - Overall: O(n log n) - sorting dominates
-  *    
-  * Space Complexity Analysis:
-  *    - Auxiliary space: O(1) for variables
-  *    - Sorting space: O(log n) for recursion stack
-  *    - Total: O(log n) - practically constant for reasonable inputs
-  *    
-  * Greedy Algorithm Justification:
-  *    - Greedy choice: Always try largest available sides first
-  *    - Optimal substructure: If [a,b,c] is optimal, no larger valid triangle exists
-  *    - Correctness: Descending sort ensures first valid triangle has maximum perimeter
-  *    
-  * Educational Extensions:
-  *    - Computational Geometry: Convex hull algorithms, polygon triangulation
-  *    - Optimization Theory: Greedy vs dynamic programming approaches
-  *    - Real-world Applications: Structural engineering, computer graphics, manufacturing
-  * ================================================================================
-  */
- 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    /**
+     * Finds the largest perimeter of a valid triangle from given side lengths
+     * @param nums Vector of positive integers representing potential side lengths
+     * @return The largest perimeter possible, or 0 if no valid triangle exists
+     */
+    int largestPerimeter(vector<int>& nums) {
+        // * Sort in descending order to check largest possible perimeters first
+        sort(nums.begin(), nums.end(), greater<int>());
+        
+        int n = nums.size();
+        
+        // * Iterate through all possible triplets of consecutive elements
+        // ? We check consecutive triplets because sorting ensures optimal pairing
+        for (int i = 0; i < n - 2; i++) {
+            int a = nums[i];      // * Largest side of current triplet
+            int b = nums[i + 1];  // * Second largest side
+            int c = nums[i + 2];  // * Smallest side of triplet
+            
+            // ! Triangle Inequality Check: largest side < sum of other two sides
+            // ? Since array is sorted (a >= b >= c), we only need to check a < b + c
+            // ? If this holds, then b < a + c and c < a + b automatically hold
+            if (a < b + c) {
+                // * Valid triangle found! Return perimeter immediately
+                return a + b + c;
+            }
+            
+            // ? If a >= b + c, then this triplet cannot form a valid triangle
+            // ? Continue to next triplet with smaller values
+        }
+        
+        // ! No valid triangle found after checking all triplets
+        return 0;
+    }
+};
+
+// ============================================================
+// * TESTING SUITE - Verifies solution with various test cases
+// ============================================================
+
+/**
+ * Helper function to print test result with visual formatting
+ */
+void printTestResult(vector<int> nums, int result, int expected) {
+    cout << "\nInput: [";
+    for (int i = 0; i < nums.size(); i++) {
+        cout << nums[i];
+        if (i < nums.size() - 1) cout << ", ";
+    }
+    cout << "]\n";
+    cout << "   Result:   " << result << "\n";
+    cout << "   Expected: " << expected << "\n";
+    cout << "   Status:   " << (result == expected ? "✅ PASS" : "❌ FAIL");
+    if (result != expected) {
+        cout << " (Expected: " << expected << ")";
+    }
+    cout << "\n";
+}
+
+int main() {
+    Solution solution;
+    
+    // * Test Case 1: Standard case with valid triangle
+    {
+        vector<int> nums = {2, 1, 2};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 5);
+        // ? Sorted: [2, 2, 1] → 2 < 2+1 ✓ → Perimeter = 5
+    }
+    
+    // * Test Case 2: Multiple triangles possible
+    {
+        vector<int> nums = {3, 2, 3, 4};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 10);
+        // ? Sorted: [4, 3, 3, 2] → 4 < 3+3 ✓ → Perimeter = 10
+    }
+    
+    // ! Test Case 3: No valid triangle possible
+    {
+        vector<int> nums = {1, 2, 1};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 0);
+        // ? Sorted: [2, 1, 1] → 2 >= 1+1 ✗ → No triangle
+    }
+    
+    // * Test Case 4: Large array with valid triangle
+    {
+        vector<int> nums = {3, 6, 2, 3};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 8);
+        // ? Sorted: [6, 3, 3, 2] → 6 >= 3+3 ✗, then 3 < 3+2 ✓ → Perimeter = 8
+    }
+    
+    // * Test Case 5: All sides equal (equilateral triangle)
+    {
+        vector<int> nums = {5, 5, 5};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 15);
+        // ? Sorted: [5, 5, 5] → 5 < 5+5 ✓ → Perimeter = 15
+    }
+    
+    // ! Test Case 6: Two very small sides
+    {
+        vector<int> nums = {1, 1, 100};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 0);
+        // ? Sorted: [100, 1, 1] → 100 >= 1+1 ✗ → No triangle
+    }
+    
+    // * Test Case 7: Large perimeter case
+    {
+        vector<int> nums = {10, 20, 15};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 45);
+        // ? Sorted: [20, 15, 10] → 20 < 15+10 ✓ → Perimeter = 45
+    }
+    
+    // * Test Case 8: Multiple elements, largest triangle in middle
+    {
+        vector<int> nums = {1, 2, 2, 4, 18, 8};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 20);
+        // ? Sorted: [18, 8, 4, 2, 2, 1] → 18 >= 8+4 ✗ → 8 < 4+2 fails... → checks until 8+4+2 or 4+2+2
+    }
+    
+    // * Test Case 9: Minimum input size
+    {
+        vector<int> nums = {5, 4, 3};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 12);
+        // ? Sorted: [5, 4, 3] → 5 < 4+3 ✓ → Perimeter = 12
+    }
+    
+    // ! Test Case 10: Barely fails triangle inequality
+    {
+        vector<int> nums = {10, 5, 5};
+        int result = solution.largestPerimeter(nums);
+        printTestResult(nums, result, 0);
+        // ? Sorted: [10, 5, 5] → 10 >= 5+5 ✗ → No triangle
+    }
+    
+    return 0;
+}
+
+/*
+ * ================================================================================
+ * TODO Additional Notes:
+ * * - The greedy approach works because sorting ensures we check maximum perimeters first
+ * ! - Triangle inequality only needs one check when sides are sorted: a < b + c
+ * * - Time complexity is dominated by sorting O(n log n), iteration is O(n)
+ * ? - Degenerate triangles (zero area) occur when a = b + c (equality case)
+ * * - Solution is optimal - cannot improve beyond O(n log n) due to sorting requirement
+ * ================================================================================
+ */

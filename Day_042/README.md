@@ -1,4 +1,4 @@
-# Day 40: 🔺 Triangle Minimum Path Sum - Complete Beginner's Guide
+# Day 42: 🔺 Triangle Minimum Path Sum - Complete Beginner's Guide
 
 > **Master dynamic programming and space optimization step by step!**
 

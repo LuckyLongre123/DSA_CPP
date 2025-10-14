@@ -1,4 +1,4 @@
-# 📐 Largest Perimeter Triangle - Complete Geometry Guide
+# Day 45: 📐 Largest Perimeter Triangle - Complete Geometry Guide
 
 > **Master triangle formation and geometric optimization step by step!**
 

@@ -1,4 +1,4 @@
-# 🔍 Find Words Containing Character - Complete Beginner's Guide
+# Day 41: 🔍 Find Words Containing Character - Complete Beginner's Guide
 
 > **Master string searching and array indexing step by step!**
 
