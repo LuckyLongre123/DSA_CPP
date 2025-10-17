@@ -83,13 +83,6 @@ public:
  */
 void printTestResult(const string& testName, const vector<int>& nums, int result, const vector<int>& expectedNums, int expectedResult) {
     cout << "\n" << testName << "\n";
-    cout << "   Input:    [";
-    for (size_t i = 0; i < nums.size(); i++) {
-        cout << nums[i];
-        if (i != nums.size() - 1) cout << ", ";
-    }
-    cout << "]\n";
-    
     cout << "   Output:   " << result << ", nums = [";
     for (int i = 0; i < result; i++) {
         cout << nums[i];
@@ -97,9 +90,15 @@ void printTestResult(const string& testName, const vector<int>& nums, int result
     }
     cout << "]\n";
     
+    cout << "   Expected: " << expectedResult << ", nums = [";
+    for (size_t i = 0; i < expectedNums.size(); i++) {
+        cout << expectedNums[i];
+        if (i != expectedNums.size() - 1) cout << ", ";
+    }
+    cout << "]\n";
+    
     bool isCorrect = (result == expectedResult);
     if (isCorrect) {
-        // Verify the first 'result' elements match expectedNums
         for (int i = 0; i < result && i < (int)expectedNums.size(); i++) {
             if (nums[i] != expectedNums[i]) {
                 isCorrect = false;
@@ -107,13 +106,6 @@ void printTestResult(const string& testName, const vector<int>& nums, int result
             }
         }
     }
-    
-    cout << "   Expected: " << expectedResult << ", nums = [";
-    for (size_t i = 0; i < expectedNums.size(); i++) {
-        cout << expectedNums[i];
-        if (i != expectedNums.size() - 1) cout << ", ";
-    }
-    cout << "]\n";
     
     cout << "   Status:   " << (isCorrect ? "PASS" : "FAIL") << "\n";
 }
@@ -124,46 +116,41 @@ int main() {
     // * Test Case 1: Basic case with duplicates
     {
         vector<int> nums = {1, 1, 2};
-        vector<int> original = nums;
         int result = solution.removeDuplicates(nums);
         vector<int> expectedNums = {1, 2};
-        printTestResult("Test Case 1: Basic case with duplicates", original, result, expectedNums, 2);
+        printTestResult("Test Case 1: Basic case with duplicates", nums, result, expectedNums, 2);
     }
     
     // * Test Case 2: Multiple duplicates
     {
         vector<int> nums = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
-        vector<int> original = nums;
         int result = solution.removeDuplicates(nums);
         vector<int> expectedNums = {0, 1, 2, 3, 4};
-        printTestResult("Test Case 2: Multiple duplicates", original, result, expectedNums, 5);
+        printTestResult("Test Case 2: Multiple duplicates", nums, result, expectedNums, 5);
     }
     
     // * Test Case 3: No duplicates
     {
         vector<int> nums = {1, 2, 3, 4, 5};
-        vector<int> original = nums;
         int result = solution.removeDuplicates(nums);
         vector<int> expectedNums = {1, 2, 3, 4, 5};
-        printTestResult("Test Case 3: No duplicates", original, result, expectedNums, 5);
+        printTestResult("Test Case 3: No duplicates", nums, result, expectedNums, 5);
     }
     
     // ! Test Case 4: Empty array
     {
         vector<int> nums = {};
-        vector<int> original = nums;
         int result = solution.removeDuplicates(nums);
         vector<int> expectedNums = {};
-        printTestResult("Test Case 4: Empty array", original, result, expectedNums, 0);
+        printTestResult("Test Case 4: Empty array", nums, result, expectedNums, 0);
     }
     
     // * Test Case 5: All elements same
     {
         vector<int> nums = {7, 7, 7, 7, 7};
-        vector<int> original = nums;
         int result = solution.removeDuplicates(nums);
         vector<int> expectedNums = {7};
-        printTestResult("Test Case 5: All elements same", original, result, expectedNums, 1);
+        printTestResult("Test Case 5: All elements same", nums, result, expectedNums, 1);
     }
     
     // * Test Case 6: Large input (performance test)
