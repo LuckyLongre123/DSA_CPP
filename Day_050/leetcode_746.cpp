@@ -1,6 +1,6 @@
 /**
  * ================================================================================
- * LeetCode 746: Min Cost Climbing Stairs - Dynamic Programming
+ * LeetCode 746: Min Cost Climbing Stairs
  * ================================================================================
  * 
  * ! Problem: You are given an integer array `cost` where cost[i] is the cost of 
