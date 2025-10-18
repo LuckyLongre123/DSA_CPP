@@ -228,6 +228,89 @@ Computational Geometry - Triangle Area Calculations ⭐ **GOLD STANDARD ENHANCED
 Geometric Optimization - Triangle Perimeter
 - [Largest Perimeter Triangle (LeetCode 976)](https://leetcode.com/problems/largest-perimeter-triangle/) - Easy
 
+**Day 46** [View Code](Day_046) - 29 Sep, 2025  
+Array Permutations & Constraint Checking
+- [Find Three-Digit Even Numbers (LeetCode 2094)](https://leetcode.com/problems/finding-3-digit-even-numbers/) - Easy
+
+**Day 47** [View Code](Day_047) - 30 Sep, 2025  
+Array Transformation & Dimension Validation
+- [Convert 1D Array Into 2D Array (LeetCode 2022)](https://leetcode.com/problems/convert-1d-array-into-2d-array/) - Easy
+
+**Day 48** [View Code](Day_048) - 1 Oct, 2025  
+Dynamic Programming - Tribonacci Sequence
+- [N-th Tribonacci Number (LeetCode 1137)](https://leetcode.com/problems/n-th-tribonacci-number/) - Easy
+
+**Day 49** [View Code](Day_049) - 2 Oct, 2025  
+Recursion Masterclass & Dynamic Programming
+- [Climbing Stairs (LeetCode 70)](https://leetcode.com/problems/climbing-stairs/) - Easy
+
+**Recursion Topics Covered**:
+- Basic Recursion Concepts (Call Stack, Base Case, Recursion Depth)
+- Parameterised vs Functional Recursion
+- Recursion with Arrays & Strings
+- Mathematical Recursion Problems
+- Backtracking Basics
+- Recursive Sorting Algorithms (Merge Sort & Quick Sort)
+- Recursion vs Iteration
+- Tail Recursion Optimization
+- Recursion Depth & Stack Overflow
+- Advanced Problem Solving Patterns
+
+**Day 50** [View Code](Day_050) - 3 Oct, 2025  
+Dynamic Programming - House Robber
+- [House Robber (LeetCode 198)](https://leetcode.com/problems/house-robber/) - Medium
+
+**Day 51** [View Code](Day_051) - 4 Oct, 2025  
+String Sequence Generation
+- [Count and Say (LeetCode 38)](https://leetcode.com/problems/count-and-say/) - Medium
+
+**Day 52** [View Code](Day_052) - 5 Oct, 2025  
+Sliding Window - String Manipulation
+- [Longest Substring Without Repeating Characters (LeetCode 3)](https://leetcode.com/problems/longest-substring-without-repeating-characters/) - Medium
+
+**Day 53** [View Code](Day_053) - 6 Oct, 2025  
+Array & String Manipulation
+- [Best Time to Buy and Sell Stock (LeetCode 121)](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) - Easy
+- [Plus One (LeetCode 66)](https://leetcode.com/problems/plus-one/) - Easy
+- [Add Binary (LeetCode 67)](https://leetcode.com/problems/add-binary/) - Easy
+- [Binary Search (LeetCode 704)](https://leetcode.com/problems/binary-search/) - Easy
+
+**Day 54** [View Code](Day_054) - 7 Oct, 2025  
+Backtracking & Recursion
+- [Letter Combinations of a Phone Number (LeetCode 17)](https://leetcode.com/problems/letter-combinations-of-a-phone-number/) - Medium
+- [Subsets (LeetCode 78)](https://leetcode.com/problems/subsets/) - Medium
+
+**Day 55** [View Code](Day_055) - 8 Oct, 2025  
+Bit Manipulation & String Operations
+- [Missing Number (LeetCode 268)](https://leetcode.com/problems/missing-number/) - Easy
+- [Length of Last Word (LeetCode 58)](https://leetcode.com/problems/length-of-last-word/) - Easy
+- [Find the Maximum Achievable Number (LeetCode 3701)](https://leetcode.com/problems/find-the-maximum-achievable-number/) - Easy
+- [Maximum Strong Pair XOR I (LeetCode 3707)](https://leetcode.com/problems/maximum-strong-pair-xor-i/) - Easy
+
+**Day 56** [View Code](Day_056) - 9 Oct, 2025  
+Backtracking & Bit Manipulation
+- [Combinations (LeetCode 77)](https://leetcode.com/problems/combinations/) - Medium
+- [Find the Maximum Sum of Node Values (LeetCode 3702)](https://leetcode.com/problems/find-the-maximum-sum-of-node-values/) - Hard
+
+**Day 57** [View Code](Day_057) - 10 Oct, 2025  
+Bit Manipulation & Math
+- [Minimum Operations to Make a Special Number (LeetCode 3708)](https://leetcode.com/problems/minimum-operations-to-make-a-special-number/) - Medium
+- [Count the Number of Powerful Integers (LeetCode 3709)](https://leetcode.com/problems/count-the-number-of-powerful-integers/) - Hard
+
+**Day 58** [View Code](Day_058) - 11 Oct, 2025  
+Backtracking & Permutations
+- [Permutations (LeetCode 46)](https://leetcode.com/problems/permutations/) - Medium
+- [Permutations II (LeetCode 47)](https://leetcode.com/problems/permutations-ii/) - Medium
+
+**Day 59** [View Code](Day_059) - 12 Oct, 2025  
+Math & Bit Manipulation
+- [Power of Three (LeetCode 326)](https://leetcode.com/problems/power-of-three/) - Easy
+- [Power of Four (LeetCode 342)](https://leetcode.com/problems/power-of-four/) - Easy
+
+**Day 60** [View Code](Day_060) - 13 Oct, 2025  
+String Manipulation
+- [Zigzag Conversion (LeetCode 6)](https://leetcode.com/problems/zigzag-conversion/) - Medium
+
 --- 
 
 ## 🛠️ How to Use This Repository
