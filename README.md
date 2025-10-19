@@ -360,36 +360,102 @@ Linked List Manipulation Mastery
 ## 🛠️ How to Use This Repository
 
 ### Prerequisites
-- Basic computer literacy
-- Any C++ compiler (GCC, Clang, MSVC)
-- Text editor or IDE (VS Code, Code::Blocks, Dev-C++)
-- Online compiler option: [Programiz C++ Compiler](https://www.programiz.com/cpp-programming/online-compiler)
+#### Required Tools
+- Any C++ compiler (GCC recommended for beginners)
+- Code editor (VS Code recommended with C/C++ extension)
+- Git for version control
+- CMake (optional, for larger projects)
 
-### Daily Study Plan
-1. **Read the README** in each day's folder
-2. **Study the simple code examples** with beginner-friendly comments
-3. **Run and experiment** with the provided programs
-4. **Try the practice exercises** at your own pace
-5. **Take notes** on key concepts and don't rush
+#### Optional Tools
+- Online IDE: [Programiz C++ Compiler](https://www.programiz.com/cpp-programming/online-compiler)
+- [Compiler Explorer](https://godbolt.org/) for understanding code compilation
+- [CPP Insights](https://cppinsights.io/) for deeper C++ understanding
 
+### 📚 Learning Path Guide
 
-## 🔧 Setup Instructions
+#### 1. Getting Started
+- Begin with `Day_001` to `Day_010` for C++ fundamentals
+- Each day builds upon previous concepts
+- Complete all exercises before moving forward
+- Use the practice problems to reinforce learning
 
-### Local Development
-```bash
-# Clone the repository
+#### 2. Problem-Solving Phase
+- Start from `Day_011` onwards for DSA
+- Focus on one topic at a time
+- Try solving problems before checking solutions
+- Review and understand the optimized solutions
+
+#### 3. Daily Study Routine
+1. 📖 **Read Theory First**
+   - Review README.md in each day's folder
+   - Understand the concepts before coding
+   - Take notes on key points
+
+2. 💻 **Practice Code**
+   - Study and run example programs
+   - Modify code to experiment
+   - Debug and fix errors
+   - Try variations of problems
+
+3. 🎯 **Solve Problems**
+   - Attempt practice exercises
+   - Start with easier problems
+   - Use hints only when stuck
+   - Review others' solutions
+
+4. 📝 **Review & Reflect**
+   - Document your learnings
+   - Note difficult concepts
+   - Create your own examples
+   - Track your progress
+
+## 🔧 Setup Guide
+
+### Local Development Setup
+
+#### Windows
+```powershell
+# Install MinGW (GCC for Windows)
+winget install GnuWin32.MinGW
+
+# Clone repository
 git clone <repository-url>
+cd DSA_CPP
 
-# Navigate to any day's folder
-cd Day_001
+# Compile and run (PowerShell)
+g++ Day_001/basics.cpp -o program
+.\program
+```
+
+#### Linux/macOS
+```bash
+# Install GCC (Linux)
+sudo apt-get install build-essential  # Ubuntu
+brew install gcc                      # macOS
+
+# Clone and navigate
+git clone <repository-url>
+cd DSA_CPP
 
 # Compile and run
-g++ filename.cpp -o program
+g++ Day_001/basics.cpp -o program
 ./program
 ```
 
-### Online Compiler
-Visit [Programiz C++ Compiler](https://www.programiz.com/cpp-programming/online-compiler) and copy-paste any `.cpp` file to run directly in browser.
+### VS Code Setup
+1. Install [VS Code](https://code.visualstudio.com/)
+2. Install Extensions:
+   - C/C++ Extension Pack
+   - Code Runner
+   - GitLens (optional)
+3. Configure build tasks for C++
+4. Use integrated terminal for compilation
+
+### Quick Start with Online Compiler
+1. Visit [Programiz C++ Compiler](https://www.programiz.com/cpp-programming/online-compiler)
+2. Copy code from any `.cpp` file
+3. Paste and run directly in browser
+4. Great for quick testing and experimentation
 
 ## 🚀 Next Steps
 
