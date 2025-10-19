@@ -60,6 +60,10 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ---
 
+---
+# 🧩 ARRAY
+---
+
 **Day 11** [View Code](Day_011) - 25 Aug, 2025  
 Array Problems
 - [Two Sum (LeetCode 1)](https://leetcode.com/problems/two-sum/) - Easy
@@ -166,6 +170,10 @@ Sliding Window - String Permutation
 String Compression & Two Pointers
 - [String Compression (LeetCode 443)](https://leetcode.com/problems/string-compression/) - Medium
 
+---
+# 🧩 2D - ARRAY
+---
+
 **Day 35** [View Code](Day_035) - 18 Sep, 2025  
 2D Array Traversal - Spiral Matrix
 - [Spiral Matrix (LeetCode 54)](https://leetcode.com/problems/spiral-matrix/) - Medium
@@ -178,6 +186,10 @@ String Compression & Two Pointers
 Matrix Search Algorithms - Binary Search & Elimination
 - [Search a 2D Matrix (LeetCode 74)](https://leetcode.com/problems/search-a-2d-matrix/) - Medium
 - [Search a 2D Matrix II (LeetCode 240)](https://leetcode.com/problems/search-a-2d-matrix-ii/) - Medium
+
+---
+# 🧩 POINTERS
+---
 
 **Day 38** [View Code](Day_038) - 21 Sep, 2025  
 Mathematical Optimization & Arithmetic Series Mastery + **Complete C++ Pointers Guide**
@@ -194,6 +206,10 @@ Mathematical Optimization & Arithmetic Series Mastery + **Complete C++ Pointers 
 **Day 39** [View Code](Day_39) - 22 Sep, 2025  
 Two Pointers & Area Optimization Mastery
 - [Container With Most Water (LeetCode 11)](https://leetcode.com/problems/container-with-most-water/) - Medium
+
+---
+# 🧩 BINARY SEARCH
+---
 
 **Day 40** [View Code](Day_040) - 24 Sep, 2025  
 Binary Search & Insertion Position Mastery
@@ -226,6 +242,10 @@ Array Permutations & Constraint Checking
 **Day 47** [View Code](Day_047) - 30 Sep, 2025  
 Array Transformation & Dimension Validation
 - [Convert 1D Array Into 2D Array (LeetCode 2022)](https://leetcode.com/problems/convert-1d-array-into-2d-array/) - Easy
+
+---
+# 🧩 RECURSION
+---
 
 **Day 48** [View Code](Day_048) - 1 Oct, 2025  
 Recursion - Tribonacci Sequence
@@ -301,8 +321,39 @@ Math & Bit Manipulation
 - [Power of Four (LeetCode 342)](https://leetcode.com/problems/power-of-four/) - Easy
 
 **Day 60** [View Code](Day_060) - 13 Oct, 2025  
-String Manipulation
+String Manipulation & Object-Oriented Programming
 - [Zigzag Conversion (LeetCode 6)](https://leetcode.com/problems/zigzag-conversion/) - Medium
+- **OOPs Part 1 Concepts Covered**:
+  - Class & Object Basics
+  - Structure and Memory
+  - Constructors
+  - Object Copying and Assignment
+  - Initialization and Constants
+  - Destructors
+  - Static Members
+- **OOPs Part 2 Concepts Covered**:
+  - Access Modifiers
+  - Encapsulation (Data Hiding)
+  - Inheritance
+  - Polymorphism
+  - Abstraction
+
+---
+# 🧩 LINKED LIST
+---
+
+**Day 61** [View Code](Day_061) - 14 Oct, 2025  
+Linked List Manipulation Mastery
+- [Reverse Linked List (LeetCode 206)](https://leetcode.com/problems/reverse-linked-list/) - Easy
+- [Middle of the Linked List (LeetCode 876)](https://leetcode.com/problems/middle-of-the-linked-list/) - Easy
+- **Topics Covered**:
+  - Understanding Nodes & Pointers
+  - Three-Pointer Reversal Technique
+  - Two-Pointer (Slow-Fast) Algorithm
+  - In-Place Operations
+  - Recursive Solutions
+  - Linked List Fundamentals Guide
+  - Time & Space Complexity Analysis
 
 --- 
 
