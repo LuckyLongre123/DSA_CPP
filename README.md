@@ -32,7 +32,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![LeetCode Stats](https://leetcard.jacoblin.cool/Lucky_Longre_SD)
 
-**Total Problems Solved: 66** (as of 18 Oct, 2025)
+**Total Problems Solved: 72** (as of 21 Oct, 2025)
 
 ## 📚 Learning Path Structure
 
@@ -56,7 +56,7 @@ A **beginner-friendly** learning path from C++ basics to programming confidence.
 
 ![Data Structures Classification](https://media.geeksforgeeks.org/wp-content/uploads/20220520182504/ClassificationofDataStructure-660x347.jpg)
 
-### 🔥 Current Progress: **60 Days | 68 Problems Solved**
+### 🔥 Current Progress: **63 Days | 72 Problems Solved**
 
 ---
 
@@ -355,6 +355,13 @@ Linked List Manipulation Mastery
   - Linked List Fundamentals Guide
   - Time & Space Complexity Analysis
 
+**Day 62** [View Code](Day_062) - 15 Oct, 2025  
+Advanced Linked List Manipulation
+- [Reverse Nodes in k-Group (LeetCode 25)](https://leetcode.com/problems/reverse-nodes-in-k-group/) - Hard
+
+**Day 63** [View Code](Day_063) - 16 Oct, 2025  
+Floyd's Cycle Detection Algorithm
+- [Linked List Cycle (LeetCode 141)](https://leetcode.com/problems/linked-list-cycle/) - Easy
 --- 
 
 ## 🛠️ How to Use This Repository
