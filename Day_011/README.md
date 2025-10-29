@@ -1,54 +1,50 @@
-# Day 11:  Two Classic LeetCode Problems - Complete Beginner's Guide
+# Day 11: Two Classic LeetCode Problems - Complete Beginner's Guide
 
 > **Master array manipulation and bit operations step by step!**
 
-
 ---
 
-##  What You'll Learn
+## 🎯 What You'll Learn
 
 By the end of this guide, you'll master:
--  **Array Search Algorithms** - Finding pairs that meet specific conditions
--  **Hash Map Optimization** - Trading space for speed efficiency
--  **Brute Force vs Optimized** - Understanding algorithmic tradeoffs
--  **Bit Manipulation** - Using bitwise operations for elegant solutions
--  **Time-Space Complexity** - Analyzing and comparing different approaches
+- 🔍 **Array Search Algorithms** - Finding pairs that meet specific conditions
+- 🗺️ **Hash Map Optimization** - Trading space for speed efficiency
+- ⚡ **Brute Force vs Optimized** - Understanding algorithmic tradeoffs
+- 💻 **Bit Manipulation** - Using bitwise operations for elegant solutions
+- 📊 **Time-Space Complexity** - Analyzing and comparing different approaches
 
 ---
 
 # Part 1: Two Sum Problem (LeetCode #1)
 
-##  The Problem
+## 📋 The Problem
 
-###  Problem Statement
+### 🎯 Problem Statement
 
 **Given**: An array of integers `nums` and an integer `target`  
 **Task**: Return **indices** of the two numbers such that they add up to `target`  
 **Guarantee**: Exactly one solution exists, and you can't use the same element twice
 
-###  Real-World Example
+### 🌟 Real-World Example
 
 Think of it like finding two puzzle pieces that fit together:
--  **Shopping**: Finding two items that exactly match your budget
--  **Chemistry**: Mixing two substances to reach a target concentration
--  **Finance**: Combining two investments to reach a target portfolio value
+- 🛒 **Shopping**: Finding two items that exactly match your budget
+- 🧪 **Chemistry**: Mixing two substances to reach a target concentration
+- 💰 **Finance**: Combining two investments to reach a target portfolio value
 
 ---
 
-##  Understanding the Basics
+## 🔍 Understanding the Basics
 
-###  What is a Pair Sum?
+### 💡 What is a Pair Sum?
 
-```mermaid
-flowchart TD
-    A[Array: 2, 7, 11, 15] --> B[Target: 9]
-    B --> C{Check each pair}
-    C --> D[2 + 7 = 9]
-    D --> E[Found! Indices: 0, 1]
-    
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style E fill:#c8e6c9
+```
+Array: [2, 7, 11, 15]
+Target: 9
+
+Check pairs:
+- 2 + 7 = 9 ✅ Found!
+- Return indices: [0, 1]
 ```
 
 **Key Concept:**
@@ -56,88 +52,61 @@ flowchart TD
 - We return the **positions** (indices), not the numbers themselves
 - Each element can only be used once
 
-###  Array Index System
+### 📍 Array Index System
 
-```mermaid
-flowchart LR
-    A[Index: 0] --> B[Value: 2]
-    C[Index: 1] --> D[Value: 7]
-    E[Index: 2] --> F[Value: 11]
-    G[Index: 3] --> H[Value: 15]
-    
-    style A fill:#e8f5e8
-    style C fill:#e8f5e8
-    style E fill:#e8f5e8
-    style G fill:#e8f5e8
+```
+Index:  0    1    2     3
+Value: [2,   7,   11,   15]
+        ↑    ↑    ↑     ↑
+     First Second Third Fourth
 ```
 
 ---
 
-##  Step-by-Step Examples
+## 📚 Step-by-Step Examples
 
-###  Example 1: Basic Case
+### 🟢 Example 1: Basic Case
 
 **Input:** `nums = [2, 7, 11, 15]`, `target = 9`  
 **Output:** `[0, 1]`
 
-```mermaid
-flowchart TD
-    A[Start: Check pairs] --> B[Check 2 + 7]
-    B --> C{2 + 7 = 9?}
-    C -->|YES| D[Return 0, 1]
-    C -->|NO| E[Continue checking]
-    
-    style A fill:#e8f5e8
-    style D fill:#c8e6c9
-```
-
 **Step-by-step breakdown:**
-1. **Check indices (0, 1):** `nums[0] + nums[1] = 2 + 7 = 9` ✅
-2. **Match found!** Return `[0, 1]`
-3. **Verification:** `2 + 7 = 9` equals target
+```
+Step 1: Check indices (0, 1)
+        nums[0] + nums[1] = 2 + 7 = 9 ✅
+
+Step 2: Match found! Return [0, 1]
+
+Step 3: Verification: 2 + 7 = 9 equals target
+```
 
 ### 🔵 Example 2: Later in Array
 
 **Input:** `nums = [3, 2, 4]`, `target = 6`  
 **Output:** `[1, 2]`
 
-```mermaid
-flowchart TD
-    A[Start: Check pairs] --> B[Check 3 + 2 = 5]
-    B --> C{5 = 6?}
-    C -->|NO| D[Check 3 + 4 = 7]
-    D --> E{7 = 6?}
-    E -->|NO| F[Check 2 + 4 = 6]
-    F --> G{6 = 6?}
-    G -->|YES| H[Return 1, 2]
-    
-    style A fill:#e3f2fd
-    style H fill:#c8e6c9
-```
-
 **Step-by-step breakdown:**
-1. **Pair (0,1):** `3 + 2 = 5` ❌ Not target
-2. **Pair (0,2):** `3 + 4 = 7` ❌ Not target
-3. **Pair (1,2):** `2 + 4 = 6` ✅ Match found!
-4. **Return:** `[1, 2]`
+```
+Pair (0,1): 3 + 2 = 5 ❌ Not target
+Pair (0,2): 3 + 4 = 7 ❌ Not target
+Pair (1,2): 2 + 4 = 6 ✅ Match found!
+Return: [1, 2]
+```
 
 ### 🟡 Example 3: Same Value, Different Indices
 
 **Input:** `nums = [3, 3]`, `target = 6`  
 **Output:** `[0, 1]`
 
-```mermaid
-flowchart TD
-    A[Array: 3, 3] --> B[Target: 6]
-    B --> C[Can use SAME value<br/>at DIFFERENT indices]
-    C --> D[3 at index 0<br/>+<br/>3 at index 1]
-    D --> E[Return: 0, 1]
-    
-    style A fill:#fff8e1
-    style E fill:#ffecb3
-```
-
 **Important Note:** Same **value** is OK if at different **indices**!
+
+```
+Array: [3, 3]
+       ↑  ↑
+     idx:0 idx:1
+
+3 (at index 0) + 3 (at index 1) = 6 ✅
+```
 
 ---
 
@@ -145,48 +114,54 @@ flowchart TD
 
 ### 🎯 Main Strategy: Check All Pairs
 
-```mermaid
-flowchart TD
-    A[Start with first element] --> B[Compare with all elements after it]
-    B --> C{Sum equals target?}
-    C -->|Yes| D[Return indices]
-    C -->|No| E[Move to next element]
-    E --> B
-    
-    style A fill:#e8f5e8
-    style D fill:#c8e6c9
-    style E fill:#fff3e0
+**Algorithm Flow:**
+```
+1. Start with first element
+2. Compare with all elements after it
+3. If sum equals target → Return indices
+4. If not → Move to next element
+5. Repeat until pair found
 ```
 
-### 💻 The Code Logic
+### 💻 Complete Brute Force Code
 
 ```cpp
-// Outer loop: Pick first number
-for (int i = 0; i < n; i++) {
-    // Inner loop: Check against all numbers after it
-    for (int j = i + 1; j < n; j++) {
-        if (nums[i] + nums[j] == target) {
-            return [i, j];  // Found!
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        
+        // Outer loop: Pick first number
+        for (int i = 0; i < n; i++) {
+            // Inner loop: Check against all numbers after it
+            for (int j = i + 1; j < n; j++) {
+                // Check if pair sums to target
+                if (nums[i] + nums[j] == target) {
+                    return {i, j};  // Found the pair!
+                }
+            }
         }
+        
+        // No pair found (though problem guarantees one exists)
+        return {};
     }
-}
+};
 ```
 
 ### 🔄 Execution Flow Visualization
 
-```mermaid
-flowchart TD
-    A[i = 0<br/>Check nums 0] --> B[j = 1, 2, 3, ...]
-    B --> C{Found match?}
-    C -->|No| D[i = 1<br/>Check nums 1]
-    D --> E[j = 2, 3, 4, ...]
-    E --> F{Found match?}
-    F -->|No| G[Continue...]
-    F -->|Yes| H[Return result]
-    C -->|Yes| H
-    
-    style A fill:#e3f2fd
-    style H fill:#c8e6c9
+**Example: nums = [2, 7, 11, 15], target = 9**
+
+```
+i=0, j=1: nums[0] + nums[1] = 2 + 7 = 9 ✅ Found!
+Return: [0, 1]
+
+If not found, would continue:
+i=0, j=2: nums[0] + nums[2] = 2 + 11 = 13 ❌
+i=0, j=3: nums[0] + nums[3] = 2 + 15 = 17 ❌
+i=1, j=2: nums[1] + nums[2] = 7 + 11 = 18 ❌
+i=1, j=3: nums[1] + nums[3] = 7 + 15 = 22 ❌
+...and so on
 ```
 
 ---
@@ -197,46 +172,112 @@ flowchart TD
 
 Instead of checking every pair, we can use a hash map to remember what we've seen!
 
-```mermaid
-flowchart TD
-    A[For each number] --> B[Calculate complement<br/>target - current]
-    B --> C{Complement in map?}
-    C -->|Yes| D[Found! Return indices]
-    C -->|No| E[Add current to map]
-    E --> F[Continue to next]
-    F --> A
-    
-    style A fill:#e8f5e8
-    style D fill:#c8e6c9
-    style E fill:#fff3e0
+**Strategy:**
+```
+For each number:
+1. Calculate complement (target - current)
+2. Check if complement exists in hash map
+3. If YES → Found pair! Return indices
+4. If NO → Add current number to hash map
+5. Continue to next number
 ```
 
-### 📊 Hash Map Approach Visualization
+### 💻 Complete Hash Map Code
+
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        // Hash map to store: value → index
+        unordered_map<int, int> map;
+        
+        // Iterate through array
+        for (int i = 0; i < nums.size(); i++) {
+            // Calculate what number we need
+            int complement = target - nums[i];
+            
+            // Check if we've seen the complement before
+            if (map.find(complement) != map.end()) {
+                // Found it! Return both indices
+                return {map[complement], i};
+            }
+            
+            // Haven't seen complement yet
+            // Store current number with its index
+            map[nums[i]] = i;
+        }
+        
+        // No solution found (though problem guarantees one exists)
+        return {};
+    }
+};
+```
+
+### 📊 Hash Map Approach Step-by-Step
 
 **Example:** `nums = [2, 7, 11, 15]`, `target = 9`
 
-```mermaid
-flowchart LR
-    A[Step 1: See 2<br/>Need: 7<br/>Map: 2→0] --> B[Step 2: See 7<br/>7 in map?<br/>YES!]
-    B --> C[Return: 0, 1]
-    
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#c8e6c9
+```
+Step 1: i=0, num=2
+        complement = 9 - 2 = 7
+        Is 7 in map? NO
+        Add to map: map[2] = 0
+        Map: {2→0}
+
+Step 2: i=1, num=7
+        complement = 9 - 7 = 2
+        Is 2 in map? YES! (at index 0)
+        Return: [0, 1] ✅
+```
+
+**Another Example:** `nums = [3, 2, 4]`, `target = 6`
+
+```
+Step 1: i=0, num=3
+        complement = 6 - 3 = 3
+        Is 3 in map? NO
+        Add to map: map[3] = 0
+        Map: {3→0}
+
+Step 2: i=1, num=2
+        complement = 6 - 2 = 4
+        Is 4 in map? NO
+        Add to map: map[2] = 1
+        Map: {3→0, 2→1}
+
+Step 3: i=2, num=4
+        complement = 6 - 4 = 2
+        Is 2 in map? YES! (at index 1)
+        Return: [1, 2] ✅
 ```
 
 ### ⚡ Performance Comparison
 
-```mermaid
-flowchart TD
-    A[Two Approaches] --> B[Brute Force<br/>Time: O n²<br/>Space: O 1]
-    A --> C[Hash Map<br/>Time: O n<br/>Space: O n]
-    
-    B --> D[Good for: Small arrays<br/>Simple to understand]
-    C --> E[Good for: Large arrays<br/>Much faster]
-    
-    style B fill:#ffebee
-    style C fill:#e8f5e8
+**Brute Force Approach:**
+- ⏰ Time Complexity: O(n²)
+- 💾 Space Complexity: O(1)
+- ✅ Good for: Small arrays, simple implementation
+- ❌ Bad for: Large arrays (very slow)
+
+**Hash Map Approach:**
+- ⏰ Time Complexity: O(n)
+- 💾 Space Complexity: O(n)
+- ✅ Good for: Large arrays (much faster!)
+- ❌ Bad for: When memory is very limited
+
+**Speed Comparison:**
+```
+Array size: 100 elements
+- Brute Force: ~10,000 operations
+- Hash Map: ~100 operations (100x faster!)
+
+Array size: 1,000 elements
+- Brute Force: ~1,000,000 operations
+- Hash Map: ~1,000 operations (1000x faster!)
+
+Array size: 10,000 elements
+- Brute Force: ~100,000,000 operations
+- Hash Map: ~10,000 operations (10000x faster!)
 ```
 
 ---
@@ -259,25 +300,19 @@ flowchart TD
 | `[-3, 4, 3, 90]` | `0` | `[0, 2]` | Negative numbers |
 | `[5, 10]` | `15` | `[0, 1]` | Minimum array size |
 
-### 🎯 Test Coverage
+### 🎯 Test Coverage Categories
 
-```mermaid
-flowchart TD
-    A[Test Categories] --> B[Positive Numbers<br/>✅ Basic cases]
-    A --> C[Negative Numbers<br/>⚠️ Edge case handling]
-    A --> D[Zero Values<br/>⚠️ Special case]
-    A --> E[Large Numbers<br/>✅ Boundary testing]
-    
-    B --> F[Example: 2+7=9]
-    C --> G[Example: -3+3=0]
-    D --> H[Example: 0+0=0]
-    E --> I[Example: 1M+2M=3M]
-    
-    style B fill:#e8f5e8
-    style C fill:#fff3e0
-    style D fill:#fff3e0
-    style E fill:#e3f2fd
-```
+**1. Positive Numbers ✅ Basic cases**
+- Example: `[2, 7] → target 9`
+
+**2. Negative Numbers ⚠️ Edge case handling**
+- Example: `[-3, 3] → target 0`
+
+**3. Zero Values ⚠️ Special case**
+- Example: `[0, 0] → target 0`
+
+**4. Large Numbers ✅ Boundary testing**
+- Example: `[1000000, 2000000] → target 3000000`
 
 ---
 
@@ -295,15 +330,19 @@ flowchart TD
 - Hash map lookup: O(1) per element
 - Total: O(n)
 
-```mermaid
-flowchart LR
-    A[Array Size] --> B[n = 100<br/>Brute: 10,000 ops<br/>Hash: 100 ops]
-    A --> C[n = 1,000<br/>Brute: 1,000,000 ops<br/>Hash: 1,000 ops]
-    A --> D[n = 10,000<br/>Brute: 100,000,000 ops<br/>Hash: 10,000 ops]
-    
-    style B fill:#e8f5e8
-    style C fill:#fff3e0
-    style D fill:#ffebee
+**Comparison:**
+```
+n = 100:
+- Brute Force: ~10,000 operations
+- Hash Map: ~100 operations
+
+n = 1,000:
+- Brute Force: ~1,000,000 operations
+- Hash Map: ~1,000 operations
+
+n = 10,000:
+- Brute Force: ~100,000,000 operations
+- Hash Map: ~10,000 operations
 ```
 
 ### 💾 Space Complexity
@@ -404,9 +443,9 @@ It's like choosing between:
 ### 🌟 Real-World Example
 
 Think of powers of two in daily life:
-- **Computer Memory**: 1GB, 2GB, 4GB, 8GB, 16GB, 32GB (all powers of 2)
-- **Tree Structures**: Perfect binary trees have 1, 2, 4, 8, 16... nodes
-- **Pixel Dimensions**: 256×256, 512×512, 1024×1024 images
+- 💾 **Computer Memory**: 1GB, 2GB, 4GB, 8GB, 16GB, 32GB (all powers of 2)
+- 🌳 **Tree Structures**: Perfect binary trees have 1, 2, 4, 8, 16... nodes
+- 🖼️ **Pixel Dimensions**: 256×256, 512×512, 1024×1024 images
 
 ---
 
@@ -424,36 +463,27 @@ Think of powers of two in daily life:
 | 2^5 | 32 | 100000 |
 | 2^10 | 1024 | 10000000000 |
 
-```mermaid
-flowchart TD
-    A[Powers of Two] --> B[Pattern: Exactly<br/>ONE bit set]
-    B --> C[1 = 0001]
-    B --> D[2 = 0010]
-    B --> E[4 = 0100]
-    B --> F[8 = 1000]
-    
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e8
-    style D fill:#e8f5e8
-    style E fill:#e8f5e8
-    style F fill:#e8f5e8
+**Pattern Recognition:**
+```
+Powers of Two → Exactly ONE bit set in binary
+
+1    = 0001  ✅ (one bit)
+2    = 0010  ✅ (one bit)
+4    = 0100  ✅ (one bit)
+8    = 1000  ✅ (one bit)
+
+3    = 0011  ❌ (two bits)
+5    = 0101  ❌ (two bits)
+6    = 0110  ❌ (two bits)
 ```
 
 ### 🔑 Key Observation
 
 **Powers of two have exactly ONE bit set in binary representation!**
 
-```mermaid
-flowchart LR
-    A[Decimal: 8] --> B[Binary: 1000]
-    C[Decimal: 6] --> D[Binary: 0110]
-    
-    B --> E[One bit = Power of 2]
-    D --> F[Multiple bits = NOT power of 2]
-    
-    style E fill:#c8e6c9
-    style F fill:#ffcdd2
+```
+Decimal 8  → Binary 1000 → One bit = Power of 2 ✅
+Decimal 6  → Binary 0110 → Multiple bits = NOT power of 2 ❌
 ```
 
 ---
@@ -464,22 +494,15 @@ flowchart LR
 
 **Rule:** If `n` is a power of 2, then `n & (n-1) == 0`
 
-```mermaid
-flowchart TD
-    A[Number n] --> B{Is power of 2?}
-    B -->|YES| C[Exactly ONE bit set]
-    B -->|NO| D[Multiple bits set]
-    
-    C --> E[n & n-1 = 0]
-    D --> F[n & n-1 ≠ 0]
-    
-    E --> G[Return TRUE]
-    F --> H[Return FALSE]
-    
-    style C fill:#e8f5e8
-    style D fill:#ffebee
-    style G fill:#c8e6c9
-    style H fill:#ffcdd2
+**Why this works:**
+```
+Power of 2: Exactly ONE bit set
+Subtracting 1: Flips all bits after the rightmost 1
+AND operation: No overlap = 0 ✅
+
+Not power of 2: Multiple bits set
+Subtracting 1: Still some overlap
+AND operation: Result ≠ 0 ❌
 ```
 
 ### 🔬 How the Trick Works
@@ -498,19 +521,19 @@ n - 1 = 5  = 0101  (binary)
 n & (n-1)  = 0100  (binary) = 4 ❌
 ```
 
-```mermaid
-flowchart TD
-    A[Why does this work?] --> B[Subtracting 1 flips<br/>all bits after<br/>rightmost 1]
-    B --> C[Power of 2:<br/>Only ONE bit set]
-    C --> D[After flip:<br/>No overlap = 0]
-    
-    B --> E[Not power of 2:<br/>Multiple bits set]
-    E --> F[After flip:<br/>Still overlap ≠ 0]
-    
-    style C fill:#e8f5e8
-    style D fill:#c8e6c9
-    style E fill:#ffebee
-    style F fill:#ffcdd2
+**Detailed Explanation:**
+```
+Why does subtracting 1 work?
+
+Power of 2 (8 = 1000):
+- Has one 1 followed by zeros
+- Subtracting 1 flips: 0111
+- AND with original: no overlap!
+
+Not power of 2 (6 = 0110):
+- Has multiple 1s
+- Subtracting 1: 0101
+- AND with original: still has overlap!
 ```
 
 ---
@@ -522,22 +545,17 @@ flowchart TD
 **Input:** `n = 1`  
 **Output:** `true` (2^0 = 1)
 
-```mermaid
-flowchart TD
-    A[n = 1] --> B[Binary: 1]
-    B --> C[One bit set?<br/>YES]
-    C --> D[1 & 0 = 0]
-    D --> E[Return: TRUE]
-    
-    style A fill:#e8f5e8
-    style E fill:#c8e6c9
+```
+n = 1 (binary: 1)
+n - 1 = 0 (binary: 0)
+1 & 0 = 0 ✅
+Result: true
 ```
 
 **Analysis:**
-- `n = 1` (binary: `1`)
-- `n - 1 = 0` (binary: `0`)
-- `1 & 0 = 0` ✅
-- Result: `true`
+- `n = 1` is a special case (2^0 = 1)
+- Binary: `1` (only one bit set)
+- `1 & 0 = 0`, so it's a power of 2 ✅
 
 ---
 
@@ -546,20 +564,16 @@ flowchart TD
 **Input:** `n = 16`  
 **Output:** `true` (2^4 = 16)
 
-```mermaid
-flowchart TD
-    A[n = 16] --> B[Binary: 10000]
-    B --> C[n - 1 = 15<br/>Binary: 01111]
-    C --> D[10000 & 01111<br/>= 00000]
-    D --> E[Result: 0<br/>Return TRUE]
-    
-    style A fill:#e3f2fd
-    style E fill:#c8e6c9
+```
+Step 1: n = 16 = 10000 (binary)
+Step 2: n - 1 = 15 = 01111 (binary)
+Step 3: 10000 & 01111 = 00000 = 0
+Step 4: Result = 0, so return true ✅
 ```
 
 **Step-by-step:**
-1. `n = 16` = `10000` in binary
-2. `n - 1 = 15` = `01111` in binary
+1. `n = 16` = `10000` in binary (one bit at position 4)
+2. `n - 1 = 15` = `01111` in binary (all lower bits set)
 3. `10000 & 01111 = 00000` = `0`
 4. Since result is 0, return `true` ✅
 
@@ -570,19 +584,15 @@ flowchart TD
 **Input:** `n = 3`  
 **Output:** `false`
 
-```mermaid
-flowchart TD
-    A[n = 3] --> B[Binary: 11]
-    B --> C[Two bits set<br/>NOT power of 2]
-    C --> D[3 & 2 = 2]
-    D --> E[Result: NOT 0<br/>Return FALSE]
-    
-    style A fill:#ffebee
-    style E fill:#ffcdd2
+```
+n = 3 (binary: 11) - TWO bits set
+n - 1 = 2 (binary: 10)
+11 & 10 = 10 = 2 ≠ 0 ❌
+Result: false
 ```
 
 **Analysis:**
-- `n = 3` (binary: `11`) - TWO bits set
+- `n = 3` (binary: `11`) - TWO bits set, not a power of 2
 - `n - 1 = 2` (binary: `10`)
 - `11 & 10 = 10` = `2` ≠ `0` ❌
 - Result: `false`
@@ -594,15 +604,11 @@ flowchart TD
 **Input:** `n = 5`  
 **Output:** `false`
 
-```mermaid
-flowchart TD
-    A[n = 5] --> B[Binary: 101]
-    B --> C[Two bits set<br/>NOT power of 2]
-    C --> D[101 & 100 = 100]
-    D --> E[Result: 4<br/>Return FALSE]
-    
-    style A fill:#fff8e1
-    style E fill:#ffecb3
+```
+Step 1: n = 5 = 101 (binary) - bits at positions 0 and 2
+Step 2: n - 1 = 4 = 100 (binary)
+Step 3: 101 & 100 = 100 = 4 ≠ 0
+Step 4: Result ≠ 0, so return false ❌
 ```
 
 **Step-by-step:**
@@ -617,42 +623,51 @@ flowchart TD
 
 ### 🎯 Main Strategy
 
-```mermaid
-flowchart TD
-    A[Input: n] --> B{n > 0?}
-    B -->|NO| C[Return FALSE<br/>Powers of 2<br/>are positive]
-    B -->|YES| D[Calculate n & n-1]
-    D --> E{Result == 0?}
-    E -->|YES| F[Return TRUE<br/>Power of 2]
-    E -->|NO| G[Return FALSE<br/>Not power of 2]
-    
-    style A fill:#e3f2fd
-    style C fill:#ffcdd2
-    style F fill:#c8e6c9
-    style G fill:#ffcdd2
+```
+Algorithm Flow:
+1. Check if n > 0 (powers of 2 are positive)
+2. If NO → return false
+3. If YES → calculate n & (n-1)
+4. If result == 0 → return true (power of 2)
+5. If result != 0 → return false (not power of 2)
 ```
 
 ### 💻 The Complete Solution
 
 ```cpp
-bool isPowerOfTwo(int n) {
-    // Must be positive AND have only one bit set
-    return (n > 0 && (n & (n - 1)) == 0);
-}
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        // Must be positive AND have only one bit set
+        return (n > 0 && (n & (n - 1)) == 0);
+    }
+};
+```
+
+**Code Breakdown:**
+```cpp
+n > 0              // Check if positive (powers of 2 are always positive)
+&&                 // AND operator (both conditions must be true)
+(n & (n - 1)) == 0 // Bit trick: only true for powers of 2
 ```
 
 ### 🔍 Why Check n > 0?
 
-```mermaid
-flowchart TD
-    A[Why n > 0?] --> B[Zero: 0 is NOT<br/>a power of 2]
-    A --> C[Negative: Powers of 2<br/>are always positive]
-    
-    B --> D[0 is 2^x?<br/>NO value of x works]
-    C --> E[-16 is NOT<br/>considered 2^x]
-    
-    style B fill:#ffebee
-    style C fill:#ffebee
+**Reason 1: Zero is not a power of 2**
+```
+0 = 2^x ?
+No value of x makes this true!
+```
+
+**Reason 2: Negative numbers**
+```
+Powers of 2 are always positive:
+2^0 = 1
+2^1 = 2
+2^2 = 4
+...
+
+-16 is NOT considered 2^x in this problem
 ```
 
 **Edge Cases Handled:**
@@ -688,16 +703,22 @@ flowchart TD
 
 ### 🎯 Binary Representation Analysis
 
-```mermaid
-flowchart TD
-    A[Test Analysis] --> B[Powers of 2<br/>✅ One bit]
-    A --> C[Non-powers<br/>❌ Multiple/zero bits]
-    
-    B --> D[1 = 1<br/>2 = 10<br/>4 = 100<br/>8 = 1000]
-    C --> E[3 = 11<br/>5 = 101<br/>6 = 110<br/>7 = 111]
-    
-    style B fill:#e8f5e8
-    style C fill:#ffebee
+**Powers of 2 (✅ One bit):**
+```
+1    = 1
+2    = 10
+4    = 100
+8    = 1000
+16   = 10000
+```
+
+**Non-powers (❌ Multiple/zero bits):**
+```
+3    = 11    (two bits)
+5    = 101   (two bits)
+6    = 110   (two bits)
+7    = 111   (three bits)
+0    = 0     (zero bits)
 ```
 
 ---
@@ -712,13 +733,8 @@ flowchart TD
 - No loops, no recursion
 - Always completes in fixed time
 
-```mermaid
-flowchart LR
-    A[Any input size] --> B[1 operation]
-    B --> C[O 1 time]
-    
-    style A fill:#e3f2fd
-    style C fill:#c8e6c9
+```
+Any input size → 1 operation → O(1) time
 ```
 
 ### 💾 Space Complexity: O(1)
@@ -735,27 +751,45 @@ flowchart LR
 ### 🔄 Approach 1: Division Loop
 
 ```cpp
-bool isPowerOfTwo(int n) {
-    if (n <= 0) return false;
-    while (n % 2 == 0) {
-        n /= 2;
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if (n <= 0) return false;
+        
+        // Keep dividing by 2
+        while (n % 2 == 0) {
+            n /= 2;
+        }
+        
+        // If we reach 1, it was a power of 2
+        return n == 1;
     }
-    return n == 1;
-}
+};
 ```
 
 **Complexity:**
-- Time: O(log n)
+- Time: O(log n) - divide by 2 each time
 - Space: O(1)
 - Slower than bit manipulation!
+
+**Example: n = 16**
+```
+16 → 8 → 4 → 2 → 1 ✅
+(4 divisions, log₂(16) = 4)
+```
 
 ### 🔄 Approach 2: Bit Counting
 
 ```cpp
-bool isPowerOfTwo(int n) {
-    if (n <= 0) return false;
-    return __builtin_popcount(n) == 1;
-}
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if (n <= 0) return false;
+        
+        // Count number of set bits
+        return __builtin_popcount(n) == 1;
+    }
+};
 ```
 
 **Complexity:**
@@ -763,18 +797,17 @@ bool isPowerOfTwo(int n) {
 - Space: O(1)
 - Uses built-in function to count set bits
 
+**Note:** `__builtin_popcount()` counts the number of 1s in binary representation
+
 ### 📊 Approach Comparison
 
-```mermaid
-flowchart TD
-    A[Three Approaches] --> B[Bit Manipulation<br/>Time: O 1<br/>Best: Elegant one-liner]
-    A --> C[Division Loop<br/>Time: O log n<br/>OK: Easy to understand]
-    A --> D[Bit Counting<br/>Time: O 1<br/>Good: Built-in function]
-    
-    style B fill:#c8e6c9
-    style C fill:#fff3e0
-    style D fill:#e3f2fd
-```
+| Approach | Time | Space | Pros | Cons |
+|----------|------|-------|------|------|
+| **Bit Manipulation** | O(1) | O(1) | Fastest, elegant | Needs understanding |
+| **Division Loop** | O(log n) | O(1) | Easy to understand | Slower |
+| **Bit Counting** | O(1) | O(1) | Uses built-in | Compiler-dependent |
+
+**Best Choice:** Bit manipulation (`n & (n-1)`) for interviews! ✅
 
 ---
 
@@ -839,15 +872,18 @@ Remember the pattern: **"Powers of 2 have exactly one bit, subtracting 1 flips a
 
 ### 🔑 Essential Patterns
 
-**Two Sum:**
+**Two Sum - Brute Force:**
 ```cpp
-// Brute Force: Check all pairs
+// Check all pairs - O(n²)
 for (int i = 0; i < n; i++)
     for (int j = i + 1; j < n; j++)
         if (nums[i] + nums[j] == target)
             return {i, j};
+```
 
-// Hash Map: O(n) time
+**Two Sum - Hash Map:**
+```cpp
+// O(n) time with hash map
 unordered_map<int, int> map;
 for (int i = 0; i < n; i++) {
     int complement = target - nums[i];
@@ -859,24 +895,15 @@ for (int i = 0; i < n; i++) {
 
 **Power of Two:**
 ```cpp
-// Bit manipulation trick
+// Bit manipulation trick - O(1)
 return (n > 0 && (n & (n - 1)) == 0);
 ```
 
 ### 🧠 Mental Models
 
-```mermaid
-flowchart TD
-    A[Problem Solving] --> B[Two Sum:<br/>Pair finding]
-    A --> C[Power of Two:<br/>Pattern recognition]
-    
-    B --> D[Trade-off:<br/>Time vs Space]
-    C --> E[Bit trick:<br/>Elegant solution]
-    
-    style A fill:#e1f5fe
-    style B fill:#e8f5e8
-    style C fill:#fff3e0
-```
+**Problem Solving Approaches:**
+- **Two Sum:** Pair finding - trade time vs space
+- **Power of Two:** Pattern recognition - use bit tricks for elegant solutions
 
 ---
 
