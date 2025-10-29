@@ -333,10 +333,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A["Test Categories"] --> B["Positive Numbers<br/>✅ Basic cases"]
-    A --> C["Negative Numbers<br/>⚠️ Edge case handling"]
-    A --> D["Zero Values<br/>⚠️ Special case"]
-    A --> E["Large Numbers<br/>✅ Boundary testing"]
+    A["Test Categories"] --> B["Positive Numbers<br/>Basic cases"]
+    A --> C["Negative Numbers<br/>Edge case handling"]
+    A --> D["Zero Values<br/>Special case"]
+    A --> E["Large Numbers<br/>Boundary testing"]
     
     B --> F["Example: 2+7=9"]
     C --> G["Example: -3+3=0"]
@@ -760,8 +760,8 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A["Test Analysis"] --> B["Powers of 2<br/>✅ One bit"]
-    A --> C["Non-powers<br/>❌ Multiple/zero bits"]
+    A["Test Analysis"] --> B["Powers of 2<br/>One bit"]
+    A --> C["Non-powers<br/>Multiple/zero bits"]
     
     B --> D["1 = 1<br/>2 = 10<br/>4 = 100<br/>8 = 1000"]
     C --> E["3 = 11<br/>5 = 101<br/>6 = 110<br/>7 = 111"]
